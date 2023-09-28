@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\VehicleOrganizer.Domain.Abstractions\VehicleOrganizer.Domain.Abstractions.csproj" />
+    <ProjectReference Include="..\VehicleOrganizer.Domain\VehicleOrganizer.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Repositories\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="BachorzLibrary.Common" Version="0.0.3" />
+    <PackageReference Include="BachorzLibrary.DAL" Version="0.0.3" />
+    <PackageReference Include="BachorzLibrary.DAL.DotNetSix" Version="0.0.2" />
+    <PackageReference Include="BachorzLibrary.Web" Version="0.0.2" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+
+</Project>
