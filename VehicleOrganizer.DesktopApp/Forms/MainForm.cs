@@ -16,5 +16,7 @@ namespace VehicleOrganizer.DesktopApp.Forms
         {
             InitializeComponent();
         }
+
+        public void SetLabel(string text) => label1.Text = text;
     }
 }

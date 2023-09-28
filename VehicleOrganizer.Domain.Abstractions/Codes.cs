@@ -9,11 +9,12 @@ namespace VehicleOrganizer.Domain.Abstractions
     public static class Codes
     {
         public const string AppName = nameof(VehicleOrganizer);
-        public static string MainPath = Path.Combine(@"C:\", Directories.Main, AppName);
+        public static string MainPath = Path.Combine(@"C:\", Directories.Main, AppName, Directories.Data);
 
         public struct Directories
         {
             public const string Main = "ABSolutions";
+            public const string Data = nameof(Data);
         }
         
         public struct Files

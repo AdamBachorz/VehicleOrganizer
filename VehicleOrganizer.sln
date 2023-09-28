@@ -7,9 +7,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VehicleOrganizer.Domain", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VehicleOrganizer.Domain.Abstractions", "VehicleOrganizer.Domain.Abstractions\VehicleOrganizer.Domain.Abstractions.csproj", "{9C2B0CC8-ACF9-4F45-9323-2E9E2B7159FA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VehicleOrganizer.DesktopApp", "VehicleOrganizer.DesktopApp\VehicleOrganizer.DesktopApp.csproj", "{5428C2AD-CF8F-42C7-8EFA-1B0B6A650BB7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VehicleOrganizer.DesktopApp", "VehicleOrganizer.DesktopApp\VehicleOrganizer.DesktopApp.csproj", "{5428C2AD-CF8F-42C7-8EFA-1B0B6A650BB7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VehicleOrganizer.Infrastructure", "VehicleOrganizer.Infrastructure\VehicleOrganizer.Infrastructure.csproj", "{286CD9F6-B950-4B9F-BBE6-054159B159EA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VehicleOrganizer.Infrastructure", "VehicleOrganizer.Infrastructure\VehicleOrganizer.Infrastructure.csproj", "{286CD9F6-B950-4B9F-BBE6-054159B159EA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
