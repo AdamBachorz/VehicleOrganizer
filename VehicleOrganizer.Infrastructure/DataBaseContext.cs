@@ -6,7 +6,9 @@ namespace VehicleOrganizer.Infrastructure;
 
 public class DataBaseContext : BaseDbContext
 {
-    
+    public DbSet<Vehicle> Vehicles { get; set; }
+    public DbSet<MileageHistory> MileageHistory { get; set; }
+    public DbSet<OperationalActivity> OperationalActivities { get; set; }
 
     public DataBaseContext()
     {
