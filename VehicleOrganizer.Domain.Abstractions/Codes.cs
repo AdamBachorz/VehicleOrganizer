@@ -20,6 +20,8 @@ namespace VehicleOrganizer.Domain.Abstractions
         public struct Files
         {
             public static string DefaultUser = Path.Combine(MainPath, "DefaultUser.json");
+            public static string DevConfig = Path.Combine(MainPath, "appsettings.Development.json");
+            public static string ProdConfig = Path.Combine(MainPath, "appsettings.Production.json");
         }
 
 
