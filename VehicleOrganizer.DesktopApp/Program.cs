@@ -1,7 +1,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using VehicleOrganizer.DesktopApp.Forms;
-using VehicleOrganizer.Domain.Abstractions.Config;
+using VehicleOrganizer.DesktopApp.Config;
 
 namespace VehicleOrganizer.DesktopApp
 {
@@ -21,8 +21,8 @@ namespace VehicleOrganizer.DesktopApp
             ApplicationConfiguration.Initialize();
           
             var service = new ServiceCollection();
-            var configuration = new ConfigurationBuilder()
-                .Build();
+            //var configuration = new ConfigurationBuilder()
+            //    .Build();
 
             DependencyInjection.RegisterModules(service);
             using (ServiceProvider serviceProvider = service.BuildServiceProvider())

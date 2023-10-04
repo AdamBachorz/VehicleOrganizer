@@ -4,10 +4,11 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using VehicleOrganizer.DesktopApp.Forms;
+using VehicleOrganizer.Domain.Abstractions;
 using VehicleOrganizer.Domain.Abstractions.Utils;
 using VehicleOrganizer.Infrastructure;
 
-namespace VehicleOrganizer.Domain.Abstractions.Config
+namespace VehicleOrganizer.DesktopApp.Config
 {
     public static class DependencyInjection
     {

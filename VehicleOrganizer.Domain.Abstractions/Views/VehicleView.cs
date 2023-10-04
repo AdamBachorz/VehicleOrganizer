@@ -1,0 +1,13 @@
+﻿namespace VehicleOrganizer.Domain.Abstractions.Views
+{
+    public class VehicleView
+    {
+        public string Name { get; set; }
+        public string VehicleType { get; set; }
+        public string OilType { get; set; }
+        public string InsuranceConclusion { get; set; }
+        public string InsuranceTermination { get; set; }
+        public string LatestMileage { get; set; }
+        public string DaysToInsuranceExpires { get; set; }
+    }
+}
