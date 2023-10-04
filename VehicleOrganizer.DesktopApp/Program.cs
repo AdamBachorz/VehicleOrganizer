@@ -14,6 +14,7 @@ using VehicleOrganizer.Infrastructure;
 using VehicleOrganizer.Infrastructure.Entities;
 using NHibernate.Cfg;
 using Xceed.Document.NET;
+using VehicleOrganizer.Domain.Abstractions.Utils;
 
 namespace VehicleOrganizer.DesktopApp
 {
@@ -41,6 +42,10 @@ namespace VehicleOrganizer.DesktopApp
                 config.ClearProviders();
             });
 
+            var configFile = FileUtils.GetProperFileByEnv(Codes.Files.DevConfig, Codes.Files.ProdConfig);
+            var config = JsonConvert.DeserializeObject<EFCCustomConfig>(File.ReadAllText(configFile));
+
+            services.AddSingleton<IEFCCustomConfig>(config);
             services.AddDbContext<DataBaseContext>();
             services.AddScoped<MainForm>();
 

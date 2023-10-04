@@ -1,10 +1,9 @@
 ﻿using BachorzLibrary.DAL.DotNetSix.EntityFrameworkCore;
 using VehicleOrganizer.Infrastructure.Entities;
 using Microsoft.EntityFrameworkCore;
-using Xceed.Document.NET;
 using Newtonsoft.Json;
+using VehicleOrganizer.Domain.Abstractions.Utils;
 using VehicleOrganizer.Domain.Abstractions;
-using Microsoft.Extensions.Options;
 
 namespace VehicleOrganizer.Infrastructure;
 
@@ -25,12 +24,20 @@ public class DataBaseContext : BaseDbContext
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         base.OnConfiguring(optionsBuilder);
-        string configFile;
+        string environment;
 #if DEBUG
-        configFile = Codes.Files.DevConfig;
+        environment = "DEV";
 #else
-        environment = Codes.Files.ProdConfig;           
+        environment = "PROD";
 #endif
+
+        var configFile = FileUtils.GetProperFileByEnv(Codes.Files.DevConfig, Codes.Files.ProdConfig);
+
+        if (!File.Exists(configFile))
+        {
+            throw new FileLoadException("Config file not found", environment);
+        }
+
         var config = JsonConvert.DeserializeObject<EFCCustomConfig>(File.ReadAllText(configFile));
         if (config.IsProduction)
         {
