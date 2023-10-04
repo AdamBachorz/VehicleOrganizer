@@ -31,6 +31,7 @@ public class DataBaseContext : BaseDbContext
         environment = "PROD";
 #endif
 
+        //TODO Better config file with loading from static method like EFCCustomConfig.TryLoad() or simmilar
         var configFile = FileUtils.GetProperFileByEnv(Codes.Files.DevConfig, Codes.Files.ProdConfig);
 
         if (!File.Exists(configFile))
@@ -38,6 +39,7 @@ public class DataBaseContext : BaseDbContext
             throw new FileLoadException("Config file not found", environment);
         }
 
+        //TODO Extract DbContextUtils.HardConfig(DbContextOptionsBuilder optionsBuilder, string configFile) or do this in base class
         var config = JsonConvert.DeserializeObject<EFCCustomConfig>(File.ReadAllText(configFile));
         if (config.IsProduction)
         {

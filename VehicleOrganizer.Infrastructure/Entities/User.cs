@@ -9,7 +9,8 @@ namespace VehicleOrganizer.Infrastructure.Entities
     public class User
     {
         public int Id { get; set; } 
-        public string Name { get; set; } 
+        public string Name { get; set; }
+        [NotMapped]
         public Details Details { get; set; } 
         public string Email { get; set; }
 
@@ -19,8 +20,12 @@ namespace VehicleOrganizer.Infrastructure.Entities
         public static User Default => JsonConvert.DeserializeObject<User>(File.ReadAllText(Codes.Files.DefaultUser));
     }
 
-    public class Details
+    public struct Details
     {
+        public Details()
+        {
+        }
+
         public string FirstName { get; set; } = "I";
         public string LastName { get; set; } = "N";
         public string IdNumber { get; set; } = "nr";

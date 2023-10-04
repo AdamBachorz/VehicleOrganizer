@@ -1,20 +1,7 @@
-using BachorzLibrary.DAL.DotNetSix.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Configuration.Json;
-using Newtonsoft.Json;
-using System;
-using System.Configuration;
-using System.Reflection;
 using VehicleOrganizer.DesktopApp.Forms;
-using VehicleOrganizer.Domain.Abstractions;
-using VehicleOrganizer.Infrastructure;
-using VehicleOrganizer.Infrastructure.Entities;
-using NHibernate.Cfg;
-using Xceed.Document.NET;
-using VehicleOrganizer.Domain.Abstractions.Utils;
+using VehicleOrganizer.Domain.Abstractions.Config;
 
 namespace VehicleOrganizer.DesktopApp
 {
@@ -33,23 +20,12 @@ namespace VehicleOrganizer.DesktopApp
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
           
-            var services = new ServiceCollection();
+            var service = new ServiceCollection();
             var configuration = new ConfigurationBuilder()
                 .Build();
 
-            services.AddLogging(config =>
-            {
-                config.ClearProviders();
-            });
-
-            var configFile = FileUtils.GetProperFileByEnv(Codes.Files.DevConfig, Codes.Files.ProdConfig);
-            var config = JsonConvert.DeserializeObject<EFCCustomConfig>(File.ReadAllText(configFile));
-
-            services.AddSingleton<IEFCCustomConfig>(config);
-            services.AddDbContext<DataBaseContext>();
-            services.AddScoped<MainForm>();
-
-            using (ServiceProvider serviceProvider = services.BuildServiceProvider())
+            DependencyInjection.RegisterModules(service);
+            using (ServiceProvider serviceProvider = service.BuildServiceProvider())
             {
                 var form = serviceProvider.GetRequiredService<MainForm>();
                 Application.Run(form);
