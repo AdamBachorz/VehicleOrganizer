@@ -28,32 +28,97 @@
         /// </summary>
         private void InitializeComponent()
         {
-            label1 = new Label();
+            tableLayoutPanel1 = new TableLayoutPanel();
+            mainPanel = new Panel();
+            menuStrip = new MenuStrip();
+            toolStripMenuOptions = new ToolStripMenuItem();
+            toolStripMenuItemAddNewVehicle = new ToolStripMenuItem();
+            toolStripMenuItemSelectVehicle = new ToolStripMenuItem();
+            tableLayoutPanel1.SuspendLayout();
+            menuStrip.SuspendLayout();
             SuspendLayout();
             // 
-            // label1
+            // tableLayoutPanel1
             // 
-            label1.AutoSize = true;
-            label1.Location = new Point(455, 217);
-            label1.Name = "label1";
-            label1.Size = new Size(38, 15);
-            label1.TabIndex = 0;
-            label1.Text = "label1";
+            tableLayoutPanel1.ColumnCount = 1;
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle());
+            tableLayoutPanel1.Controls.Add(mainPanel, 0, 1);
+            tableLayoutPanel1.Controls.Add(menuStrip, 0, 0);
+            tableLayoutPanel1.Dock = DockStyle.Fill;
+            tableLayoutPanel1.Location = new Point(0, 0);
+            tableLayoutPanel1.Name = "tableLayoutPanel1";
+            tableLayoutPanel1.RowCount = 2;
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 5.33333349F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 94.6666641F));
+            tableLayoutPanel1.Size = new Size(800, 450);
+            tableLayoutPanel1.TabIndex = 0;
+            // 
+            // mainPanel
+            // 
+            mainPanel.AutoSize = true;
+            mainPanel.Location = new Point(3, 27);
+            mainPanel.Name = "mainPanel";
+            mainPanel.Size = new Size(0, 0);
+            mainPanel.TabIndex = 0;
+            // 
+            // menuStrip
+            // 
+            menuStrip.BackColor = SystemColors.ControlLight;
+            menuStrip.Items.AddRange(new ToolStripItem[] { toolStripMenuOptions });
+            menuStrip.Location = new Point(0, 0);
+            menuStrip.Name = "menuStrip";
+            menuStrip.Size = new Size(800, 24);
+            menuStrip.TabIndex = 1;
+            menuStrip.Text = "menuStrip1";
+            // 
+            // toolStripMenuOptions
+            // 
+            toolStripMenuOptions.DropDownItems.AddRange(new ToolStripItem[] { toolStripMenuItemAddNewVehicle, toolStripMenuItemSelectVehicle });
+            toolStripMenuOptions.Name = "toolStripMenuOptions";
+            toolStripMenuOptions.Size = new Size(50, 20);
+            toolStripMenuOptions.Text = "Opcje";
+            // 
+            // toolStripMenuItemAddNewVehicle
+            // 
+            toolStripMenuItemAddNewVehicle.Name = "toolStripMenuItemAddNewVehicle";
+            toolStripMenuItemAddNewVehicle.Size = new Size(175, 22);
+            toolStripMenuItemAddNewVehicle.Text = "Dodaj nowy pojazd";
+            toolStripMenuItemAddNewVehicle.Click += toolStripMenuItemAddNewVehicle_Click;
+            // 
+            // toolStripMenuItemSelectVehicle
+            // 
+            toolStripMenuItemSelectVehicle.Name = "toolStripMenuItemSelectVehicle";
+            toolStripMenuItemSelectVehicle.Size = new Size(175, 22);
+            toolStripMenuItemSelectVehicle.Text = "Wybierz pojazd";
+            toolStripMenuItemSelectVehicle.Click += toolStripMenuItemSelectVehicle_Click;
             // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            AutoSize = true;
             ClientSize = new Size(800, 450);
-            Controls.Add(label1);
+            Controls.Add(tableLayoutPanel1);
+            FormBorderStyle = FormBorderStyle.Fixed3D;
+            MainMenuStrip = menuStrip;
+            MaximizeBox = false;
             Name = "MainForm";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "MainForm";
+            tableLayoutPanel1.ResumeLayout(false);
+            tableLayoutPanel1.PerformLayout();
+            menuStrip.ResumeLayout(false);
+            menuStrip.PerformLayout();
             ResumeLayout(false);
-            PerformLayout();
         }
 
         #endregion
 
-        private Label label1;
+        private TableLayoutPanel tableLayoutPanel1;
+        private Panel mainPanel;
+        private MenuStrip menuStrip;
+        private ToolStripMenuItem toolStripMenuOptions;
+        private ToolStripMenuItem toolStripMenuItemAddNewVehicle;
+        private ToolStripMenuItem toolStripMenuItemSelectVehicle;
     }
 }

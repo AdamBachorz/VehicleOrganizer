@@ -35,10 +35,10 @@ namespace VehicleOrganizer.DesktopApp
 
                 var vehicles = await vehicleRepository.GetVehiclesForUser(User.Default);
 
-                if (vehicles.IsNullOrEmpty())
-                {
-                    MessageBox.Show("Brak pojazdów");
-                }
+                //if (vehicles.IsNullOrEmpty())
+                //{
+                //    MessageBox.Show("Brak pojazdów");
+                //}
 
                 var form = serviceProvider.GetRequiredService<MainForm>();
                 Application.Run(form);
