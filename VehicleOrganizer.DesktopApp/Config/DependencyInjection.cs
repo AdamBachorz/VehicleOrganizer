@@ -7,6 +7,8 @@ using VehicleOrganizer.DesktopApp.Forms;
 using VehicleOrganizer.Domain.Abstractions;
 using VehicleOrganizer.Domain.Abstractions.Utils;
 using VehicleOrganizer.Infrastructure;
+using VehicleOrganizer.Infrastructure.Repositories;
+using VehicleOrganizer.Infrastructure.Repositories.Interfaces;
 
 namespace VehicleOrganizer.DesktopApp.Config
 {
@@ -24,6 +26,8 @@ namespace VehicleOrganizer.DesktopApp.Config
             service.AddObjectMappingConfiguration(AutoMapperFixture.Create());
             service.AddSingleton<IEFCCustomConfig>(config);
             service.AddDbContext<DataBaseContext>();
+
+            service.AddTransient<IVehicleRepository, VehicleRepository>();
 
             service.AddScoped<MainForm>();
         }

@@ -1,4 +1,4 @@
-namespace VehicleOrganizer.Infrastructure.Tests
+﻿namespace VehicleOrganizer.Infrastructure.Tests
 {
     public abstract class BaseTests
     {

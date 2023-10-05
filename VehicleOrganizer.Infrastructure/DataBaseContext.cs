@@ -24,30 +24,33 @@ public class DataBaseContext : BaseDbContext
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         base.OnConfiguring(optionsBuilder);
-        string environment;
+        if (!optionsBuilder.IsConfigured)
+        {
+            string environment;
 #if DEBUG
-        environment = "DEV";
+            environment = "DEV";
 #else
         environment = "PROD";
 #endif
 
-        //TODO Better config file with loading from static method like EFCCustomConfig.TryLoad() or simmilar
-        var configFile = FileUtils.GetProperFileByEnv(Codes.Files.DevConfig, Codes.Files.ProdConfig);
+            //TODO Better config file with loading from static method like EFCCustomConfig.TryLoad() or simmilar
+            var configFile = FileUtils.GetProperFileByEnv(Codes.Files.DevConfig, Codes.Files.ProdConfig);
 
-        if (!File.Exists(configFile))
-        {
-            throw new FileLoadException("Config file not found", environment);
-        }
+            if (!File.Exists(configFile))
+            {
+                throw new FileLoadException("Config file not found", environment);
+            }
 
-        //TODO Extract DbContextUtils.HardConfig(DbContextOptionsBuilder optionsBuilder, string configFile) or do this in base class
-        var config = JsonConvert.DeserializeObject<EFCCustomConfig>(File.ReadAllText(configFile));
-        if (config.IsProduction)
-        {
-            optionsBuilder.UseNpgsql(config.ConnectionString);
-        }
-        else
-        {
-            optionsBuilder.UseSqlite(config.ConnectionString);
+            //TODO Extract DbContextUtils.HardConfig(DbContextOptionsBuilder optionsBuilder, string configFile) or do this in base class
+            var config = JsonConvert.DeserializeObject<EFCCustomConfig>(File.ReadAllText(configFile));
+            if (config.IsProduction)
+            {
+                optionsBuilder.UseNpgsql(config.ConnectionString);
+            }
+            else
+            {
+                optionsBuilder.UseSqlite(config.ConnectionString);
+            } 
         }
     }
 

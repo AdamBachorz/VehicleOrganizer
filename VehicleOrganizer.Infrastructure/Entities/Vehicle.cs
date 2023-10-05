@@ -8,14 +8,19 @@ namespace VehicleOrganizer.Infrastructure.Entities
     public class Vehicle : Entity
     {
         public string Name { get; set; }
+        public DateTime PurchaseDate { get; set; } = DateTime.Now.Date;
+        public DateTime RegistrationDate { get; set; } = DateTime.Now.Date;
         public VehicleType VehicleType { get; set; }
         public string OilType { get; set; }
         public DateTime InsuranceConclusion { get; set; } = DateTime.Now.Date;
         public DateTime InsuranceTermination { get; set; } = DateTime.Now.Date.AddYears(1);
+        public DateTime? SaleDate { get; set; }
         public User User { get; set; } = User.Default;
         public IList<MileageHistory> MileageHistory { get; set; }
         public IList<OperationalActivity> OperationalActivities { get; set; }
 
+        [NotMapped]
+        public bool IsSold => SaleDate.HasValue;
         [NotMapped]
         public int LatestMileage => MileageHistory.IsNotNullOrEmpty() ? MileageHistory?.LastOrDefault()?.Mileage ?? 0 : 0;
         [NotMapped]
