@@ -94,9 +94,9 @@ namespace VehicleOrganizer.Infrastructure.Tests.Repositories
                 Name = _fixture.Create<string>(),
                 OilType = _fixture.Create<string>(),
             };
-            const int Mileage = 100;
+            var mileage = _fixture.Create<int>();
 
-            var resultVehicle = await _sut.AddVehicle(vehicle, Mileage);
+            var resultVehicle = await _sut.AddVehicle(vehicle, mileage);
 
             Assert.Multiple(() =>
             {
@@ -105,7 +105,7 @@ namespace VehicleOrganizer.Infrastructure.Tests.Repositories
                 Assert.That(resultVehicle.User.Id, Is.EqualTo(User.Default.Id));
                 Assert.That(resultVehicle.MileageHistory, Is.Not.Null.Or.Empty);
                 Assert.That(resultVehicle.MileageHistory, Has.Count.EqualTo(1));
-                Assert.That(resultVehicle.LatestMileage, Is.EqualTo(Mileage));
+                Assert.That(resultVehicle.LatestMileage, Is.EqualTo(mileage));
                 Assert.That(resultVehicle.MileageHistory.First().Id, Is.GreaterThan(0));
                 Assert.That(resultVehicle.MileageHistory.First().AddDate, Is.EqualTo(resultVehicle.PurchaseDate));
             });
@@ -119,8 +119,8 @@ namespace VehicleOrganizer.Infrastructure.Tests.Repositories
                 Name = _fixture.Create<string>(),
                 OilType = _fixture.Create<string>(),
             };
-            const int Mileage = 100;
-            var resultVehicle = await _sut.AddVehicle(vehicle, Mileage);
+            var mileage = _fixture.Create<int>();
+            var resultVehicle = await _sut.AddVehicle(vehicle, mileage);
             var saleDate = _fixture.Create<DateTime>();
 
             await _sut.SaleVehicle(resultVehicle, saleDate);

@@ -3,14 +3,13 @@ using BachorzLibrary.Web.Extensions;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using VehicleOrganizer.DesktopApp.Forms;
 using VehicleOrganizer.Domain.Abstractions;
 using VehicleOrganizer.Domain.Abstractions.Utils;
 using VehicleOrganizer.Infrastructure;
 using VehicleOrganizer.Infrastructure.Repositories;
 using VehicleOrganizer.Infrastructure.Repositories.Interfaces;
 
-namespace VehicleOrganizer.DesktopApp.Config
+namespace VehicleOrganizer.Core.Config
 {
     public static class DependencyInjection
     {
@@ -28,8 +27,6 @@ namespace VehicleOrganizer.DesktopApp.Config
             service.AddDbContext<DataBaseContext>();
 
             service.AddTransient<IVehicleRepository, VehicleRepository>();
-
-            service.AddScoped<MainForm>();
         }
     }
 }

@@ -1,7 +1,9 @@
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Configuration;
 using VehicleOrganizer.DesktopApp.Forms;
-using VehicleOrganizer.DesktopApp.Config;
+using VehicleOrganizer.Infrastructure.Repositories.Interfaces;
+using VehicleOrganizer.Infrastructure.Entities;
+using BachorzLibrary.Common.Extensions;
+using VehicleOrganizer.Core.Config;
 
 namespace VehicleOrganizer.DesktopApp
 {
@@ -14,7 +16,7 @@ namespace VehicleOrganizer.DesktopApp
 
 
         [STAThread]
-        static void Main()
+        static async Task Main()
         {
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
@@ -25,12 +27,27 @@ namespace VehicleOrganizer.DesktopApp
             //    .Build();
 
             DependencyInjection.RegisterModules(service);
+            RegisterForms(service);
+
             using (ServiceProvider serviceProvider = service.BuildServiceProvider())
             {
+                var vehicleRepository = serviceProvider.GetRequiredService<IVehicleRepository>();
+
+                var vehicles = await vehicleRepository.GetVehiclesForUser(User.Default);
+
+                if (vehicles.IsNullOrEmpty())
+                {
+                    MessageBox.Show("Brak pojazdów");
+                }
+
                 var form = serviceProvider.GetRequiredService<MainForm>();
                 Application.Run(form);
             }
         }
 
+        private static void RegisterForms(IServiceCollection service)
+        {
+            service.AddScoped<MainForm>();
+        }
     }
 }

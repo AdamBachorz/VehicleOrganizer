@@ -3,7 +3,7 @@ using VehicleOrganizer.Domain.Abstractions.Enums;
 using VehicleOrganizer.Domain.Abstractions.Views;
 using VehicleOrganizer.Infrastructure.Entities;
 
-namespace VehicleOrganizer.DesktopApp.Config
+namespace VehicleOrganizer.Core.Config
 {
     public static class AutoMapperFixture
     {

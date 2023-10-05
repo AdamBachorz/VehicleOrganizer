@@ -27,8 +27,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\VehicleOrganizer.Core\VehicleOrganizer.Core.csproj" />
     <ProjectReference Include="..\VehicleOrganizer.Domain.Abstractions\VehicleOrganizer.Domain.Abstractions.csproj" />
     <ProjectReference Include="..\VehicleOrganizer.Domain\VehicleOrganizer.Domain.csproj" />
+    <ProjectReference Include="..\VehicleOrganizer.Infrastructure.Abstractions\VehicleOrganizer.Infrastructure.Abstractions.csproj" />
     <ProjectReference Include="..\VehicleOrganizer.Infrastructure\VehicleOrganizer.Infrastructure.csproj" />
   </ItemGroup>
 

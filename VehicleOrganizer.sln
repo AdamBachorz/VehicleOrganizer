@@ -11,9 +11,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VehicleOrganizer.DesktopApp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VehicleOrganizer.Infrastructure", "VehicleOrganizer.Infrastructure\VehicleOrganizer.Infrastructure.csproj", "{286CD9F6-B950-4B9F-BBE6-054159B159EA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VehicleOrganizer.Infrastructure.Abstractions", "VehicleOrganizer.Infrastructure.Abstractions\VehicleOrganizer.Infrastructure.Abstractions.csproj", "{E3DC67D8-E7E1-4CA9-AC85-721402BECBDA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VehicleOrganizer.Infrastructure.Abstractions", "VehicleOrganizer.Infrastructure.Abstractions\VehicleOrganizer.Infrastructure.Abstractions.csproj", "{E3DC67D8-E7E1-4CA9-AC85-721402BECBDA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VehicleOrganizer.Infrastructure.Tests", "VehicleOrganizer.Infrastructure.Tests\VehicleOrganizer.Infrastructure.Tests.csproj", "{48B45CBD-EC54-4527-BBD4-FB7D56C0E686}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VehicleOrganizer.Infrastructure.Tests", "VehicleOrganizer.Infrastructure.Tests\VehicleOrganizer.Infrastructure.Tests.csproj", "{48B45CBD-EC54-4527-BBD4-FB7D56C0E686}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VehicleOrganizer.Core", "VehicleOrganizer.Core\VehicleOrganizer.Core.csproj", "{CA72871B-4D83-440A-939D-722A6D4EC03D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VehicleOrganizer.Core.Tests", "VehicleOrganizer.Core.Tests\VehicleOrganizer.Core.Tests.csproj", "{B3BE8A4E-CED2-4062-BEEE-3FBCF150E0A9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +49,14 @@ Global
 		{48B45CBD-EC54-4527-BBD4-FB7D56C0E686}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{48B45CBD-EC54-4527-BBD4-FB7D56C0E686}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{48B45CBD-EC54-4527-BBD4-FB7D56C0E686}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CA72871B-4D83-440A-939D-722A6D4EC03D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CA72871B-4D83-440A-939D-722A6D4EC03D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CA72871B-4D83-440A-939D-722A6D4EC03D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CA72871B-4D83-440A-939D-722A6D4EC03D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B3BE8A4E-CED2-4062-BEEE-3FBCF150E0A9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B3BE8A4E-CED2-4062-BEEE-3FBCF150E0A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B3BE8A4E-CED2-4062-BEEE-3FBCF150E0A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B3BE8A4E-CED2-4062-BEEE-3FBCF150E0A9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
