@@ -132,5 +132,12 @@ namespace VehicleOrganizer.Infrastructure.Tests.Repositories
                 Assert.That(resultVehicle.IsSold, Is.True);
             });
         }
+        
+        [Test]
+        public void ShouldThrowArgumentNullException_SellVehicle()
+        {
+            var notExistingVehicleInDb = new Vehicle();
+            Assert.That(async () => await _sut.SaleVehicle(notExistingVehicleInDb, _fixture.Create<DateTime>()), Throws.ArgumentNullException);
+        }
     }
 }
