@@ -17,10 +17,11 @@ namespace VehicleOrganizer.Infrastructure.Tests.Repositories
             _sut = new VehicleRepository(_db);
         }
 
-        [Test]
-        public async Task ShouldRetrunListOfVehilcesForUser_GetVehiclesForUser_SoldExcluded()
+        [TestCase(true, 3)]
+        [TestCase(false, 2)]
+        public async Task ShouldRetrunListOfVehilcesForUser_GetVehiclesForUser(bool includeSold, int expectedResultListCount)
         {
-            var user = _fixture.Create<User>();
+            var targetUser = _fixture.Create<User>();
             var userOther = _fixture.Create<User>();
 
             var vehicles = new List<Vehicle>()
@@ -28,19 +29,19 @@ namespace VehicleOrganizer.Infrastructure.Tests.Repositories
                 new Vehicle { Id = 1, Name = _fixture.Create<string>(),
                     OilType = _fixture.Create<string>(),
                     VehicleType = _fixture.Create<VehicleType>(), 
-                    User = user,
+                    User = targetUser,
                 },
 
                 new Vehicle { Id = 2, Name = _fixture.Create<string>(),
                     OilType = _fixture.Create<string>(), 
                     VehicleType = _fixture.Create<VehicleType>(), 
-                    User = user,
+                    User = targetUser,
                 },
 
                 new Vehicle { Id = 3, Name = _fixture.Create<string>(),
                     OilType = _fixture.Create<string>(), 
                     VehicleType = _fixture.Create<VehicleType>(), 
-                    User = user,
+                    User = targetUser,
                     SaleDate = _fixture.Create<DateTime>() 
                 },
 
@@ -67,14 +68,21 @@ namespace VehicleOrganizer.Infrastructure.Tests.Repositories
             _db.Vehicles.AddRange(vehicles);
             _db.SaveChanges();
 
-            var resultVehicles = await _sut.GetVehiclesForUser(user, includeSold: false);
+            var resultVehicles = await _sut.GetVehiclesForUser(targetUser, includeSold);
 
             Assert.Multiple(() =>
             {
                 Assert.That(resultVehicles, Is.Not.Null.Or.Empty);
-                Assert.That(resultVehicles, Has.Count.EqualTo(2));
-                Assert.That(resultVehicles.All(v => v.User == user), Is.True);
-                Assert.That(resultVehicles.All(v => !v.IsSold), Is.True);
+                Assert.That(resultVehicles, Has.Count.EqualTo(expectedResultListCount));
+                Assert.That(resultVehicles.All(v => v.User == targetUser), Is.True);
+                if (includeSold)
+                {
+                    Assert.That(resultVehicles.Any(v => v.IsSold), Is.True);
+                }
+                else
+                {
+                    Assert.That(resultVehicles.All(v => !v.IsSold), Is.True);
+                }
             });
         }
 

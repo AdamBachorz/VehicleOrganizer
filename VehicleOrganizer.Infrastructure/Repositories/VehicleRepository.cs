@@ -42,7 +42,7 @@ namespace VehicleOrganizer.Infrastructure.Repositories
                 query = query.Where(v => !v.SaleDate.HasValue);
             }
 
-            return await query.ToListAsync();
+            return await query.OrderBy(v => v.PurchaseDate).ToListAsync();
         }
 
         public async Task SaleVehicle(Vehicle vehcle, DateTime saleDate)
