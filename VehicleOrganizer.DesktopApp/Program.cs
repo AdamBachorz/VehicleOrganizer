@@ -13,8 +13,6 @@ namespace VehicleOrganizer.DesktopApp
         ///  The main entry point for the application.
         /// </summary>
         /// 
-
-
         [STAThread]
         static async Task Main()
         {
