@@ -17,7 +17,7 @@ namespace VehicleOrganizer.DesktopApp.Panels
         private void FillUpControls()
         {
             labelVehicleName.Text = _vehicleView.Name;
-            //labelYearOfProduction.Text = _vehicleView.YearOfProduction;
+            labelYearOfProduction.Text = _vehicleView.YearOfProduction;
             labelOilType.Text = _vehicleView.OilType;
             labelLatestMileage.Text = _vehicleView.LatestMileage;
             labelPruchaseDate.Text = _vehicleView.PurchaseDate;

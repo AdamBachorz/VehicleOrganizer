@@ -11,6 +11,11 @@ namespace VehicleOrganizer.Infrastructure.Repositories
         {
         }
 
+        public bool UserHasVehicle(User user)
+        {
+            return _db.Vehicles.Any(v => v.User.Id == user.Id);   
+        }
+
         public async Task<Vehicle> AddVehicle(Vehicle vehcle, int mileage)
         {
             vehcle.MileageHistory = new List<MileageHistory>()
@@ -40,17 +45,43 @@ namespace VehicleOrganizer.Infrastructure.Repositories
             return await query.OrderBy(v => v.PurchaseDate).ToListAsync();
         }
 
-        public async Task SaleVehicle(Vehicle vehcle, DateTime saleDate)
+        public async Task UpdateMileage(Vehicle vehicle, int mileage)
         {
-            vehcle = await _db.Vehicles.FindAsync(vehcle.Id);
+            vehicle = await _db.Vehicles.FindAsync(vehicle.Id);
 
-            if (vehcle == null)
+            if (vehicle == null)
             {
                 throw new ArgumentNullException("Vehicle not found");
             }
 
-            vehcle.SaleDate = saleDate;
+            if (vehicle.LatestMileage > mileage)
+            {
+                throw new ArgumentException("Given mileage is smaller than current mileage");
+            }
+
+            var mileageHistory = new MileageHistory
+            {
+                Vehicle = vehicle,
+                AddDate = DateTime.Now.Date,
+                Mileage = mileage
+            };
+
+            vehicle.MileageHistory.Add(mileageHistory);
             await _db.SaveChangesAsync();
         }
+
+        public async Task SaleVehicle(Vehicle vehicle, DateTime saleDate)
+        {
+            vehicle = await _db.Vehicles.FindAsync(vehicle.Id);
+
+            if (vehicle == null)
+            {
+                throw new ArgumentNullException("Vehicle not found");
+            }
+
+            vehicle.SaleDate = saleDate;
+            await _db.SaveChangesAsync();
+        }
+
     }
 }

@@ -3,6 +3,7 @@
     public class VehicleView
     {
         public string Name { get; set; }
+        public string YearOfProduction { get; set; }
         public string VehicleType { get; set; }
         public string OilType { get; set; }
         public string PurchaseDate { get; set; }

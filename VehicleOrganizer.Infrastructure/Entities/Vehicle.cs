@@ -8,6 +8,7 @@ namespace VehicleOrganizer.Infrastructure.Entities
     public class Vehicle : Entity
     {
         public string Name { get; set; }
+        public int YearOfProduction { get; set; }
         public DateTime PurchaseDate { get; set; } = DateTime.Now.Date;
         public DateTime RegistrationDate { get; set; } = DateTime.Now.Date;
         public VehicleType VehicleType { get; set; }

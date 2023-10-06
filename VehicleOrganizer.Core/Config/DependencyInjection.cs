@@ -27,6 +27,7 @@ namespace VehicleOrganizer.Core.Config
             service.AddDbContext<DataBaseContext>();
 
             service.AddTransient<IVehicleRepository, VehicleRepository>();
+            service.AddTransient<IOperationalActivityRepository, OperationalActivityRepository>();
         }
     }
 }

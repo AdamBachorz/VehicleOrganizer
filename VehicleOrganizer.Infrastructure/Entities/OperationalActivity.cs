@@ -20,6 +20,7 @@ namespace VehicleOrganizer.Infrastructure.Entities
         /// How many years can pass to the next this type operation 
         /// </summary>
         public int YearsStep { get; set; }
+        public DateTime? ReminderDate { get; set; }
 
         [NotMapped]
         public DateTime NextOperationDate => LastOperationDate.AddYears(YearsStep);

@@ -31,12 +31,12 @@ namespace VehicleOrganizer.DesktopApp
             {
                 var vehicleRepository = serviceProvider.GetRequiredService<IVehicleRepository>();
 
-                //var userHasVehicle = await vehicleRepository.UserHasVehicle(User.Default);
+                var userHasVehicle = vehicleRepository.UserHasVehicle(User.Default);
 
-                //if (!userHasVehicle)
-                //{
-                //    MessageBox.Show("Brak pojazdów");
-                //}
+                if (!userHasVehicle)
+                {
+                    MessageBox.Show("Brak pojazdów");
+                }
 
                 var form = serviceProvider.GetRequiredService<MainForm>();
                 Application.Run(form);

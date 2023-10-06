@@ -17,6 +17,24 @@ namespace VehicleOrganizer.Infrastructure.Tests.Repositories
             _sut = new VehicleRepository(_db);
         }
 
+        [Test]
+        public void ShouldReturnTrueOrFalse_UserHasVehicle()
+        {
+            var user = _fixture.Create<User>();
+
+            var vehicle = new Vehicle
+            {
+                Name = _fixture.Create<string>(),
+                OilType = _fixture.Create<string>(),
+                User = user,
+            };
+
+            _db.Vehicles.Add(vehicle);
+            _db.SaveChanges();
+
+            Assert.That(_sut.UserHasVehicle(user), Is.True);
+        }
+
         [TestCase(true, 3)]
         [TestCase(false, 2)]
         public async Task ShouldRetrunListOfVehilcesForUser_GetVehiclesForUser(bool includeSold, int expectedResultListCount)
@@ -109,6 +127,63 @@ namespace VehicleOrganizer.Infrastructure.Tests.Repositories
                 Assert.That(resultVehicle.MileageHistory.First().Id, Is.GreaterThan(0));
                 Assert.That(resultVehicle.MileageHistory.First().AddDate, Is.EqualTo(resultVehicle.PurchaseDate));
             });
+        }
+
+        [Test]
+        public async Task ShouldUpdateMileage_UpdateMileage()
+        {
+            var user = _fixture.Create<User>();
+
+            var vehicle = new Vehicle
+            {
+                Name = _fixture.Create<string>(),
+                OilType = _fixture.Create<string>(),
+                User = user
+            };
+            vehicle.MileageHistory = new List<MileageHistory> 
+            {
+                new MileageHistory{ Vehicle = vehicle, Mileage = 100 }
+            };
+
+            await _db.Vehicles.AddAsync(vehicle);
+            await _db.SaveChangesAsync();
+
+            var newMileage = 1000;
+            await _sut.UpdateMileage(vehicle, newMileage);
+
+            var updatedVehicle = _db.Vehicles.FirstOrDefault(x => x.Id == vehicle.Id);
+            Assert.Multiple(() =>
+            {
+                Assert.That(updatedVehicle, Is.Not.Null);
+                Assert.That(updatedVehicle.Id, Is.GreaterThan(0));
+                Assert.That(updatedVehicle.LatestMileage, Is.EqualTo(newMileage));
+                Assert.That(updatedVehicle.MileageHistory, Has.Count.EqualTo(2));
+            });
+
+        }
+
+        [Test]
+        public async Task ShouldThrowException_SmallerMileage_UpdateMileage()
+        {
+            var user = _fixture.Create<User>();
+
+            var vehicle = new Vehicle
+            {
+                Name = _fixture.Create<string>(),
+                OilType = _fixture.Create<string>(),
+                User = user
+            };
+            vehicle.MileageHistory = new List<MileageHistory> 
+            {
+                new MileageHistory{ Vehicle = vehicle, Mileage = 100 }
+            };
+
+            await _db.Vehicles.AddAsync(vehicle);
+            await _db.SaveChangesAsync();
+
+            var newMileage = 1;
+
+            Assert.That(() => _sut.UpdateMileage(vehicle, newMileage), Throws.ArgumentException);
         }
 
         [Test]
