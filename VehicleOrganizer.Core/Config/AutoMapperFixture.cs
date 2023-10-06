@@ -17,6 +17,8 @@ namespace VehicleOrganizer.Core.Config
                     .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
                     .ForMember(dest => dest.VehicleType, opt => opt.MapFrom(src => src.VehicleType.ToString()))
                     .ForMember(dest => dest.OilType, opt => opt.MapFrom(src => src.VehicleType == VehicleType.Car ? src.OilType : "N/A"))
+                    .ForMember(dest => dest.PurchaseDate, opt => opt.MapFrom(src => src.PurchaseDate.ToShortDateString()))
+                    .ForMember(dest => dest.RegistrationDate, opt => opt.MapFrom(src => src.RegistrationDate.ToShortDateString()))
                     .ForMember(dest => dest.InsuranceConclusion, opt => opt.MapFrom(src => src.InsuranceConclusion.ToShortDateString()))
                     .ForMember(dest => dest.InsuranceTermination, opt => opt.MapFrom(src => src.InsuranceTermination.ToShortDateString()))
                     .ForMember(dest => dest.LatestMileage, opt => opt.MapFrom(src => src.LatestMileage + " km"))
