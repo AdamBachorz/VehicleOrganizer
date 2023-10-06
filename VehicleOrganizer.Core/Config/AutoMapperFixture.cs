@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using VehicleOrganizer.Domain.Abstractions.Enums;
+using VehicleOrganizer.Domain.Abstractions.Extensions;
 using VehicleOrganizer.Domain.Abstractions.Views;
 using VehicleOrganizer.Infrastructure.Entities;
 
@@ -16,7 +16,7 @@ namespace VehicleOrganizer.Core.Config
                 cfg.CreateMap<Vehicle, VehicleView>()
                     .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
                     .ForMember(dest => dest.VehicleType, opt => opt.MapFrom(src => src.VehicleType.ToString()))
-                    .ForMember(dest => dest.OilType, opt => opt.MapFrom(src => src.VehicleType == VehicleType.Car ? src.OilType : "N/A"))
+                    .ForMember(dest => dest.OilType, opt => opt.MapFrom(src => src.VehicleType.IsOilBased() ? src.OilType : "N/A"))
                     .ForMember(dest => dest.PurchaseDate, opt => opt.MapFrom(src => src.PurchaseDate.ToShortDateString()))
                     .ForMember(dest => dest.RegistrationDate, opt => opt.MapFrom(src => src.RegistrationDate.ToShortDateString()))
                     .ForMember(dest => dest.InsuranceConclusion, opt => opt.MapFrom(src => src.InsuranceConclusion.ToShortDateString()))

@@ -33,9 +33,9 @@ namespace VehicleOrganizer.DesktopApp
             {
                 var vehicleRepository = serviceProvider.GetRequiredService<IVehicleRepository>();
 
-                var vehicles = await vehicleRepository.GetVehiclesForUser(User.Default);
+                //var userHasVehicle = await vehicleRepository.UserHasVehicle(User.Default);
 
-                //if (vehicles.IsNullOrEmpty())
+                //if (!userHasVehicle)
                 //{
                 //    MessageBox.Show("Brak pojazdów");
                 //}
