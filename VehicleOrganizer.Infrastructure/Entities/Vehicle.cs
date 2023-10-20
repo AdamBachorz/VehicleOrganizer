@@ -24,7 +24,7 @@ namespace VehicleOrganizer.Infrastructure.Entities
         public bool IsSold => SaleDate.HasValue;
         [NotMapped]
         public int LatestMileage => MileageHistory.IsNotNullOrEmpty() ? MileageHistory?.LastOrDefault()?.Mileage ?? 0 : 0;
-        [NotMapped]
-        public int DaysToInsuranceExpires => (int)(InsuranceTermination - InsuranceConclusion).TotalDays;
+        
+        public int DaysToInsuranceExpires(DateTime referenceDate) => (int)(InsuranceTermination - referenceDate).TotalDays;
     }
 }

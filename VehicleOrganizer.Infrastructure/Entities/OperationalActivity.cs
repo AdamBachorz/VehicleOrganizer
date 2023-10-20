@@ -20,6 +20,10 @@ namespace VehicleOrganizer.Infrastructure.Entities
         /// How many years can pass to the next this type operation 
         /// </summary>
         public int YearsStep { get; set; }
+        
+        /// <summary>
+        /// Date when last reminder was send/announced
+        /// </summary>
         public DateTime? ReminderDate { get; set; }
 
         [NotMapped]
@@ -27,7 +31,9 @@ namespace VehicleOrganizer.Infrastructure.Entities
         [NotMapped]
         public int NextOperationAtMilage => MileageWhenPerformed + MileageStep;
 
-        [NotMapped]
-        public int ToNextAct => IsDateOperated ? (int)(NextOperationDate - LastOperationDate).TotalDays : NextOperationAtMilage - Vehicle.LatestMileage;
+        public int ToNextAct(DateTime referenceDate) => 
+            IsDateOperated ? (int)(NextOperationDate - referenceDate).TotalDays : NextOperationAtMilage - Vehicle.LatestMileage;
+        public string SummaryPrompt(DateTime referenceDate) => 
+            $"{Name} - Pozostało: {ToNextAct(referenceDate)} {(IsDateOperated ? "dni" : "kilometrów")}";
     }
 }
