@@ -18,7 +18,7 @@ namespace VehicleOrganizer.Infrastructure.Tests.Repositories
         }
 
         [Test]
-        public void ShouldReturnTrueOrFalse_UserHasVehicle()
+        public async Task ShouldReturnTrueOrFalse_UserHasVehicle()
         {
             var user = _fixture.Create<User>();
 
@@ -29,8 +29,8 @@ namespace VehicleOrganizer.Infrastructure.Tests.Repositories
                 User = user,
             };
 
-            _db.Vehicles.Add(vehicle);
-            _db.SaveChanges();
+            await _db.Vehicles.AddAsync(vehicle);
+            await _db.SaveChangesAsync();
 
             Assert.That(_sut.UserHasVehicle(user), Is.True);
         }
@@ -83,10 +83,10 @@ namespace VehicleOrganizer.Infrastructure.Tests.Repositories
                 },
             };
 
-            _db.Vehicles.AddRange(vehicles);
-            _db.SaveChanges();
+            await _db.Vehicles.AddRangeAsync(vehicles);
+            await _db.SaveChangesAsync();
 
-            var resultVehicles = await _sut.GetVehiclesForUser(targetUser, includeSold);
+            var resultVehicles = await _sut.GetVehiclesForUserAsync(targetUser, includeSold);
 
             Assert.Multiple(() =>
             {
@@ -114,7 +114,7 @@ namespace VehicleOrganizer.Infrastructure.Tests.Repositories
             };
             var mileage = _fixture.Create<int>();
 
-            var resultVehicle = await _sut.AddVehicle(vehicle, mileage);
+            var resultVehicle = await _sut.AddVehicleAsync(vehicle, mileage);
 
             Assert.Multiple(() =>
             {
@@ -149,7 +149,7 @@ namespace VehicleOrganizer.Infrastructure.Tests.Repositories
             await _db.SaveChangesAsync();
 
             var newMileage = 1000;
-            await _sut.UpdateMileage(vehicle, newMileage);
+            await _sut.UpdateMileageAsync(vehicle, newMileage);
 
             var updatedVehicle = _db.Vehicles.FirstOrDefault(x => x.Id == vehicle.Id);
             Assert.Multiple(() =>
@@ -183,7 +183,7 @@ namespace VehicleOrganizer.Infrastructure.Tests.Repositories
 
             var newMileage = 1;
 
-            Assert.That(() => _sut.UpdateMileage(vehicle, newMileage), Throws.ArgumentException);
+            Assert.That(() => _sut.UpdateMileageAsync(vehicle, newMileage), Throws.ArgumentException);
         }
 
         [Test]
@@ -195,10 +195,10 @@ namespace VehicleOrganizer.Infrastructure.Tests.Repositories
                 OilType = _fixture.Create<string>(),
             };
             var mileage = _fixture.Create<int>();
-            var resultVehicle = await _sut.AddVehicle(vehicle, mileage);
+            var resultVehicle = await _sut.AddVehicleAsync(vehicle, mileage);
             var saleDate = _fixture.Create<DateTime>();
 
-            await _sut.SaleVehicle(resultVehicle, saleDate);
+            await _sut.SaleVehicleAsync(resultVehicle, saleDate);
             
             Assert.Multiple(() =>
             {
@@ -212,7 +212,7 @@ namespace VehicleOrganizer.Infrastructure.Tests.Repositories
         public void ShouldThrowArgumentNullException_SellVehicle()
         {
             var notExistingVehicleInDb = new Vehicle();
-            Assert.That(async () => await _sut.SaleVehicle(notExistingVehicleInDb, _fixture.Create<DateTime>()), Throws.ArgumentNullException);
+            Assert.That(async () => await _sut.SaleVehicleAsync(notExistingVehicleInDb, _fixture.Create<DateTime>()), Throws.ArgumentNullException);
         }
     }
 }

@@ -16,7 +16,7 @@ namespace VehicleOrganizer.Infrastructure.Repositories
             return _db.Vehicles.Any(v => v.User.Id == user.Id);   
         }
 
-        public async Task<Vehicle> AddVehicle(Vehicle vehcle, int mileage)
+        public async Task<Vehicle> AddVehicleAsync(Vehicle vehcle, int mileage)
         {
             vehcle.MileageHistory = new List<MileageHistory>()
             {
@@ -33,7 +33,7 @@ namespace VehicleOrganizer.Infrastructure.Repositories
             return vehcle;
         }
 
-        public async Task<IList<Vehicle>> GetVehiclesForUser(User user, bool includeSold = false)
+        public async Task<IList<Vehicle>> GetVehiclesForUserAsync(User user, bool includeSold = false)
         {
             var query = _db.Vehicles.Where(v => v.User.Id == user.Id);
 
@@ -45,7 +45,7 @@ namespace VehicleOrganizer.Infrastructure.Repositories
             return await query.OrderBy(v => v.PurchaseDate).ToListAsync();
         }
 
-        public async Task UpdateMileage(Vehicle vehicle, int mileage)
+        public async Task UpdateMileageAsync(Vehicle vehicle, int mileage)
         {
             vehicle = await _db.Vehicles.FindAsync(vehicle.Id);
 
@@ -70,7 +70,7 @@ namespace VehicleOrganizer.Infrastructure.Repositories
             await _db.SaveChangesAsync();
         }
 
-        public async Task SaleVehicle(Vehicle vehicle, DateTime saleDate)
+        public async Task SaleVehicleAsync(Vehicle vehicle, DateTime saleDate)
         {
             vehicle = await _db.Vehicles.FindAsync(vehicle.Id);
 
