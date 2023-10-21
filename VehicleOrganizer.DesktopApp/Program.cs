@@ -29,8 +29,10 @@ namespace VehicleOrganizer.DesktopApp
 
             using (ServiceProvider serviceProvider = service.BuildServiceProvider())
             {
+                var userRepository = serviceProvider.GetRequiredService<IUserRepository>();
                 var vehicleRepository = serviceProvider.GetRequiredService<IVehicleRepository>();
 
+                await userRepository.AuthorizeUser(User.Default);
                 var userHasVehicle = vehicleRepository.UserHasVehicle(User.Default);
 
                 if (!userHasVehicle)

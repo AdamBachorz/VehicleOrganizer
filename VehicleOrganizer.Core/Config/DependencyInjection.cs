@@ -26,6 +26,7 @@ namespace VehicleOrganizer.Core.Config
             service.AddSingleton<IEFCCustomConfig>(config);
             service.AddDbContext<DataBaseContext>();
 
+            service.AddTransient<IUserRepository, UserRepository>();
             service.AddTransient<IVehicleRepository, VehicleRepository>();
             service.AddTransient<IOperationalActivityRepository, OperationalActivityRepository>();
         }
