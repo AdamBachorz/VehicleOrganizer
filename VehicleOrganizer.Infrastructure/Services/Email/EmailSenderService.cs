@@ -1,39 +1,40 @@
-﻿using FluentNHibernate.Conventions.Instances;
-using mailslurp.Api;
-using mailslurp.Client;
-using mailslurp.Model;
+﻿using BachorzLibrary.DAL.DotNetSix.EntityFrameworkCore;
 using System.Net;
-using System.Net.Http;
 using System.Net.Mail;
+using VehicleOrganizer.Domain.Abstractions;
 using VehicleOrganizer.Infrastructure.Entities;
 
 namespace VehicleOrganizer.Infrastructure.Services.Email
 {
     public class EmailSenderService
     {
-        private InboxControllerApi _controller;
-        private InboxDto _inbox;
+        private SmtpClient _smtpClient;
+        private IEFCCustomConfig _customConfig;
+        private MailAddress _baseMail;
 
-        public EmailSenderService()
+        public EmailSenderService(IEFCCustomConfig customConfig)
         {
-            //Fail
-            // first configure your api key
-            var config = new Configuration();
-            config.ApiKey.Add("x-api-key", "6a17b5e7251cd259aafd58675991c0d1b1dbcec5162b428e5ada8e6c7e2ea9b1");
-
-            _controller = new InboxControllerApi(config);
-            _inbox = _controller.CreateInbox();         
+            _customConfig = customConfig;
+            var values = ((string)_customConfig.ValuesBag["Sender"]).Split('#');
+            _baseMail = new MailAddress(values[1], Codes.AppName);
+            _smtpClient = new SmtpClient("smtp.poczta.onet.pl")
+            {
+                Port = 587,
+                Credentials = new NetworkCredential(values[1], values[0]),
+                EnableSsl = true,
+            };
         }
 
-        public void SendEmail(string subject, string body)
+        public async Task SendEmail(string subject, string body)
         {
-            var sendEmailOptions = new SendEmailOptions()
+            using var message = new MailMessage(_baseMail, new MailAddress(User.Default.Email, User.Default.Name))
             {
-                To = new List<string>() { User.Default.Email },
                 Subject = subject,
-                Body = body
+                Body = body,
+                IsBodyHtml = true,
             };
-            _controller.SendEmail(_inbox.Id, sendEmailOptions);
+             await _smtpClient.SendMailAsync(message);
+            
         }
     }
 }

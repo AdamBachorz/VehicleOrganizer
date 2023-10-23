@@ -8,6 +8,7 @@ using VehicleOrganizer.Domain.Abstractions.Utils;
 using VehicleOrganizer.Infrastructure;
 using VehicleOrganizer.Infrastructure.Repositories;
 using VehicleOrganizer.Infrastructure.Repositories.Interfaces;
+using VehicleOrganizer.Infrastructure.Services.Email;
 
 namespace VehicleOrganizer.Core.Config
 {
@@ -29,6 +30,8 @@ namespace VehicleOrganizer.Core.Config
             service.AddTransient<IUserRepository, UserRepository>();
             service.AddTransient<IVehicleRepository, VehicleRepository>();
             service.AddTransient<IOperationalActivityRepository, OperationalActivityRepository>();
+
+            service.AddTransient<EmailSenderService>();
         }
     }
 }

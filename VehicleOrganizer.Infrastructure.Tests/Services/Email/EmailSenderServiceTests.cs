@@ -1,4 +1,5 @@
-﻿using VehicleOrganizer.Infrastructure.Services.Email;
+﻿using FluentEmail.Core;
+using VehicleOrganizer.Infrastructure.Services.Email;
 
 namespace VehicleOrganizer.Infrastructure.Tests.Services.Email
 {
@@ -11,14 +12,14 @@ namespace VehicleOrganizer.Infrastructure.Tests.Services.Email
         {
             base.Setup();
 
-            _sut = new EmailSenderService();
+            _sut = new EmailSenderService(_customConfig);
         }
 
         [Test]
         [Explicit]
-        public void ShouldSendEmail_SendEmail()
+        public async Task ShouldSendEmail_SendEmail()
         {
-            _sut.SendEmail("Testowy temat", "testowa treść <h1>Nagłówek</h1>");
+            await _sut.SendEmail("Testowy temat", "testowa treść <h1>Nagłówek</h1>");
 
             Assert.Pass();
         }
