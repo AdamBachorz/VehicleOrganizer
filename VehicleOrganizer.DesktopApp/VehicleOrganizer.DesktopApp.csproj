@@ -8,10 +8,18 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <WarningsAsErrors />
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <WarningsAsErrors />
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="BachorzLibrary.Common" Version="0.0.3" />
-    <PackageReference Include="BachorzLibrary.DAL" Version="0.0.3" />
-    <PackageReference Include="BachorzLibrary.DAL.DotNetSix" Version="0.0.2" />
+    <PackageReference Include="BachorzLibrary.DAL" Version="0.0.4" />
+    <PackageReference Include="BachorzLibrary.DAL.DotNetSix" Version="0.0.3" />
     <PackageReference Include="BachorzLibrary.Desktop" Version="1.0.3" />
     <PackageReference Include="BachorzLibrary.Web" Version="0.0.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.11">

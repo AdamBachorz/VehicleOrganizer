@@ -6,6 +6,14 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <WarningsAsErrors></WarningsAsErrors>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <WarningsAsErrors></WarningsAsErrors>
+  </PropertyGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\VehicleOrganizer.Domain.Abstractions\VehicleOrganizer.Domain.Abstractions.csproj" />
     <ProjectReference Include="..\VehicleOrganizer.Domain\VehicleOrganizer.Domain.csproj" />
@@ -13,9 +21,11 @@
 
   <ItemGroup>
     <PackageReference Include="BachorzLibrary.Common" Version="0.0.3" />
-    <PackageReference Include="BachorzLibrary.DAL" Version="0.0.3" />
-    <PackageReference Include="BachorzLibrary.DAL.DotNetSix" Version="0.0.2" />
+    <PackageReference Include="BachorzLibrary.DAL" Version="0.0.4" />
+    <PackageReference Include="BachorzLibrary.DAL.DotNetSix" Version="0.0.3" />
     <PackageReference Include="BachorzLibrary.Web" Version="0.0.2" />
+    <PackageReference Include="FluentEmail.Razor" Version="3.0.2" />
+    <PackageReference Include="FluentEmail.Smtp" Version="3.0.2" />
     <PackageReference Include="mailslurp" Version="15.17.17" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="7.0.11" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.11">
