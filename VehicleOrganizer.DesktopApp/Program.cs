@@ -4,6 +4,7 @@ using VehicleOrganizer.Infrastructure.Repositories.Interfaces;
 using VehicleOrganizer.Infrastructure.Entities;
 using BachorzLibrary.Common.Extensions;
 using VehicleOrganizer.Core.Config;
+using VehicleOrganizer.Infrastructure.Services.Email;
 
 namespace VehicleOrganizer.DesktopApp
 {
@@ -16,13 +17,9 @@ namespace VehicleOrganizer.DesktopApp
         [STAThread]
         static async Task Main()
         {
-            // To customize application configuration such as set high DPI settings or default font,
-            // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
           
             var service = new ServiceCollection();
-            //var configuration = new ConfigurationBuilder()
-            //    .Build();
 
             DependencyInjection.RegisterModules(service);
             RegisterForms(service);
@@ -31,6 +28,7 @@ namespace VehicleOrganizer.DesktopApp
             {
                 var userRepository = serviceProvider.GetRequiredService<IUserRepository>();
                 var vehicleRepository = serviceProvider.GetRequiredService<IVehicleRepository>();
+                var emailSenderService = serviceProvider.GetRequiredService<EmailSenderService>();
 
                 await userRepository.AuthorizeUser(User.Default);
                 var userHasVehicle = vehicleRepository.UserHasVehicle(User.Default);

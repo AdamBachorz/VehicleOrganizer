@@ -6,9 +6,9 @@ using Newtonsoft.Json;
 using VehicleOrganizer.Domain.Abstractions;
 using VehicleOrganizer.Domain.Abstractions.Utils;
 using VehicleOrganizer.Infrastructure;
+using VehicleOrganizer.Infrastructure.Extensions;
 using VehicleOrganizer.Infrastructure.Repositories;
 using VehicleOrganizer.Infrastructure.Repositories.Interfaces;
-using VehicleOrganizer.Infrastructure.Services.Email;
 
 namespace VehicleOrganizer.Core.Config
 {
@@ -31,7 +31,12 @@ namespace VehicleOrganizer.Core.Config
             service.AddTransient<IVehicleRepository, VehicleRepository>();
             service.AddTransient<IOperationalActivityRepository, OperationalActivityRepository>();
 
-            service.AddTransient<EmailSenderService>();
+            service.AddEmailSenderService(config, settings =>
+            {
+                settings.SmtpClientUrl = "smtp.poczta.onet.pl";
+                settings.SenderEmail = "adar_1@op.pl";
+                settings.SenderHeader = Codes.AppName;
+            });
         }
     }
 }

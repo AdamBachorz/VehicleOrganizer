@@ -1,4 +1,5 @@
-﻿using FluentEmail.Core;
+﻿using VehicleOrganizer.Domain.Abstractions;
+using VehicleOrganizer.Infrastructure.Entities;
 using VehicleOrganizer.Infrastructure.Services.Email;
 
 namespace VehicleOrganizer.Infrastructure.Tests.Services.Email
@@ -12,14 +13,22 @@ namespace VehicleOrganizer.Infrastructure.Tests.Services.Email
         {
             base.Setup();
 
-            _sut = new EmailSenderService(_customConfig);
+            var values = _customConfig.ValuesBag["Sender"] as string;
+            var settings = new EmailSenderServiceSettings
+            {
+                SmtpClientUrl = "smtp.poczta.onet.pl",
+                SenderValues = values,
+                SenderEmail = "adar_1@op.pl",
+                SenderHeader = Codes.AppName,
+            };
+            _sut = new EmailSenderService(settings);
         }
 
         [Test]
         [Explicit]
         public async Task ShouldSendEmail_SendEmail()
         {
-            await _sut.SendEmail("Testowy temat", "testowa treść <h1>Nagłówek</h1>");
+            await _sut.SendEmail("Testowy temat", "testowa treść <h1>Nagłówek</h1>", User.Default.Email, User.Default.Name);
 
             Assert.Pass();
         }
