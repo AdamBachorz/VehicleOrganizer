@@ -10,7 +10,7 @@ namespace VehicleOrganizer.Infrastructure.Repositories
         {
         }
 
-        public async Task AuthorizeUser(User user, bool refreshUserAsDefault = true)
+        public async Task AuthorizeUserAsync(User user, bool refreshUserAsDefault = true)
         {
             var existingUser = await _db.Users.FindAsync(user.Id);
 

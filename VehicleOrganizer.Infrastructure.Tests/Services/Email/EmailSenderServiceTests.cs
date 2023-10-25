@@ -28,7 +28,7 @@ namespace VehicleOrganizer.Infrastructure.Tests.Services.Email
         [Explicit]
         public async Task ShouldSendEmail_SendEmail()
         {
-            await _sut.SendEmail("Testowy temat", "testowa treść <h1>Nagłówek</h1>", User.Default.Email, User.Default.Name);
+            await _sut.SendEmailAsync("Testowy temat", "testowa treść <h1>Nagłówek</h1>", User.Default.Email, User.Default.Name);
 
             Assert.Pass();
         }

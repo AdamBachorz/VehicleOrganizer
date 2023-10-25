@@ -5,6 +5,6 @@ namespace VehicleOrganizer.Infrastructure.Repositories.Interfaces
 {
     public interface IUserRepository : IBaseDao<User, string>
     {
-        Task AuthorizeUser(User user, bool refreshUserAsDefault = true);
+        Task AuthorizeUserAsync(User user, bool refreshUserAsDefault = true);
     }
 }

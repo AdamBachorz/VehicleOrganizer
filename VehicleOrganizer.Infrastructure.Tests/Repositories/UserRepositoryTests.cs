@@ -26,7 +26,7 @@ namespace VehicleOrganizer.Infrastructure.Tests.Repositories
             await _db.Users.AddAsync(existingUser);
             await _db.SaveChangesAsync();
 
-            await _sut.AuthorizeUser(newUser, refreshUserAsDefault: false);
+            await _sut.AuthorizeUserAsync(newUser, refreshUserAsDefault: false);
 
             var allUsers = _sut.GetAll();
 

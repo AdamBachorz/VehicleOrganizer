@@ -30,7 +30,7 @@ namespace VehicleOrganizer.DesktopApp
                 var vehicleRepository = serviceProvider.GetRequiredService<IVehicleRepository>();
                 var emailSenderService = serviceProvider.GetRequiredService<EmailSenderService>();
 
-                await userRepository.AuthorizeUser(User.Default);
+                await userRepository.AuthorizeUserAsync(User.Default);
                 var userHasVehicle = vehicleRepository.UserHasVehicle(User.Default);
 
                 if (!userHasVehicle)

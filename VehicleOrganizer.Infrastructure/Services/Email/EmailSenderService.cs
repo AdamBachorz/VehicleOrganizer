@@ -23,7 +23,7 @@ namespace VehicleOrganizer.Infrastructure.Services.Email
             };
         }
 
-        public async Task SendEmail(string subject, string body, string destinationEmail, string destinationVisibleName)
+        public async Task SendEmailAsync(string subject, string body, string destinationEmail, string destinationVisibleName)
         {
             using var message = new MailMessage(_baseMail, new MailAddress(destinationEmail, destinationVisibleName))
             {
