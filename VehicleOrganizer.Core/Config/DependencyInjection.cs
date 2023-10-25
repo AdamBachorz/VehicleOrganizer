@@ -3,12 +3,14 @@ using BachorzLibrary.Web.Extensions;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using RestApiInmoto.Common.Html;
 using VehicleOrganizer.Domain.Abstractions;
 using VehicleOrganizer.Domain.Abstractions.Utils;
 using VehicleOrganizer.Infrastructure;
 using VehicleOrganizer.Infrastructure.Extensions;
 using VehicleOrganizer.Infrastructure.Repositories;
 using VehicleOrganizer.Infrastructure.Repositories.Interfaces;
+using VehicleOrganizer.Infrastructure.Services.Email;
 
 namespace VehicleOrganizer.Core.Config
 {
@@ -30,6 +32,9 @@ namespace VehicleOrganizer.Core.Config
             service.AddTransient<IUserRepository, UserRepository>();
             service.AddTransient<IVehicleRepository, VehicleRepository>();
             service.AddTransient<IOperationalActivityRepository, OperationalActivityRepository>();
+            service.AddTransient<IEmailService, EmailService>();
+
+            service.AddTransient<HtmlHelper>();
 
             service.AddEmailSenderService(config, settings =>
             {
