@@ -11,12 +11,15 @@ namespace VehicleOrganizer.Infrastructure.Services.Email
         private readonly EmailSenderService _emailSenderService;
         private readonly HtmlHelper _htmlHelper;
         private readonly IOperationalActivityRepository _operationalActivityRepository;
+        private readonly IUserRepository _userRepository;
 
-        public EmailService(EmailSenderService emailSenderService, HtmlHelper htmlHelper, IOperationalActivityRepository operationalActivityRepository)
+        public EmailService(EmailSenderService emailSenderService, HtmlHelper htmlHelper, IOperationalActivityRepository operationalActivityRepository, 
+            IUserRepository userRepository)
         {
             _emailSenderService = emailSenderService;
             _htmlHelper = htmlHelper;
             _operationalActivityRepository = operationalActivityRepository;
+            _userRepository = userRepository;
         }
 
         public async Task RemindUserAboutActivitiesAsync(User user)
@@ -46,7 +49,10 @@ namespace VehicleOrganizer.Infrastructure.Services.Email
 
         public async Task RemindAllUsersAboutActivitiesAsync()
         {
-            throw new NotImplementedException();
+            foreach (var user in await _userRepository.GetAllActiveAsync())
+            {
+                await RemindUserAboutActivitiesAsync(user);
+            }
         }
     }
 }
