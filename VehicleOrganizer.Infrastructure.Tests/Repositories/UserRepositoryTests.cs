@@ -17,6 +17,35 @@ namespace VehicleOrganizer.Infrastructure.Tests.Repositories
         }
 
         [Test]
+        public async Task ShouldGetActiveUsers_GetAllActiveAsync()
+        {
+            var inactiveUser = _fixture.Create<User>();
+            inactiveUser.IsActive = false;
+
+            var users = new List<User>
+            {
+                _fixture.Create<User>(),
+                _fixture.Create<User>(),
+                _fixture.Create<User>(),
+                _fixture.Create<User>(),
+            };
+            users.ForEach(x => x.IsActive = true);
+            users.Add(inactiveUser);
+
+            await _db.Users.AddRangeAsync(users);
+            await _db.SaveChangesAsync();
+
+            var result = await _sut.GetAllActiveAsync();
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(result, Is.Not.Null.Or.Empty);
+                Assert.That(result, Has.Count.EqualTo(users.Count - 1));
+                Assert.That(result.All(u => u.IsActive), Is.True);
+            });
+        }
+
+        [Test]
         public async Task ShouldAuthorizeUser_AuthorizeUser()
         {
             var newUser = _fixture.Create<User>();

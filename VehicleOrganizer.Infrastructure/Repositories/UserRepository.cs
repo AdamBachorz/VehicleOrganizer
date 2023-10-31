@@ -1,4 +1,5 @@
 ﻿using BachorzLibrary.DAL.DotNetSix.Repositories;
+using Microsoft.EntityFrameworkCore;
 using VehicleOrganizer.Infrastructure.Entities;
 using VehicleOrganizer.Infrastructure.Repositories.Interfaces;
 
@@ -8,6 +9,11 @@ namespace VehicleOrganizer.Infrastructure.Repositories
     {
         public UserRepository(DataBaseContext db) : base(db)
         {
+        }
+
+        public async Task<IList<User>> GetAllActiveAsync()
+        {
+            return await _db.Users.Where(u => u.IsActive).ToListAsync();
         }
 
         public async Task AuthorizeUserAsync(User user, bool refreshUserAsDefault = true)

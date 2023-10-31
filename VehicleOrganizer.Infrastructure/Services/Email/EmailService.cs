@@ -1,5 +1,5 @@
 ﻿using BachorzLibrary.Common.Extensions;
-using RestApiInmoto.Common.Html;
+using BachorzLibrary.Common.Tools.Html;
 using VehicleOrganizer.Domain.Abstractions;
 using VehicleOrganizer.Infrastructure.Entities;
 using VehicleOrganizer.Infrastructure.Repositories.Interfaces;
