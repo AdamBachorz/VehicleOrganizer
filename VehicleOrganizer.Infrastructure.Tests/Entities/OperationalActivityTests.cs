@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using VehicleOrganizer.Infrastructure.Entities;
+﻿using VehicleOrganizer.Infrastructure.Entities;
 
 namespace VehicleOrganizer.Infrastructure.Tests.Entities
 {
@@ -30,6 +25,8 @@ namespace VehicleOrganizer.Infrastructure.Tests.Entities
             return new Vehicle
             {
                 Name = _fixture.Create<string>(),
+                OilType = _fixture.Create<string>(),
+                User = _fixture.Create<User>(),
             };
         }
     }

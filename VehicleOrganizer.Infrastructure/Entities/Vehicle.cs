@@ -26,5 +26,16 @@ namespace VehicleOrganizer.Infrastructure.Entities
         public int LatestMileage => MileageHistory.IsNotNullOrEmpty() ? MileageHistory?.LastOrDefault()?.Mileage ?? 0 : 0;
         
         public int DaysToInsuranceExpires(DateTime referenceDate) => (int)(InsuranceTermination - referenceDate).TotalDays;
+        
+        public string? InsuranceTerminationPrompt(DateTime referenceDate)
+        {
+            var daysToInsuranceTermination = DaysToInsuranceExpires(referenceDate);
+            if (daysToInsuranceTermination <= 30)
+            {
+                return daysToInsuranceTermination > 0
+                    ? $"Ubezpieczenie wygasa za {daysToInsuranceTermination} dni"
+                    : $"Ubezpieczenie wygasło {Math.Abs(daysToInsuranceTermination)} dni temu";
+            } else return null;
+        }
     }
 }

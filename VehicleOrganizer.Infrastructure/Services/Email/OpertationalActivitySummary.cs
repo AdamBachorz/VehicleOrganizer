@@ -26,15 +26,7 @@ namespace VehicleOrganizer.Infrastructure.Services.Email
             foreach (var vehicle in vehicles)
             {
                 var activitiesForSummary = operationalActivities.Where(oa => oa.Vehicle.Id == vehicle.Id);
-                var summary = new OpertationalActivitySummary(vehicle.Name, activitiesForSummary.Select(a => a.SummaryPrompt(referenceDate)).ToList());
-                // TODO Move to a different service
-                //var daysToInsuranceTermination = vehicle.DaysToInsuranceExpires(referenceDate);
-                //if (daysToInsuranceTermination <= 30)
-                //{
-                //    summary.ActivitySummaries.Add(daysToInsuranceTermination > 0 
-                //        ? $"Ubezpieczenie wygasa za {daysToInsuranceTermination} dni"
-                //        : $"Ubezpieczenie wygasło {Math.Abs(daysToInsuranceTermination)} dni temu");
-                //}
+                var summary = new OpertationalActivitySummary(vehicle.Name, activitiesForSummary.Select(a => a.SummaryPrompt(referenceDate)).ToList());                
                 summaries.Add(summary);
             }
 

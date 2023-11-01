@@ -1,11 +1,11 @@
-﻿using BachorzLibrary.DAL.DotNetSix.EntityFrameworkCore;
+﻿using BachorzLibrary.Common.Tools.Html;
+using BachorzLibrary.Common.Utils;
+using BachorzLibrary.DAL.DotNetSix.EntityFrameworkCore;
 using BachorzLibrary.Web.Extensions;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using RestApiInmoto.Common.Html;
 using VehicleOrganizer.Domain.Abstractions;
-using VehicleOrganizer.Domain.Abstractions.Utils;
 using VehicleOrganizer.Infrastructure;
 using VehicleOrganizer.Infrastructure.Extensions;
 using VehicleOrganizer.Infrastructure.Repositories;
@@ -23,7 +23,7 @@ namespace VehicleOrganizer.Core.Config
                 config.ClearProviders();
             });
 
-            var configFile = FileUtils.GetProperFileByEnv(Codes.Files.DevConfig, Codes.Files.ProdConfig);
+            var configFile = EnvUtils.GetValueDependingOnEnvironment(Codes.Files.DevConfig, Codes.Files.ProdConfig);
             var config = JsonConvert.DeserializeObject<EFCCustomConfig>(File.ReadAllText(configFile));
             service.AddObjectMappingConfiguration(AutoMapperFixture.Create());
             service.AddSingleton<IEFCCustomConfig>(config);

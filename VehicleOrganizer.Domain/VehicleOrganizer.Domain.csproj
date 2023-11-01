@@ -15,7 +15,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="BachorzLibrary.Common" Version="0.0.5" />
+    <PackageReference Include="BachorzLibrary.Common" Version="0.0.6" />
   </ItemGroup>
 
   <ItemGroup>

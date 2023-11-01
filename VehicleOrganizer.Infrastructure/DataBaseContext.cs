@@ -1,8 +1,8 @@
 ﻿using BachorzLibrary.DAL.DotNetSix.EntityFrameworkCore;
 using VehicleOrganizer.Infrastructure.Entities;
 using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
-using VehicleOrganizer.Domain.Abstractions.Utils;
+using BachorzLibrary.DAL.DotNetSix.Utils;
+using BachorzLibrary.Common.Utils;
 using VehicleOrganizer.Domain.Abstractions;
 
 namespace VehicleOrganizer.Infrastructure;
@@ -25,41 +25,12 @@ public class DataBaseContext : BaseDbContext
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         base.OnConfiguring(optionsBuilder);
-        if (!optionsBuilder.IsConfigured)
-        {
-            string environment;
-#if DEBUG
-            environment = "DEV";
-#else
-        environment = "PROD";
-#endif
-
-            //TODO Better config file with loading from static method like EFCCustomConfig.TryLoad() or simmilar
-            var configFile = FileUtils.GetProperFileByEnv(Codes.Files.DevConfig, Codes.Files.ProdConfig);
-
-            if (!File.Exists(configFile))
-            {
-                throw new FileLoadException("Config file not found", environment);
-            }
-
-            //TODO Extract DbContextUtils.HardConfig(DbContextOptionsBuilder optionsBuilder, string configFile) or do this in base class
-            var config = JsonConvert.DeserializeObject<EFCCustomConfig>(File.ReadAllText(configFile));
-            if (config.IsProduction)
-            {
-                optionsBuilder.UseNpgsql(config.ConnectionString);
-            }
-            else
-            {
-                optionsBuilder.UseSqlite(config.ConnectionString);
-            } 
-        }
+        DbContextUtils.ExplicitConfig(optionsBuilder, EnvUtils.GetValueDependingOnEnvironment(Codes.Files.DevConfig, Codes.Files.ProdConfig));
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
-        
-
     }
 }
 

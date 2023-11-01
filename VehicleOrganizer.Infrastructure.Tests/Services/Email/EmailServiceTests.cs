@@ -27,7 +27,7 @@ namespace VehicleOrganizer.Infrastructure.Tests.Services.Email
                 SenderHeader = Codes.AppName,
             };
             _emailSenderService = new EmailSenderService(settings);
-            _sut = new EmailService(_emailSenderService, new HtmlHelper(), _operationalActivityRepository);
+            _sut = new EmailService(_emailSenderService, new HtmlHelper(), _operationalActivityRepository, null);
         }
 
         [Test]
