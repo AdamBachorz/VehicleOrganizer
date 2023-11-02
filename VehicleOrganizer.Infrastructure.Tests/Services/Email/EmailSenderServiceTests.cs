@@ -6,7 +6,7 @@ namespace VehicleOrganizer.Infrastructure.Tests.Services.Email
 {
     public class EmailSenderServiceTests : BaseTests
     {
-        private EmailSenderService _sut;
+        private EmailSender _sut;
 
         [SetUp]
         public void Setup()
@@ -14,14 +14,14 @@ namespace VehicleOrganizer.Infrastructure.Tests.Services.Email
             base.Setup();
 
             var values = _customConfig.ValuesBag["Sender"] as string;
-            var settings = new EmailSenderServiceSettings
+            var settings = new EmailSenderSettings
             {
                 SmtpClientUrl = "smtp.poczta.onet.pl",
                 SenderValues = values,
                 SenderEmail = "adar_1@op.pl",
                 SenderHeader = Codes.AppName,
             };
-            _sut = new EmailSenderService(settings);
+            _sut = new EmailSender(settings);
         }
 
         [Test]

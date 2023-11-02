@@ -10,7 +10,7 @@ namespace VehicleOrganizer.Infrastructure.Tests.Services.Email
     public class EmailServiceTests : BaseDataBaseTests
     {
         private IEmailService _sut;
-        private EmailSenderService _emailSenderService;
+        private EmailSender _emailSenderService;
         private IOperationalActivityRepository _operationalActivityRepository;
 
         [SetUp]
@@ -19,14 +19,14 @@ namespace VehicleOrganizer.Infrastructure.Tests.Services.Email
             base.Setup();
 
             _operationalActivityRepository = new OperationalActivityRepository(_db);
-            var settings = new EmailSenderServiceSettings
+            var settings = new EmailSenderSettings
             {
                 SmtpClientUrl = "smtp.poczta.onet.pl",
                 SenderValues = _customConfig.ValuesBag["Sender"] as string,
                 SenderEmail = "adar_1@op.pl",
                 SenderHeader = Codes.AppName,
             };
-            _emailSenderService = new EmailSenderService(settings);
+            _emailSenderService = new EmailSender(settings);
             _sut = new EmailService(_emailSenderService, new HtmlHelper(), _operationalActivityRepository, null);
         }
 

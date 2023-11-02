@@ -6,13 +6,13 @@ namespace VehicleOrganizer.Infrastructure.Extensions
 {
     public static class ServiceCollectionExtensions
     {
-        public static void AddEmailSenderService(this IServiceCollection services, ICustomConfig config, Action<EmailSenderServiceSettings> settingsInvoker)
+        public static void AddEmailSenderService(this IServiceCollection services, ICustomConfig config, Action<EmailSenderSettings> settingsInvoker)
         {
             var senderValues = config.ValuesBag["Sender"] as string;
-            var settings = new EmailSenderServiceSettings();
+            var settings = new EmailSenderSettings();
             settingsInvoker(settings);
             settings.SenderValues = senderValues;
-            var emailSenderService = new EmailSenderService(settings);
+            var emailSenderService = new EmailSender(settings);
 
             services.AddSingleton(emailSenderService);
         }

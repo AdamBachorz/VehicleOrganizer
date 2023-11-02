@@ -1,6 +1,6 @@
 ﻿namespace VehicleOrganizer.Infrastructure.Services.Email
 {
-    public class EmailSenderServiceSettings
+    public class EmailSenderSettings
     {
         public string SmtpClientUrl { get; set; }
         public string SenderEmail { get; set; }

@@ -9,12 +9,12 @@ namespace VehicleOrganizer.Infrastructure.Services.Email
 {
     public class EmailService : IEmailService
     {
-        private readonly EmailSenderService _emailSenderService;
+        private readonly EmailSender _emailSenderService;
         private readonly HtmlHelper _htmlHelper;
         private readonly IOperationalActivityRepository _operationalActivityRepository;
         private readonly IUserRepository _userRepository;
 
-        public EmailService(EmailSenderService emailSenderService, HtmlHelper htmlHelper, IOperationalActivityRepository operationalActivityRepository, 
+        public EmailService(EmailSender emailSenderService, HtmlHelper htmlHelper, IOperationalActivityRepository operationalActivityRepository, 
             IUserRepository userRepository)
         {
             _emailSenderService = emailSenderService;

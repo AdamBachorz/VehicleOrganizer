@@ -4,13 +4,13 @@ using VehicleOrganizer.Domain.Abstractions;
 
 namespace VehicleOrganizer.Infrastructure.Services.Email
 {
-    public class EmailSenderService
+    public class EmailSender
     {
-        private EmailSenderServiceSettings _settings;
+        private EmailSenderSettings _settings;
         private SmtpClient _smtpClient;
         private MailAddress _baseMail;
 
-        public EmailSenderService(EmailSenderServiceSettings settings)
+        public EmailSender(EmailSenderSettings settings)
         {
             _settings = settings;
             var values = _settings.SenderValues.Split('#');
