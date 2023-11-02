@@ -5,7 +5,7 @@
         public const string AppName = nameof(VehicleOrganizer);
         public static string MainPath = Path.Combine(@"C:\", Directories.Main, AppName, Directories.Data);
 
-        public struct Defaults
+        public struct Defaults//
         {
             public const int DaysToRemind = 30;
             public const int MileageToRemind = 500;
