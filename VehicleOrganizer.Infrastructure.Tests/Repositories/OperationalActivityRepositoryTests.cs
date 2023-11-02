@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using VehicleOrganizer.Domain.Abstractions;
+using VehicleOrganizer.Infrastructure.Criteria;
 using VehicleOrganizer.Infrastructure.Entities;
 using VehicleOrganizer.Infrastructure.Repositories;
 using VehicleOrganizer.Infrastructure.Repositories.Interfaces;
@@ -49,9 +50,13 @@ namespace VehicleOrganizer.Infrastructure.Tests.Repositories
             await _db.OperationalActivities.AddRangeAsync(operationalActivities);
             await _db.SaveChangesAsync();
 
-            var referenceThreshold = (Codes.Defaults.DaysToRemind, Codes.Defaults.MileageToRemind);
+            var criteria = new OperationalActivityCriteria
+            {
+                ReferenceDate = referenceDate,
+                ShouldSetReminderDate = shouldSetReminderDate,
+            };
 
-            var summaries = await _sut.GetOpertationalActivitiesForUserToRemindAsync(user, referenceThreshold, referenceDate, shouldSetReminderDate);
+            var summaries = await _sut.GetOpertationalActivitiesForUserToRemindAsync(user, criteria);
 
             Assert.Multiple(() =>
             {

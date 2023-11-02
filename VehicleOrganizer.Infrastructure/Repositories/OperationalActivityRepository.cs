@@ -1,6 +1,7 @@
 ﻿using BachorzLibrary.Common.Extensions;
 using BachorzLibrary.DAL.DotNetSix.Repositories;
 using Microsoft.EntityFrameworkCore;
+using VehicleOrganizer.Infrastructure.Criteria;
 using VehicleOrganizer.Infrastructure.Entities;
 using VehicleOrganizer.Infrastructure.Repositories.Interfaces;
 using VehicleOrganizer.Infrastructure.Services.Email;
@@ -13,8 +14,7 @@ namespace VehicleOrganizer.Infrastructure.Repositories
         {
         }
 
-        public async Task<IList<OpertationalActivitySummary>> GetOpertationalActivitiesForUserToRemindAsync(User user, 
-            (int DateDays, int Milage) referenceThreshold, DateTime referenceDate, bool shouldSetReminderDate)
+        public async Task<IList<OpertationalActivitySummary>> GetOpertationalActivitiesForUserToRemindAsync(User user, OperationalActivityCriteria criteria)
         {
             var operationalActivitiesForUser = await _db.OperationalActivities
                 .Include(oa => oa.Vehicle)
@@ -22,8 +22,8 @@ namespace VehicleOrganizer.Infrastructure.Repositories
                 .ToListAsync();
 
             operationalActivitiesForUser = operationalActivitiesForUser
-                .Where(oa => oa.IsDateOperated ? oa.ToNextAct(referenceDate) <= referenceThreshold.DateDays 
-                                               : oa.ToNextAct(referenceDate) <= referenceThreshold.Milage)
+                .Where(oa => oa.IsDateOperated ? oa.ToNextAct(criteria.ReferenceDate) <= criteria.DaysToRemind
+                                               : oa.ToNextAct(criteria.ReferenceDate) <= criteria.MileageToRemind)
                 .ToList();
 
             if (operationalActivitiesForUser.IsNullOrEmpty()) 
@@ -31,14 +31,14 @@ namespace VehicleOrganizer.Infrastructure.Repositories
                 return null;
             }
 
-            if (shouldSetReminderDate)
+            if (criteria.ShouldSetReminderDate)
             {
-                operationalActivitiesForUser.ForEach(oa => oa.ReminderDate = referenceDate);
+                operationalActivitiesForUser.ForEach(oa => oa.ReminderDate = criteria.ReferenceDate);
                 _db.UpdateRange(operationalActivitiesForUser);
                 await _db.SaveChangesAsync();
             }
 
-            return OpertationalActivitySummary.BuildList(operationalActivitiesForUser, referenceDate);
+            return OpertationalActivitySummary.BuildList(operationalActivitiesForUser, criteria.ReferenceDate);
         }
     }
 }

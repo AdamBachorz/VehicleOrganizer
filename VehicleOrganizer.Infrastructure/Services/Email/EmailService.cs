@@ -1,6 +1,7 @@
 ﻿using BachorzLibrary.Common.Extensions;
 using BachorzLibrary.Common.Tools.Html;
 using VehicleOrganizer.Domain.Abstractions;
+using VehicleOrganizer.Infrastructure.Criteria;
 using VehicleOrganizer.Infrastructure.Entities;
 using VehicleOrganizer.Infrastructure.Repositories.Interfaces;
 
@@ -24,8 +25,8 @@ namespace VehicleOrganizer.Infrastructure.Services.Email
 
         public async Task RemindUserAboutActivitiesAsync(User user)
         {
-            var operationalActivitiySummaries = await _operationalActivityRepository.GetOpertationalActivitiesForUserToRemindAsync(
-                user, (Codes.Defaults.DaysToRemind, Codes.Defaults.MileageToRemind), DateTime.Now.Date, shouldSetReminderDate: false);
+            var criteria = new OperationalActivityCriteria();
+            var operationalActivitiySummaries = await _operationalActivityRepository.GetOpertationalActivitiesForUserToRemindAsync(user, criteria);
 
             if (operationalActivitiySummaries.IsNullOrEmpty())
             {
