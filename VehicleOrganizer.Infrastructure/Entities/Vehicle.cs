@@ -15,6 +15,8 @@ namespace VehicleOrganizer.Infrastructure.Entities
         public string OilType { get; set; }
         public DateTime InsuranceConclusion { get; set; } = DateTime.Now.Date;
         public DateTime InsuranceTermination { get; set; } = DateTime.Now.Date.AddYears(1);
+        public DateTime LastTechnicalReview { get; set; } = DateTime.Now.Date;
+        public DateTime NextTechnicalReview { get; set; } = DateTime.Now.Date.AddYears(1);
         public DateTime? SaleDate { get; set; }
         public User User { get; set; } = User.Default;
         public IList<MileageHistory> MileageHistory { get; set; }
