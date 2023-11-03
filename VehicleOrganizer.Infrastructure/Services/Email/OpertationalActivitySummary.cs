@@ -29,10 +29,17 @@ namespace VehicleOrganizer.Infrastructure.Services.Email
                     .Select(a => a.SummaryPrompt(referenceDate))
                     .ToList();
 
+                //TODO Move to another service
                 var insurancTerminationPrompt = vehicle.InsuranceTerminationPrompt(referenceDate);
                 if (insurancTerminationPrompt is not null)
                 {
                     activitiesForSummaryPropmpts.Add(insurancTerminationPrompt);
+                }
+
+                var technicalReviewPrompt = vehicle.TechnicalReviewPrompt(referenceDate);
+                if (technicalReviewPrompt is not null)
+                {
+                    activitiesForSummaryPropmpts.Add(technicalReviewPrompt);
                 }
 
                 var summary = new OpertationalActivitySummary(vehicle.Name, activitiesForSummaryPropmpts);                

@@ -26,6 +26,8 @@ namespace VehicleOrganizer.Infrastructure.Repositories
                                                : oa.ToNextAct(criteria.ReferenceDate) <= criteria.MileageToRemind)
                 .ToList();
 
+            //TODO Add seekeng for insurance or technical review
+
             if (operationalActivitiesForUser.IsNullOrEmpty()) 
             {
                 return null;
