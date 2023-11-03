@@ -1,4 +1,5 @@
 ﻿using BachorzLibrary.Common.Extensions;
+using BachorzLibrary.Common.Tools.Email;
 using BachorzLibrary.Common.Tools.Html;
 using VehicleOrganizer.Infrastructure.Criteria;
 using VehicleOrganizer.Infrastructure.Entities;

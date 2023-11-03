@@ -1,13 +1,12 @@
-﻿using BachorzLibrary.Common.Tools.Html;
+﻿using BachorzLibrary.Common.Extensions;
+using BachorzLibrary.Common.Tools.Html;
 using BachorzLibrary.Common.Utils;
 using BachorzLibrary.DAL.DotNetSix.EntityFrameworkCore;
-using BachorzLibrary.Web.Extensions;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using VehicleOrganizer.Domain.Abstractions;
 using VehicleOrganizer.Infrastructure;
-using VehicleOrganizer.Infrastructure.Extensions;
 using VehicleOrganizer.Infrastructure.Repositories;
 using VehicleOrganizer.Infrastructure.Repositories.Interfaces;
 using VehicleOrganizer.Infrastructure.Services.Email;
@@ -36,11 +35,10 @@ namespace VehicleOrganizer.Core.Config
 
             service.AddTransient<HtmlHelper>();
 
-            service.AddEmailSenderService(config, settings =>
+            service.AddEmailSenderService(settings =>
             {
-                settings.SmtpClientUrl = "smtp.poczta.onet.pl";
-                settings.SenderEmail = "adar_1@op.pl";
                 settings.SenderHeader = Codes.AppName;
+                settings.SenderValues = config.ValuesBag["Sender"] as string;
             });
         }
     }

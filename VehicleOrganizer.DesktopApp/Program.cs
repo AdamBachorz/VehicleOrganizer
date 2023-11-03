@@ -2,9 +2,8 @@ using Microsoft.Extensions.DependencyInjection;
 using VehicleOrganizer.DesktopApp.Forms;
 using VehicleOrganizer.Infrastructure.Repositories.Interfaces;
 using VehicleOrganizer.Infrastructure.Entities;
-using BachorzLibrary.Common.Extensions;
 using VehicleOrganizer.Core.Config;
-using VehicleOrganizer.Infrastructure.Services.Email;
+using BachorzLibrary.Common.Tools.Email;
 
 namespace VehicleOrganizer.DesktopApp
 {

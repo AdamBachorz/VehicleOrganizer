@@ -1,9 +1,9 @@
-﻿using BachorzLibrary.Common.Tools.Html;
+﻿using BachorzLibrary.Common.Tools.Email;
+using BachorzLibrary.Common.Tools.Html;
 using VehicleOrganizer.Domain.Abstractions;
 using VehicleOrganizer.Infrastructure.Criteria;
 using VehicleOrganizer.Infrastructure.Entities;
 using VehicleOrganizer.Infrastructure.Repositories;
-using VehicleOrganizer.Infrastructure.Repositories.Interfaces;
 using VehicleOrganizer.Infrastructure.Services.Email;
 
 namespace VehicleOrganizer.Infrastructure.Tests.Services.Email
@@ -19,9 +19,7 @@ namespace VehicleOrganizer.Infrastructure.Tests.Services.Email
 
             var settings = new EmailSenderSettings
             {
-                SmtpClientUrl = "smtp.poczta.onet.pl",
                 SenderValues = _customConfig.ValuesBag["Sender"] as string,
-                SenderEmail = "adar_1@op.pl",
                 SenderHeader = Codes.AppName,
             };
 
