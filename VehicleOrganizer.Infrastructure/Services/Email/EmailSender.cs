@@ -14,7 +14,7 @@ namespace VehicleOrganizer.Infrastructure.Services.Email
         {
             _settings = settings;
             var values = _settings.SenderValues.Split('#');
-            _baseMail = new MailAddress(values[1], Codes.AppName);
+            _baseMail = new MailAddress(values[1], _settings.SenderHeader);
             _smtpClient = new SmtpClient(_settings.SmtpClientUrl)
             {
                 Port = 587,

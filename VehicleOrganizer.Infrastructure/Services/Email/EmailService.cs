@@ -1,6 +1,5 @@
 ﻿using BachorzLibrary.Common.Extensions;
 using BachorzLibrary.Common.Tools.Html;
-using VehicleOrganizer.Domain.Abstractions;
 using VehicleOrganizer.Infrastructure.Criteria;
 using VehicleOrganizer.Infrastructure.Entities;
 using VehicleOrganizer.Infrastructure.Repositories.Interfaces;
@@ -23,9 +22,14 @@ namespace VehicleOrganizer.Infrastructure.Services.Email
             _userRepository = userRepository;
         }
 
-        public async Task RemindUserAboutActivitiesAsync(User user)
+        public async Task RemindUserAboutActivitiesAsync(User user, OperationalActivityCriteria criteria = null)
         {
-            var criteria = new OperationalActivityCriteria();
+            if (!user.IsEmailOk)
+            {
+                return;
+            }
+
+            criteria ??= new OperationalActivityCriteria();
             var operationalActivitiySummaries = await _operationalActivityRepository.GetOpertationalActivitiesForUserToRemindAsync(user, criteria);
 
             if (operationalActivitiySummaries.IsNullOrEmpty())
@@ -52,7 +56,7 @@ namespace VehicleOrganizer.Infrastructure.Services.Email
         {
             foreach (var user in await _userRepository.GetAllActiveAsync())
             {
-                await RemindUserAboutActivitiesAsync(user);
+                await RemindUserAboutActivitiesAsync(user, new OperationalActivityCriteria());
             }
         }
     }

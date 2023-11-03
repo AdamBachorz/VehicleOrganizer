@@ -1,5 +1,6 @@
 ﻿using BachorzLibrary.Common.Tools.Html;
 using VehicleOrganizer.Domain.Abstractions;
+using VehicleOrganizer.Infrastructure.Criteria;
 using VehicleOrganizer.Infrastructure.Entities;
 using VehicleOrganizer.Infrastructure.Repositories;
 using VehicleOrganizer.Infrastructure.Repositories.Interfaces;
@@ -10,15 +11,12 @@ namespace VehicleOrganizer.Infrastructure.Tests.Services.Email
     public class EmailServiceTests : BaseDataBaseTests
     {
         private IEmailService _sut;
-        private EmailSender _emailSenderService;
-        private IOperationalActivityRepository _operationalActivityRepository;
 
         [SetUp]
         public void Setup()
         {
             base.Setup();
 
-            _operationalActivityRepository = new OperationalActivityRepository(_db);
             var settings = new EmailSenderSettings
             {
                 SmtpClientUrl = "smtp.poczta.onet.pl",
@@ -26,15 +24,16 @@ namespace VehicleOrganizer.Infrastructure.Tests.Services.Email
                 SenderEmail = "adar_1@op.pl",
                 SenderHeader = Codes.AppName,
             };
-            _emailSenderService = new EmailSender(settings);
-            _sut = new EmailService(_emailSenderService, new HtmlHelper(), _operationalActivityRepository, null);
+
+            _sut = new EmailService(new EmailSender(settings), _fixture.Create<HtmlHelper>(), new OperationalActivityRepository(_db), null);
         }
 
         [Test]
         [Explicit]
-        public async Task ShouldSedndREminderEmail_RemindUserAboutActivitiesAsync()
+        public async Task ShouldSendReminderEmail_RemindUserAboutActivitiesAsync()
         {
             var user = _fixture.Create<User>();
+            user.Email = Codes.AdminEmail;
             var referenceDate = new DateTime(2024, 1, 1);
             var vehicle1 = DummyVehicle(user);
             var vehicle2 = DummyVehicle(user);
@@ -45,6 +44,7 @@ namespace VehicleOrganizer.Infrastructure.Tests.Services.Email
             var vehicle4 = DummyVehicle(user);
             vehicle4.InsuranceTermination = referenceDate.AddDays(-10);
 
+            //TODO Extend with other options like mileage and add Insurance reference
             var operationalActivities = new List<OperationalActivity>
             {
                 DummyActivityDateBased(vehicle1, new DateTime(2023, 1, 6)),
@@ -58,12 +58,15 @@ namespace VehicleOrganizer.Infrastructure.Tests.Services.Email
                 DummyActivityDateBased(vehicle4, new DateTime(2023, 12, 31)),
             };
 
-            foreach (var item in operationalActivities)
-            {
-                _operationalActivityRepository.Insert(item);
-            }
+            await _db.OperationalActivities.AddRangeAsync(operationalActivities);
+            await _db.SaveChangesAsync();
 
-            await _sut.RemindUserAboutActivitiesAsync(user);
+            var criteria = new OperationalActivityCriteria()
+            {
+                ReferenceDate = referenceDate
+            };
+
+            await _sut.RemindUserAboutActivitiesAsync(user, criteria);
 
             Assert.Pass();
         }

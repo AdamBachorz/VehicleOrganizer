@@ -19,18 +19,18 @@ namespace VehicleOrganizer.Infrastructure.Tests.Repositories
         [Test]
         public async Task ShouldGetActiveUsers_GetAllActiveAsync()
         {
+            const int StartingNumberOfUsers = 4;
             var inactiveUser = _fixture.Create<User>();
             inactiveUser.IsActive = false;
 
-            var users = new List<User>
-            {
-                _fixture.Create<User>(),
-                _fixture.Create<User>(),
-                _fixture.Create<User>(),
-                _fixture.Create<User>(),
-            };
-            users.ForEach(x => x.IsActive = true);
-            users.Add(inactiveUser);
+            var users = Enumerable.Range(1, StartingNumberOfUsers)
+                .Select(_ =>
+                {
+                    var user = _fixture.Create<User>();
+                    user.IsActive = true;
+                    return user;
+                })
+                .Append(inactiveUser);
 
             await _db.Users.AddRangeAsync(users);
             await _db.SaveChangesAsync();
@@ -40,7 +40,7 @@ namespace VehicleOrganizer.Infrastructure.Tests.Repositories
             Assert.Multiple(() =>
             {
                 Assert.That(result, Is.Not.Null.Or.Empty);
-                Assert.That(result, Has.Count.EqualTo(users.Count - 1));
+                Assert.That(result, Has.Count.EqualTo(StartingNumberOfUsers));
                 Assert.That(result.All(u => u.IsActive), Is.True);
             });
         }

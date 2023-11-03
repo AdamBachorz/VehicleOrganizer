@@ -3,6 +3,7 @@
     public static class Codes
     {
         public const string AppName = nameof(VehicleOrganizer);
+        public const string AdminEmail = "adam.bachorz1702@gmail.com";
         public static string MainPath = Path.Combine(@"C:\", Directories.Main, AppName, Directories.Data);
 
         public struct Defaults

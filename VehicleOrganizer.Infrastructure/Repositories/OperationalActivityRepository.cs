@@ -18,7 +18,7 @@ namespace VehicleOrganizer.Infrastructure.Repositories
         {
             var operationalActivitiesForUser = await _db.OperationalActivities
                 .Include(oa => oa.Vehicle)
-                .Where(oa => oa.Vehicle.User.Id == user.Id)
+                .Where(oa => oa.Vehicle.User.Id.Equals(user.Id))
                 .ToListAsync();
 
             operationalActivitiesForUser = operationalActivitiesForUser

@@ -7,7 +7,7 @@ namespace VehicleOrganizer.Infrastructure.Services.Email
         public string VehicleName { get; set; }
         public IList<string> ActivitySummaries { get; set; } = new List<string>();
 
-        public OpertationalActivitySummary(string vehicleName, IList<string> activitySummaries)
+        private OpertationalActivitySummary(string vehicleName, IList<string> activitySummaries)
         {
             VehicleName = vehicleName;
             ActivitySummaries = activitySummaries;
@@ -25,9 +25,18 @@ namespace VehicleOrganizer.Infrastructure.Services.Email
             var summaries = new List<OpertationalActivitySummary>();
             foreach (var vehicle in vehicles)
             {
-                var activitiesForSummary = operationalActivities.Where(oa => oa.Vehicle.Id == vehicle.Id);
-                var summary = new OpertationalActivitySummary(vehicle.Name, activitiesForSummary.Select(a => a.SummaryPrompt(referenceDate)).ToList());                
-                summaries.Add(summary);
+                var activitiesForSummaryPropmpts = operationalActivities.Where(oa => oa.Vehicle.Id == vehicle.Id)
+                    .Select(a => a.SummaryPrompt(referenceDate))
+                    .ToList();
+
+                var insurancTerminationPrompt = vehicle.InsuranceTerminationPrompt(referenceDate);
+                if (insurancTerminationPrompt is not null)
+                {
+                    activitiesForSummaryPropmpts.Add(insurancTerminationPrompt);
+                }
+
+                var summary = new OpertationalActivitySummary(vehicle.Name, activitiesForSummaryPropmpts);                
+                summaries.Add(summary);               
             }
 
             return summaries;

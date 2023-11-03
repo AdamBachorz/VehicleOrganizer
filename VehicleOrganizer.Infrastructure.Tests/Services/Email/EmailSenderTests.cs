@@ -4,7 +4,7 @@ using VehicleOrganizer.Infrastructure.Services.Email;
 
 namespace VehicleOrganizer.Infrastructure.Tests.Services.Email
 {
-    public class EmailSenderServiceTests : BaseTests
+    public class EmailSenderTests : BaseTests
     {
         private EmailSender _sut;
 
