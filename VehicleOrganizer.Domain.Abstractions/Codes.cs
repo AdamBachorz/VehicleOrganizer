@@ -8,8 +8,10 @@
 
         public struct Defaults
         {
-            public const int DaysToRemind = 30;
-            public const int MileageToRemind = 500;
+            public const int DaysToRemindAboutActivity = 30;
+            public const int DaysToRemindAboutInsuranceTermination = 30;
+            public const int DaysToRemindAboutTechnicalReview = 30;
+            public const int MileageToRemindAboutActivity = 500;
         }
 
         public struct Directories

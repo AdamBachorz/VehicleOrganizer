@@ -48,6 +48,7 @@ namespace VehicleOrganizer.Core.Tests.Config
                 Assert.That(result.Name, Is.EqualTo(source.Name));
                 Assert.That(result.OilType, Is.EqualTo(expectedOilType));
                 Assert.That(result.DaysToInsuranceExpires, Does.EndWith("dni"));
+                Assert.That(result.DaysToNextTechnicalReview, Does.EndWith("dni"));
                 Assert.That(result.LatestMileage, Does.EndWith("km"));
             });
         }

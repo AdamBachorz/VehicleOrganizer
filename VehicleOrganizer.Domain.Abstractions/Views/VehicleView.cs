@@ -12,5 +12,6 @@
         public string InsuranceTermination { get; set; }
         public string LatestMileage { get; set; }
         public string DaysToInsuranceExpires { get; set; }
+        public string DaysToNextTechnicalReview { get; set; }
     }
 }

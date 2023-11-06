@@ -23,7 +23,8 @@ namespace VehicleOrganizer.Infrastructure.Tests.Services.Email
                 SenderHeader = Codes.AppName,
             };
 
-            _sut = new EmailService(new EmailSender(settings), _fixture.Create<HtmlHelper>(), new OperationalActivityRepository(_db), null);
+            _sut = new EmailService(new EmailSender(settings), _fixture.Create<HtmlHelper>(), 
+                new OperationalActivityRepository(_db), new VehicleRepository(_db));
         }
 
         [Test]
@@ -65,6 +66,36 @@ namespace VehicleOrganizer.Infrastructure.Tests.Services.Email
             };
 
             await _sut.RemindUserAboutActivitiesAsync(user, criteria);
+
+            Assert.Pass();
+        }
+
+        [Test]
+        [Explicit]
+        public async Task ShouldSendReminderEmail_RemindUserAboutVehicleInsuranceOrTechnicalReviewAsync()
+        {
+            var user = _fixture.Create<User>();
+            user.Email = Codes.AdminEmail;
+            var referenceDate = new DateTime(2024, 1, 1);
+            var vehicle1 = DummyVehicle(user);
+            var vehicle2 = DummyVehicle(user);
+            vehicle2.NextTechnicalReview = referenceDate.AddDays(10);
+
+            var vehicle3 = DummyVehicle(user);
+            vehicle3.InsuranceTermination = referenceDate.AddDays(10);
+
+            var vehicle4 = DummyVehicle(user);
+            vehicle4.InsuranceTermination = referenceDate.AddDays(-10);
+
+            var vehicles = new List<Vehicle>
+            {
+                vehicle1, vehicle2, vehicle3, vehicle4
+            };
+
+            await _db.Vehicles.AddRangeAsync(vehicles);
+            await _db.SaveChangesAsync();
+
+            await _sut.RemindUserAboutVehicleInsuranceOrTechnicalReviewAsync(user, referenceDate);
 
             Assert.Pass();
         }

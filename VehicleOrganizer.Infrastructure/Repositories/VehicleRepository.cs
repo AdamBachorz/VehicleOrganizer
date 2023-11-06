@@ -1,5 +1,6 @@
 ﻿using BachorzLibrary.DAL.DotNetSix.Repositories;
 using Microsoft.EntityFrameworkCore;
+using VehicleOrganizer.Domain.Abstractions;
 using VehicleOrganizer.Infrastructure.Entities;
 using VehicleOrganizer.Infrastructure.Repositories.Interfaces;
 
@@ -83,5 +84,16 @@ namespace VehicleOrganizer.Infrastructure.Repositories
             await _db.SaveChangesAsync();
         }
 
+        public async Task<IList<Vehicle>> GetVehiclesWithCloseInsuranceTermination(User user, DateTime referenceDate)
+        {
+            var vehiclesForUser = await GetVehiclesForUserAsync(user);
+            return vehiclesForUser.Where(v => v.DaysToInsuranceExpires(referenceDate) <= Codes.Defaults.DaysToRemindAboutInsuranceTermination).ToList();
+        }
+
+        public async Task<IList<Vehicle>> GetVehiclesWithCloseNextReviewDate(User user, DateTime referenceDate)
+        {
+            var vehiclesForUser = await GetVehiclesForUserAsync(user);
+            return vehiclesForUser.Where(v => v.DaysToNextTechnicalReview(referenceDate) <= Codes.Defaults.DaysToRemindAboutTechnicalReview).ToList();
+        }
     }
 }

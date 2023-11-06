@@ -214,5 +214,91 @@ namespace VehicleOrganizer.Infrastructure.Tests.Repositories
             var notExistingVehicleInDb = new Vehicle();
             Assert.That(async () => await _sut.SaleVehicleAsync(notExistingVehicleInDb, _fixture.Create<DateTime>()), Throws.ArgumentNullException);
         }
+
+        [Test]
+        public async Task ShouldReturnVehiclesWithCloseInsuranceTermination_GetVehiclesWithCloseInsuranceTermination()
+        {
+            var targetUser = _fixture.Create<User>();
+            var referenceDate = new DateTime(2024, 5, 5);
+            var vehicles = new List<Vehicle>()
+            {
+                new Vehicle { Id = 1, Name = _fixture.Create<string>(),
+                    OilType = _fixture.Create<string>(),
+                    VehicleType = _fixture.Create<VehicleType>(),
+                    User = targetUser,
+                    InsuranceTermination = referenceDate.AddDays(60),
+                },
+
+                new Vehicle { Id = 2, Name = _fixture.Create<string>(),
+                    OilType = _fixture.Create<string>(),
+                    VehicleType = _fixture.Create<VehicleType>(),
+                    User = targetUser,
+                    InsuranceTermination = referenceDate.AddDays(30),
+                },
+
+                new Vehicle { Id = 3, Name = _fixture.Create<string>(),
+                    OilType = _fixture.Create<string>(),
+                    VehicleType = _fixture.Create<VehicleType>(),
+                    User = targetUser,
+                    InsuranceTermination = referenceDate.AddDays(10),
+                },
+            };
+            
+            await _db.Vehicles.AddRangeAsync(vehicles);
+            await _db.SaveChangesAsync();
+
+            var resultVehicles = await _sut.GetVehiclesWithCloseInsuranceTermination(targetUser, referenceDate);
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(resultVehicles, Is.Not.Null.Or.Empty);
+                Assert.That(resultVehicles, Has.Count.EqualTo(2));
+                Assert.That(resultVehicles.Any(v => v.Id == 2), Is.True);
+                Assert.That(resultVehicles.Any(v => v.Id == 3), Is.True);
+            });
+        }
+
+        [Test]
+        public async Task ShouldReturnVehiclesWithCloseNextReviewDate_GetVehiclesWithCloseNextReviewDate()
+        {
+            var targetUser = _fixture.Create<User>();
+            var referenceDate = new DateTime(2024, 5, 5);
+            var vehicles = new List<Vehicle>()
+            {
+                new Vehicle { Id = 1, Name = _fixture.Create<string>(),
+                    OilType = _fixture.Create<string>(),
+                    VehicleType = _fixture.Create<VehicleType>(),
+                    User = targetUser,
+                    NextTechnicalReview = referenceDate.AddDays(60),
+                },
+
+                new Vehicle { Id = 2, Name = _fixture.Create<string>(),
+                    OilType = _fixture.Create<string>(),
+                    VehicleType = _fixture.Create<VehicleType>(),
+                    User = targetUser,
+                    NextTechnicalReview = referenceDate.AddDays(30),
+                },
+
+                new Vehicle { Id = 3, Name = _fixture.Create<string>(),
+                    OilType = _fixture.Create<string>(),
+                    VehicleType = _fixture.Create<VehicleType>(),
+                    User = targetUser,
+                    NextTechnicalReview = referenceDate.AddDays(10),
+                },
+            };
+
+            await _db.Vehicles.AddRangeAsync(vehicles);
+            await _db.SaveChangesAsync();
+
+            var resultVehicles = await _sut.GetVehiclesWithCloseNextReviewDate(targetUser, referenceDate);
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(resultVehicles, Is.Not.Null.Or.Empty);
+                Assert.That(resultVehicles, Has.Count.EqualTo(2));
+                Assert.That(resultVehicles.Any(v => v.Id == 2), Is.True);
+                Assert.That(resultVehicles.Any(v => v.Id == 3), Is.True);
+            });
+        }
     }
 }

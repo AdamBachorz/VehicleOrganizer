@@ -24,6 +24,7 @@ namespace VehicleOrganizer.Core.Config
                     .ForMember(dest => dest.InsuranceTermination, opt => opt.MapFrom(src => src.InsuranceTermination.ToShortDateString()))
                     .ForMember(dest => dest.LatestMileage, opt => opt.MapFrom(src => src.LatestMileage + " km"))
                     .ForMember(dest => dest.DaysToInsuranceExpires, opt => opt.MapFrom(src => src.DaysToInsuranceExpires(DateTime.Now.Date) + " dni"))
+                    .ForMember(dest => dest.DaysToNextTechnicalReview, opt => opt.MapFrom(src => src.DaysToInsuranceExpires(DateTime.Now.Date) + " dni"))
                     ;
             return cfg;
         }

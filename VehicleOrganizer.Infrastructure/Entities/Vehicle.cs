@@ -1,6 +1,7 @@
 ﻿using BachorzLibrary.Common.DbModel;
 using BachorzLibrary.Common.Extensions;
 using System.ComponentModel.DataAnnotations.Schema;
+using VehicleOrganizer.Domain.Abstractions;
 using VehicleOrganizer.Domain.Abstractions.Enums;
 
 namespace VehicleOrganizer.Infrastructure.Entities
@@ -33,7 +34,7 @@ namespace VehicleOrganizer.Infrastructure.Entities
         public string? InsuranceTerminationPrompt(DateTime referenceDate)
         {
             var daysToInsuranceTermination = DaysToInsuranceExpires(referenceDate);
-            if (daysToInsuranceTermination <= 30)
+            if (daysToInsuranceTermination <= Codes.Defaults.DaysToRemindAboutInsuranceTermination)
             {
                 return daysToInsuranceTermination > 0
                     ? $"Ubezpieczenie wygasa za {daysToInsuranceTermination} dni"
@@ -44,7 +45,7 @@ namespace VehicleOrganizer.Infrastructure.Entities
         public string? TechnicalReviewPrompt(DateTime referenceDate)
         {
             var daysToNextTechnicalReview = DaysToNextTechnicalReview(referenceDate);
-            if (daysToNextTechnicalReview <= 30)
+            if (daysToNextTechnicalReview <= Codes.Defaults.DaysToRemindAboutTechnicalReview)
             {
                 return daysToNextTechnicalReview > 0
                     ? $"Przegląd techniczny wygasa za {daysToNextTechnicalReview} dni"
