@@ -12,15 +12,15 @@ namespace VehicleOrganizer.Infrastructure.Services.Email
         private readonly EmailSender _emailSenderService;
         private readonly HtmlHelper _htmlHelper;
         private readonly IOperationalActivityRepository _operationalActivityRepository;
-        private readonly IUserRepository _userRepository;
+        private readonly IVehicleRepository _vehicleRepository;
 
         public EmailService(EmailSender emailSenderService, HtmlHelper htmlHelper, IOperationalActivityRepository operationalActivityRepository, 
-            IUserRepository userRepository)
+            IVehicleRepository vehicleRepository)
         {
             _emailSenderService = emailSenderService;
             _htmlHelper = htmlHelper;
             _operationalActivityRepository = operationalActivityRepository;
-            _userRepository = userRepository;
+            _vehicleRepository = vehicleRepository;
         }
 
         public async Task RemindUserAboutActivitiesAsync(User user, OperationalActivityCriteria criteria = null)
@@ -53,12 +53,50 @@ namespace VehicleOrganizer.Infrastructure.Services.Email
             await _emailSenderService.SendEmailAsync("Przypomnienie o nadchodzących czynnościach", emailBody, user.Email, user.Name);
         }
 
-        public async Task RemindAllUsersAboutActivitiesAsync()
+        public async Task RemindUserAboutVehicleInsuranceOrTechnicalReviewAsync(User user, DateTime referenceDate)
         {
-            foreach (var user in await _userRepository.GetAllActiveAsync())
+            if (!user.IsEmailOk)
             {
-                await RemindUserAboutActivitiesAsync(user, new OperationalActivityCriteria());
+                return;
             }
+
+            var vehiclesWithCloseInsuranceTermination = await _vehicleRepository.GetVehiclesWithCloseInsuranceTermination(user, referenceDate);
+            var vehiclesWithCloseNextReviewDate = await _vehicleRepository.GetVehiclesWithCloseNextReviewDate(user, referenceDate);
+
+            if (vehiclesWithCloseInsuranceTermination.IsNullOrEmpty() && vehiclesWithCloseNextReviewDate.IsNullOrEmpty())
+            {
+                return;
+            }
+
+            _htmlHelper.Begin();
+            _htmlHelper.Paragraph("Poniżej znajduje się lista pojazdów, dla których zbliżają się ważne terminy:");
+            _htmlHelper.NextLine();
+            if (vehiclesWithCloseInsuranceTermination.IsNotNullOrEmpty())
+            {
+                foreach (var vehicle in vehiclesWithCloseInsuranceTermination)
+                {
+                    _htmlHelper.H(3, vehicle.Name);
+                    _htmlHelper.Paragraph($"{vehicle.InsuranceTerminationPrompt(referenceDate)} ({vehicle.InsuranceTermination.ToShortDateString()})");
+                    _htmlHelper.NextLine();
+                }
+                _htmlHelper.NextLine();
+            }
+
+            if (vehiclesWithCloseNextReviewDate.IsNotNullOrEmpty())
+            {
+                foreach (var vehicle in vehiclesWithCloseNextReviewDate)
+                {
+                    _htmlHelper.H(3, vehicle.Name);
+                    _htmlHelper.Paragraph($"{vehicle.TechnicalReviewPrompt(referenceDate)} ({vehicle.NextTechnicalReview.ToShortDateString()})");
+                    _htmlHelper.NextLine();
+                }
+                _htmlHelper.NextLine(); 
+            }
+
+            var emailBody = _htmlHelper.EndWithResult();
+
+            await _emailSenderService.SendEmailAsync("Przypomnienie o nadchodzących terminach (ubezpieczenie lub przegląd techniczny)", 
+                emailBody, user.Email, user.Name);
         }
     }
 }

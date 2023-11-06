@@ -6,6 +6,6 @@ namespace VehicleOrganizer.Infrastructure.Services.Email
     public interface IEmailService
     {
         Task RemindUserAboutActivitiesAsync(User user, OperationalActivityCriteria criteria = null);
-        Task RemindAllUsersAboutActivitiesAsync();
+        Task RemindUserAboutVehicleInsuranceOrTechnicalReviewAsync(User user, DateTime referenceDate);
     }
 }
