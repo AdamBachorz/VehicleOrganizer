@@ -7,9 +7,11 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using VehicleOrganizer.Domain.Abstractions;
 using VehicleOrganizer.Infrastructure;
+using VehicleOrganizer.Infrastructure.Entities;
 using VehicleOrganizer.Infrastructure.Repositories;
 using VehicleOrganizer.Infrastructure.Repositories.Interfaces;
 using VehicleOrganizer.Infrastructure.Services.Email;
+using VehicleOrganizer.Infrastructure.Validators;
 
 namespace VehicleOrganizer.Core.Config
 {
@@ -32,6 +34,8 @@ namespace VehicleOrganizer.Core.Config
             service.AddTransient<IVehicleRepository, VehicleRepository>();
             service.AddTransient<IOperationalActivityRepository, OperationalActivityRepository>();
             service.AddTransient<IEmailService, EmailService>();
+
+            service.AddTransient<IValidator<Vehicle>, VehicleValidator>();
 
             service.AddTransient<HtmlHelper>();
 
