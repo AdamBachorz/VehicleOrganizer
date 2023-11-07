@@ -1,5 +1,6 @@
 using AutoMapper;
 using VehicleOrganizer.Core.Config;
+using VehicleOrganizer.Domain.Abstractions;
 using VehicleOrganizer.Domain.Abstractions.Enums;
 using VehicleOrganizer.Domain.Abstractions.Views;
 using VehicleOrganizer.Infrastructure.Entities;
@@ -21,8 +22,8 @@ namespace VehicleOrganizer.Core.Tests.Config
         [TestCase(VehicleType.Car, "5W-40", "5W-40")]
         [TestCase(VehicleType.Truck, "5W-40", "5W-40")]
         [TestCase(VehicleType.Bus, "5W-40", "5W-40")]
-        [TestCase(VehicleType.Motorcycle, "something", "N/A")]
-        [TestCase(VehicleType.Trailer, "something", "N/A")]
+        [TestCase(VehicleType.Motorcycle, "something", Codes.None)]
+        [TestCase(VehicleType.Trailer, "something", Codes.None)]
         public void ShoudMap_Vehicle(VehicleType vehicleType, string oilType, string expectedOilType)
         {
             var source = new Vehicle 

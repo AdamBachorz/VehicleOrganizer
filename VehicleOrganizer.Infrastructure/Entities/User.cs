@@ -9,14 +9,17 @@ namespace VehicleOrganizer.Infrastructure.Entities
 {
     public class User : Entity<string>
     {
-        public bool IsActive { get; set; } 
+        public bool IsActive { get; set; }
         public string Name { get; set; }
         [NotMapped]
-        public Details Details { get; set; } 
+        public Details Details { get; set; }
         public string Email { get; set; }
+        public string ReferenceCode { get; set; } = Codes.None;
 
         [NotMapped]
         public bool IsEmailOk => Email is not null ? Regex.IsMatch(Email, Consts.RegexPatterns.Email) : false;
+        [NotMapped]
+        public bool IsWorthy => ReferenceCode.Equals(Codes.ReferenceCode);
         [NotMapped]
         public static User Default => JsonConvert.DeserializeObject<User>(File.ReadAllText(Codes.Files.DefaultUser));
 

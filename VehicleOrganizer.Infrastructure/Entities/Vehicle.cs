@@ -13,7 +13,7 @@ namespace VehicleOrganizer.Infrastructure.Entities
         public DateTime PurchaseDate { get; set; } = DateTime.Now.Date;
         public DateTime RegistrationDate { get; set; } = DateTime.Now.Date;
         public VehicleType VehicleType { get; set; }
-        public string OilType { get; set; }
+        public string OilType { get; set; } = Codes.None;
         public DateTime InsuranceConclusion { get; set; } = DateTime.Now.Date;
         public DateTime InsuranceTermination { get; set; } = DateTime.Now.Date.AddYears(1);
         public DateTime LastTechnicalReview { get; set; } = DateTime.Now.Date;
