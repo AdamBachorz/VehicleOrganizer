@@ -1,13 +1,4 @@
 ﻿using AutoMapper;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 using VehicleOrganizer.DesktopApp.Panels;
 using VehicleOrganizer.Domain.Abstractions.Views;
 using VehicleOrganizer.Infrastructure.Entities;
@@ -26,18 +17,13 @@ namespace VehicleOrganizer.DesktopApp.Forms
             _mapper = mapper;
             _vehicleRepository = vehicleRepository;
 
-            var v = new Vehicle 
-            { 
-                Name = "XYZ", 
-                OilType = "5W-40", 
-            };
-            v.MileageHistory = new List<MileageHistory> 
-            { 
-                new MileageHistory { Mileage = 155000, Vehicle = v }, 
-                new MileageHistory { Mileage = 200000 , Vehicle = v }, 
-            };
-            var vehiclePanel = new VehiclePanel(_mapper.Map<VehicleView>(v));
-            PlacePanel(mainPanel, vehiclePanel);
+            toolStripMenuAdmin.Visible = toolStripMenuAdmin.Enabled = User.Default.IsWorthy;
+        }
+
+        public void InitAndOpen(VehicleView vehicleView)
+        {
+            PlacePanel(mainPanel, new VehiclePanel(vehicleView));
+            ShowDialog();
         }
 
         private void toolStripMenuItemAddNewVehicle_Click(object sender, EventArgs e)
@@ -46,6 +32,11 @@ namespace VehicleOrganizer.DesktopApp.Forms
         }
 
         private void toolStripMenuItemSelectVehicle_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private async void toolStripMenuItemRunReminders_Click(object sender, EventArgs e)
         {
 
         }

@@ -1,5 +1,7 @@
-﻿using BachorzLibrary.Common.Tools.Email;
+﻿using BachorzLibrary.Common.Extensions;
+using BachorzLibrary.Common.Tools.Email;
 using BachorzLibrary.Common.Tools.Html;
+using System.Text;
 using VehicleOrganizer.Domain.Abstractions;
 using VehicleOrganizer.Infrastructure.Criteria;
 using VehicleOrganizer.Infrastructure.Entities;
@@ -96,6 +98,42 @@ namespace VehicleOrganizer.Infrastructure.Tests.Services.Email
             await _db.SaveChangesAsync();
 
             await _sut.RemindUserAboutVehicleInsuranceOrTechnicalReviewAsync(user, referenceDate);
+
+            Assert.Pass();
+        }
+
+        [Test]
+        [Explicit]
+        public async Task ShouldInformAdmin_InformAdminAboutProblem()
+        {
+            var errors = new List<string>();
+            StringBuilder sb = null;
+            try
+            {
+                var a = 1;
+                var b = 0;
+                var r = a/b;
+            } 
+            catch (Exception ex) 
+            {
+                sb = new StringBuilder();
+                sb.AppendLine(ex.FullMessageWithStackTrace());
+                errors.Add(sb.ToString());
+            }
+            
+            try
+            {
+                var arr = new int[1];
+                var v = arr[3];
+            } 
+            catch (Exception ex) 
+            {
+                sb = new StringBuilder();
+                sb.AppendLine(ex.FullMessageWithStackTrace());
+                errors.Add(sb.ToString());
+            }
+
+            await _sut.InformAdminAboutProblem(errors);
 
             Assert.Pass();
         }

@@ -34,6 +34,8 @@
             toolStripMenuOptions = new ToolStripMenuItem();
             toolStripMenuItemAddNewVehicle = new ToolStripMenuItem();
             toolStripMenuItemSelectVehicle = new ToolStripMenuItem();
+            toolStripMenuAdmin = new ToolStripMenuItem();
+            toolStripMenuItemRunReminders = new ToolStripMenuItem();
             tableLayoutPanel1.SuspendLayout();
             menuStrip.SuspendLayout();
             SuspendLayout();
@@ -64,7 +66,7 @@
             // menuStrip
             // 
             menuStrip.BackColor = SystemColors.ControlLight;
-            menuStrip.Items.AddRange(new ToolStripItem[] { toolStripMenuOptions });
+            menuStrip.Items.AddRange(new ToolStripItem[] { toolStripMenuOptions, toolStripMenuAdmin });
             menuStrip.Location = new Point(0, 0);
             menuStrip.Name = "menuStrip";
             menuStrip.Size = new Size(800, 24);
@@ -91,6 +93,20 @@
             toolStripMenuItemSelectVehicle.Size = new Size(175, 22);
             toolStripMenuItemSelectVehicle.Text = "Wybierz pojazd";
             toolStripMenuItemSelectVehicle.Click += toolStripMenuItemSelectVehicle_Click;
+            // 
+            // toolStripMenuAdmin
+            // 
+            toolStripMenuAdmin.DropDownItems.AddRange(new ToolStripItem[] { toolStripMenuItemRunReminders });
+            toolStripMenuAdmin.Name = "toolStripMenuAdmin";
+            toolStripMenuAdmin.Size = new Size(55, 20);
+            toolStripMenuAdmin.Text = "Admin";
+            // 
+            // toolStripMenuItemRunReminders
+            // 
+            toolStripMenuItemRunReminders.Name = "toolStripMenuItemRunReminders";
+            toolStripMenuItemRunReminders.Size = new Size(206, 22);
+            toolStripMenuItemRunReminders.Text = "Uruchom przypomnienia";
+            toolStripMenuItemRunReminders.Click += toolStripMenuItemRunReminders_Click;
             // 
             // MainForm
             // 
@@ -120,5 +136,7 @@
         private ToolStripMenuItem toolStripMenuOptions;
         private ToolStripMenuItem toolStripMenuItemAddNewVehicle;
         private ToolStripMenuItem toolStripMenuItemSelectVehicle;
+        private ToolStripMenuItem toolStripMenuAdmin;
+        private ToolStripMenuItem toolStripMenuItemRunReminders;
     }
 }

@@ -1,6 +1,8 @@
-﻿using BachorzLibrary.Common.Extensions;
+﻿using BachorzLibrary.Common;
+using BachorzLibrary.Common.Extensions;
 using BachorzLibrary.Common.Tools.Email;
 using BachorzLibrary.Common.Tools.Html;
+using VehicleOrganizer.Domain.Abstractions;
 using VehicleOrganizer.Infrastructure.Criteria;
 using VehicleOrganizer.Infrastructure.Entities;
 using VehicleOrganizer.Infrastructure.Repositories.Interfaces;
@@ -21,6 +23,23 @@ namespace VehicleOrganizer.Infrastructure.Services.Email
             _htmlHelper = htmlHelper;
             _operationalActivityRepository = operationalActivityRepository;
             _vehicleRepository = vehicleRepository;
+        }
+
+        public async Task InformAdminAboutProblem(IList<string> invokeErrorResultStrings)
+        {
+            _htmlHelper.Paragraph($"Dnia {DateTime.Now.ToString(Consts.DateFormat.DateFirstWithTime)} wystąpiły następujące błędy:");
+            _htmlHelper.NextLine();
+
+            var tableContent = new TableCellContent[invokeErrorResultStrings.Count, 1];
+            for (int i = 0; i < invokeErrorResultStrings.Count; i++)
+            {
+                tableContent[i, 0] = new TableCellContent(invokeErrorResultStrings[i]);
+            }
+
+            _htmlHelper.Table(invokeErrorResultStrings.Count, 1, 500, 100, 10, tableContent);
+            _htmlHelper.NextLine();
+
+            await _emailSenderService.SendEmailAsync("[Error] Wystąpiły błędy", _htmlHelper.EndWithResult(), Codes.AdminEmail, "Adam");
         }
 
         public async Task RemindUserAboutActivitiesAsync(User user, OperationalActivityCriteria criteria = null)
