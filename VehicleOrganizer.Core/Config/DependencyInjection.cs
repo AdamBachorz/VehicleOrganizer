@@ -5,6 +5,8 @@ using BachorzLibrary.DAL.DotNetSix.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using VehicleOrganizer.Core.Services;
+using VehicleOrganizer.Core.Services.Interfaces;
 using VehicleOrganizer.Domain.Abstractions;
 using VehicleOrganizer.Infrastructure;
 using VehicleOrganizer.Infrastructure.Entities;
@@ -30,10 +32,12 @@ namespace VehicleOrganizer.Core.Config
             service.AddSingleton<IEFCCustomConfig>(config);
             service.AddDbContext<DataBaseContext>();
 
+            service.AddScoped<IBackgroundActionInvokeService, BackgroundActionInvokeService>();
+            service.AddScoped<IEmailService, EmailService>();
+
             service.AddTransient<IUserRepository, UserRepository>();
             service.AddTransient<IVehicleRepository, VehicleRepository>();
             service.AddTransient<IOperationalActivityRepository, OperationalActivityRepository>();
-            service.AddTransient<IEmailService, EmailService>();
 
             service.AddTransient<IValidator<Vehicle>, VehicleValidator>();
 

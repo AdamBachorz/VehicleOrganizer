@@ -25,18 +25,23 @@ namespace VehicleOrganizer.Infrastructure.Services.Email
             _vehicleRepository = vehicleRepository;
         }
 
-        public async Task InformAdminAboutProblem(IList<string> invokeErrorResultStrings)
+        public async Task InformAdminAboutProblemAsync(IList<string> errors)
         {
+            if (errors.IsNullOrEmpty()) 
+            {
+                return;
+            }
+
             _htmlHelper.Paragraph($"Dnia {DateTime.Now.ToString(Consts.DateFormat.DateFirstWithTime)} wystąpiły następujące błędy:");
             _htmlHelper.NextLine();
 
-            var tableContent = new TableCellContent[invokeErrorResultStrings.Count, 1];
-            for (int i = 0; i < invokeErrorResultStrings.Count; i++)
+            var tableContent = new TableCellContent[errors.Count, 1];
+            for (int i = 0; i < errors.Count; i++)
             {
-                tableContent[i, 0] = new TableCellContent(invokeErrorResultStrings[i]);
+                tableContent[i, 0] = new TableCellContent(errors[i]);
             }
 
-            _htmlHelper.Table(invokeErrorResultStrings.Count, 1, 500, 100, 10, tableContent);
+            _htmlHelper.Table(rows: errors.Count, columns: 1, cellWidth: 500, cellHeight: 100, border: 10, tableContent);
             _htmlHelper.NextLine();
 
             await _emailSenderService.SendEmailAsync("[Error] Wystąpiły błędy", _htmlHelper.EndWithResult(), Codes.AdminEmail, "Adam");

@@ -4,6 +4,7 @@ using VehicleOrganizer.Infrastructure.Repositories.Interfaces;
 using VehicleOrganizer.Infrastructure.Entities;
 using VehicleOrganizer.Core.Config;
 using BachorzLibrary.Common.Tools.Email;
+using VehicleOrganizer.Core.Services.Interfaces;
 
 namespace VehicleOrganizer.DesktopApp
 {
@@ -25,11 +26,11 @@ namespace VehicleOrganizer.DesktopApp
 
             using (ServiceProvider serviceProvider = service.BuildServiceProvider())
             {
-                var userRepository = serviceProvider.GetRequiredService<IUserRepository>();
                 var vehicleRepository = serviceProvider.GetRequiredService<IVehicleRepository>();
-                var emailSenderService = serviceProvider.GetRequiredService<EmailSender>();
+                var backgroundActionInvokeService = serviceProvider.GetRequiredService<IBackgroundActionInvokeService>();
 
-                await userRepository.AuthorizeUserAsync(User.Default);
+                await backgroundActionInvokeService.InvokeAllAsync();
+
                 var userHasVehicle = vehicleRepository.UserHasVehicle(User.Default);
 
                 if (!userHasVehicle)

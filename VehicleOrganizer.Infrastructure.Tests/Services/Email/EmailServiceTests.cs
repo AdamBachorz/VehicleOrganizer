@@ -104,7 +104,7 @@ namespace VehicleOrganizer.Infrastructure.Tests.Services.Email
 
         [Test]
         [Explicit]
-        public async Task ShouldInformAdmin_InformAdminAboutProblem()
+        public async Task ShouldInformAdmin_InformAdminAboutProblemAsync()
         {
             var errors = new List<string>();
             StringBuilder sb = null;
@@ -133,8 +133,16 @@ namespace VehicleOrganizer.Infrastructure.Tests.Services.Email
                 errors.Add(sb.ToString());
             }
 
-            await _sut.InformAdminAboutProblem(errors);
+            await _sut.InformAdminAboutProblemAsync(errors);
 
+            Assert.Pass();
+        }
+        
+        [Test]
+        [Explicit]
+        public async Task ShouldNotInformAdminWhenNoErrors_InformAdminAboutProblemAsync()
+        {
+            await _sut.InformAdminAboutProblemAsync(new List<string>());
             Assert.Pass();
         }
 
