@@ -39,6 +39,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\VehicleOrganizer.Domain.Abstractions\VehicleOrganizer.Domain.Abstractions.csproj" />
+    <ProjectReference Include="..\VehicleOrganizer.Infrastructure.Abstractions\VehicleOrganizer.Infrastructure.Abstractions.csproj" />
     <ProjectReference Include="..\VehicleOrganizer.Infrastructure\VehicleOrganizer.Infrastructure.csproj" />
   </ItemGroup>
 

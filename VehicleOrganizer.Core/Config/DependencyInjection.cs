@@ -9,11 +9,13 @@ using VehicleOrganizer.Core.Services;
 using VehicleOrganizer.Core.Services.Interfaces;
 using VehicleOrganizer.Domain.Abstractions;
 using VehicleOrganizer.Infrastructure;
+using VehicleOrganizer.Infrastructure.Abstractions.Validators;
 using VehicleOrganizer.Infrastructure.Entities;
 using VehicleOrganizer.Infrastructure.Repositories;
 using VehicleOrganizer.Infrastructure.Repositories.Interfaces;
 using VehicleOrganizer.Infrastructure.Services.Email;
 using VehicleOrganizer.Infrastructure.Validators;
+using VehicleOrganizer.Infrastructure.Validators.Criteria;
 
 namespace VehicleOrganizer.Core.Config
 {
@@ -39,7 +41,7 @@ namespace VehicleOrganizer.Core.Config
             service.AddTransient<IVehicleRepository, VehicleRepository>();
             service.AddTransient<IOperationalActivityRepository, OperationalActivityRepository>();
 
-            service.AddTransient<IValidator<Vehicle>, VehicleValidator>();
+            service.AddTransient<IValidator<Vehicle, VehicleValidationCriteria>, VehicleValidator>();
 
             service.AddTransient<HtmlHelper>();
 

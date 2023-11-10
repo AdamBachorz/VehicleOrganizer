@@ -1,11 +1,13 @@
-﻿using VehicleOrganizer.Infrastructure.Entities;
+﻿using VehicleOrganizer.Infrastructure.Abstractions.Validators;
+using VehicleOrganizer.Infrastructure.Entities;
 using VehicleOrganizer.Infrastructure.Validators;
+using VehicleOrganizer.Infrastructure.Validators.Criteria;
 
 namespace VehicleOrganizer.Infrastructure.Tests.Validators
 {
     public class VehicleValidatorTests : BaseTests
     {
-        private IValidator<Vehicle> _validator;
+        private IValidator<Vehicle, VehicleValidationCriteria> _validator;
 
         [SetUp]
         public void Setup()
@@ -22,7 +24,11 @@ namespace VehicleOrganizer.Infrastructure.Tests.Validators
                 Name = _fixture.Create<string>(),
             };
 
-            var validationResult = _validator.Validate(input);
+            var criteria = new VehicleValidationCriteria
+            {
+                User = _fixture.Create<User>(),
+            };
+            var validationResult = _validator.Validate(input, criteria);
 
             Assert.That(validationResult, Is.Null.Or.Empty);
         }
@@ -32,7 +38,11 @@ namespace VehicleOrganizer.Infrastructure.Tests.Validators
         {
             var input = new Vehicle();
 
-            var validationResult = _validator.Validate(input).ToList();
+            var criteria = new VehicleValidationCriteria
+            {
+                User = _fixture.Create<User>(),
+            };
+            var validationResult = _validator.Validate(input, criteria).ToList();
             const int ExpectedValidationMessagesCount = 1;
 
             Assert.Multiple(() =>
