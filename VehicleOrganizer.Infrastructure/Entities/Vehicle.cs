@@ -18,7 +18,7 @@ namespace VehicleOrganizer.Infrastructure.Entities
         public DateTime InsuranceTermination { get; set; } = DateTime.Now.Date.AddYears(1);
         public DateTime LastTechnicalReview { get; set; } = DateTime.Now.Date;
         public DateTime NextTechnicalReview { get; set; } = DateTime.Now.Date.AddYears(1);
-        public DateTime? SaleDate { get; set; }
+        public DateTime? SaleDate { get; set; } = null;
         public User User { get; set; } = User.Default;
         public IList<MileageHistory> MileageHistory { get; set; }
         public IList<OperationalActivity> OperationalActivities { get; set; }

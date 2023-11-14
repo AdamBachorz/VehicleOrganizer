@@ -11,6 +11,10 @@ namespace VehicleOrganizer.DesktopApp.Panels
             InitializeComponent();
             _vehicleView = vehicleView;
 
+            if (!vehicleView.IsOilBased)
+            {
+                buttonUpdateMileage.Enabled = false;
+            }
             FillUpControls();
         }
 

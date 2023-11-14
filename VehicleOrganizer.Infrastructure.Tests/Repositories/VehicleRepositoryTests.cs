@@ -18,7 +18,7 @@ namespace VehicleOrganizer.Infrastructure.Tests.Repositories
         }
 
         [Test]
-        public async Task ShouldReturnTrueOrFalse_UserHasVehicle()
+        public async Task ShouldReturnTrue_UserHasVehicle()
         {
             var user = _fixture.Create<User>();
 
@@ -33,6 +33,45 @@ namespace VehicleOrganizer.Infrastructure.Tests.Repositories
             await _db.SaveChangesAsync();
 
             Assert.That(_sut.UserHasVehicle(user), Is.True);
+        }
+        
+        [Test]
+        public async Task ShouldReturnTrueIfUserHasVehicleWithGivenName_UserHasVehicleWithName()
+        {
+            var user = _fixture.Create<User>();
+            var targetVehicleName = _fixture.Create<string>();
+
+            var otherUserVehicle = new Vehicle
+            {
+                Name = _fixture.Create<string>(),
+                OilType = _fixture.Create<string>(),
+                User = user,
+            };
+            
+            var targetUserVehicle = new Vehicle
+            {
+                Name = targetVehicleName,
+                OilType = _fixture.Create<string>(),
+                User = user,
+            };
+
+            var someOtherVehicle = new Vehicle
+            {
+                Name = _fixture.Create<string>(),
+                OilType = _fixture.Create<string>(),
+                User = _fixture.Create<User>(),
+            };
+
+            await _db.Vehicles.AddAsync(otherUserVehicle);
+            await _db.Vehicles.AddAsync(targetUserVehicle);
+            await _db.Vehicles.AddAsync(someOtherVehicle);
+            await _db.SaveChangesAsync();
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(_sut.UserHasVehicleWithName(user, targetVehicleName), Is.True);
+                Assert.That(_sut.UserHasVehicleWithName(user, _fixture.Create<string>()), Is.False);
+            });
         }
 
         [TestCase(true, 3)]

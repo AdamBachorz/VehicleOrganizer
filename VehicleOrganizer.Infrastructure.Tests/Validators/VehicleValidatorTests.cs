@@ -13,7 +13,7 @@ namespace VehicleOrganizer.Infrastructure.Tests.Validators
         public void Setup()
         {
             base.Setup();
-            _validator = new VehicleValidator();
+            _validator = new VehicleValidator(null);
         }
 
         [Test]

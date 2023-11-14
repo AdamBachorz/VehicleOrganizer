@@ -2,6 +2,7 @@ using AutoMapper;
 using VehicleOrganizer.Core.Config;
 using VehicleOrganizer.Domain.Abstractions;
 using VehicleOrganizer.Domain.Abstractions.Enums;
+using VehicleOrganizer.Domain.Abstractions.Extensions;
 using VehicleOrganizer.Domain.Abstractions.Views;
 using VehicleOrganizer.Infrastructure.Entities;
 
@@ -48,6 +49,7 @@ namespace VehicleOrganizer.Core.Tests.Config
                 Assert.That(result, Is.Not.Null);
                 Assert.That(result.Name, Is.EqualTo(source.Name));
                 Assert.That(result.OilType, Is.EqualTo(expectedOilType));
+                Assert.That(result.IsOilBased, Is.EqualTo(source.VehicleType.IsOilBased()));
                 Assert.That(result.DaysToInsuranceExpires, Does.EndWith("dni"));
                 Assert.That(result.DaysToNextTechnicalReview, Does.EndWith("dni"));
                 Assert.That(result.LatestMileage, Does.EndWith("km"));

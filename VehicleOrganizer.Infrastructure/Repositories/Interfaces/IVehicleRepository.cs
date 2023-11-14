@@ -6,6 +6,7 @@ namespace VehicleOrganizer.Infrastructure.Repositories.Interfaces
     public interface IVehicleRepository : IBaseDao<Vehicle, int>
     {
         bool UserHasVehicle(User user);
+        bool UserHasVehicleWithName(User user, string vehicleName);
         Task<IList<Vehicle>> GetVehiclesForUserAsync(User user, bool includeSold = false);
         Task<Vehicle> AddVehicleAsync(Vehicle vehcle, int mileage);
         Task UpdateMileageAsync(Vehicle vehicle, int mileage);

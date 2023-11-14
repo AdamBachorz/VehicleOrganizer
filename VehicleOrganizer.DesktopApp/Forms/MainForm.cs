@@ -20,11 +20,15 @@ namespace VehicleOrganizer.DesktopApp.Forms
             toolStripMenuAdmin.Visible = toolStripMenuAdmin.Enabled = User.Default.IsWorthy;
         }
 
-        public void InitAndOpen(VehicleView vehicleView)
+        public void Init(VehicleView vehicleView)
         {
-            PlacePanel(mainPanel, new VehiclePanel(vehicleView));
-            ShowDialog();
+            if (vehicleView is not null)
+            {
+                PlacePanel(new VehiclePanel(vehicleView)); 
+            }
         }
+
+        public void PlacePanel(Control control) => PlacePanel(mainPanel, control);
 
         private void toolStripMenuItemAddNewVehicle_Click(object sender, EventArgs e)
         {
@@ -46,5 +50,6 @@ namespace VehicleOrganizer.DesktopApp.Forms
             baseControl.Controls.Clear();
             baseControl.Controls.Add(control);
         }
+
     }
 }

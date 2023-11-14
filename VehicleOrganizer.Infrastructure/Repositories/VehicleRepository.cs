@@ -17,6 +17,11 @@ namespace VehicleOrganizer.Infrastructure.Repositories
             return _db.Vehicles.Any(v => v.User.Id == user.Id);   
         }
 
+        public bool UserHasVehicleWithName(User user, string vehicleName)
+        {
+            return _db.Vehicles.Any(v => v.User.Id == user.Id && v.Name.Equals(vehicleName));   
+        }
+
         public async Task<Vehicle> AddVehicleAsync(Vehicle vehcle, int mileage)
         {
             vehcle.MileageHistory = new List<MileageHistory>()

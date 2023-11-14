@@ -35,7 +35,10 @@ namespace VehicleOrganizer.DesktopApp
 
                 if (!userHasVehicle)
                 {
-                    MessageBox.Show("Brak pojazdów");
+                    MessageBox.Show("Brak pojazdów. Dodaj nowy teraz!");
+                    var addVehicleForm = serviceProvider.GetRequiredService<AddOrEditVehicleForm>();
+                    addVehicleForm.Init(vehicle: null, isEditMode: false);
+                    addVehicleForm.ShowDialog();
                 }
 
                 var form = serviceProvider.GetRequiredService<MainForm>();
@@ -46,6 +49,7 @@ namespace VehicleOrganizer.DesktopApp
         private static void RegisterForms(IServiceCollection service)
         {
             service.AddScoped<MainForm>();
+            service.AddScoped<AddOrEditVehicleForm>();
         }
     }
 }
