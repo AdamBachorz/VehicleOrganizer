@@ -52,6 +52,7 @@
             label11 = new Label();
             dateTimePickerLastTechnicalReview = new DateTimePicker();
             label12 = new Label();
+            checkBoxDebugMode = new CheckBox();
             ((System.ComponentModel.ISupportInitialize)numericUpDownYearOfProduction).BeginInit();
             SuspendLayout();
             // 
@@ -257,11 +258,24 @@
             label12.TabIndex = 23;
             label12.Text = "km";
             // 
+            // checkBoxDebugMode
+            // 
+            checkBoxDebugMode.AutoSize = true;
+            checkBoxDebugMode.Checked = true;
+            checkBoxDebugMode.CheckState = CheckState.Checked;
+            checkBoxDebugMode.Location = new Point(10, 285);
+            checkBoxDebugMode.Name = "checkBoxDebugMode";
+            checkBoxDebugMode.Size = new Size(100, 19);
+            checkBoxDebugMode.TabIndex = 24;
+            checkBoxDebugMode.Text = "DEBUG MODE";
+            checkBoxDebugMode.UseVisualStyleBackColor = true;
+            // 
             // AddOrEditVehicleForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(807, 305);
+            Controls.Add(checkBoxDebugMode);
             Controls.Add(label12);
             Controls.Add(label10);
             Controls.Add(dateTimePickerNextTechnicalReview);
@@ -319,5 +333,6 @@
         private Label label11;
         private DateTimePicker dateTimePickerLastTechnicalReview;
         private Label label12;
+        private CheckBox checkBoxDebugMode;
     }
 }

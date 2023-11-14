@@ -1,11 +1,10 @@
 ﻿using BachorzLibrary.Common.Extensions;
-using System.Data.SqlTypes;
 
 namespace VehicleOrganizer.DesktopApp.Extensions
 {
     public static class ComboBoxExtensions
     {
-        public static void LoadWithEnums<E>(this ComboBox comboBox, bool useEnumDescriptions, IEnumerable<E> lookUpValues, bool autoPickFirstItem = false) where E : Enum
+        public static void LoadWithEnums<E>(this ComboBox comboBox, bool useEnumDescriptions, bool autoPickFirstItem = false) where E : Enum
         {
             comboBox.Items.Clear();
             foreach (Enum value in Enum.GetValues(typeof(E)))

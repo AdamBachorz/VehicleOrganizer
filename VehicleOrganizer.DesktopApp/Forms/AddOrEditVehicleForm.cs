@@ -1,9 +1,10 @@
 ﻿using AutoMapper;
 using BachorzLibrary.Common.Extensions;
-using BachorzLibrary.Desktop.Extensions;
-using System.Windows.Forms;
+using BachorzLibrary.Common.Utils;
+using VehicleOrganizer.DesktopApp.Extensions;
 using VehicleOrganizer.Domain.Abstractions.Enums;
 using VehicleOrganizer.Domain.Abstractions.Extensions;
+using VehicleOrganizer.Domain.Abstractions.Views;
 using VehicleOrganizer.Infrastructure.Abstractions.Validators;
 using VehicleOrganizer.Infrastructure.Entities;
 using VehicleOrganizer.Infrastructure.Repositories.Interfaces;
@@ -17,7 +18,10 @@ namespace VehicleOrganizer.DesktopApp.Forms
         private readonly IVehicleRepository _vehicleRepository;
         private readonly IMapper _mapper;
 
+        private MainForm _mainForm;
+
         private bool _isEditMode;
+        private bool _isFromFirstRun;
 
         public AddOrEditVehicleForm(IValidator<Vehicle, VehicleValidationCriteria> validator, IVehicleRepository vehicleRepository, IMapper mapper)
         {
@@ -26,24 +30,22 @@ namespace VehicleOrganizer.DesktopApp.Forms
             _vehicleRepository = vehicleRepository;
             _mapper = mapper;
 
-            comboBoxType.LoadWithEnums<VehicleType>();
-            comboBoxType.SelectedIndex = 0;
+            checkBoxDebugMode.Visible = checkBoxDebugMode.Enabled = checkBoxDebugMode.Checked = EnvUtils.GetValueDependingOnEnvironment(true, false);
+            comboBoxType.LoadWithEnums<VehicleType>(useEnumDescriptions: true, autoPickFirstItem: true);
             numericUpDownYearOfProduction.Maximum = numericUpDownYearOfProduction.Value = DateTime.Now.Year;
         }
 
-        public void Init(Vehicle vehicle, bool isEditMode)
+        public void Init(MainForm mainForm, Vehicle vehicle, bool isEditMode, bool isFromFirstRun = false)
         {
+            _mainForm = mainForm;
             _isEditMode = isEditMode;
+            _isFromFirstRun = isFromFirstRun;
             buttonAddOrUpdate.Text = isEditMode ? "Zaktualizuj dane" : "Dodaj pojazd";
 
             if (isEditMode)
             {
                 FillUpControls(vehicle);
                 textBoxMileage.Enabled = false;
-            }
-            else // Adding new vehicle
-            {
-
             }
         }
 
@@ -53,6 +55,7 @@ namespace VehicleOrganizer.DesktopApp.Forms
             comboBoxType.SelectedIndex = (int)vehicle.VehicleType;
             textBoxOilType.Text = vehicle.OilType;
             textBoxMileage.Text = vehicle.LatestMileage.ToString();
+
             dateTimePickerPurchaseDate.Value = vehicle.PurchaseDate;
             dateTimePickerRegistrationDate.Value = vehicle.RegistrationDate;
             dateTimePickerInsuranceConclusion.Value = vehicle.InsuranceConclusion;
@@ -98,6 +101,7 @@ namespace VehicleOrganizer.DesktopApp.Forms
             var criteria = new VehicleValidationCriteria
             {
                 ShouldCheckOilType = vehicle.VehicleType.IsOilBased(),
+                VehicleTypeIsNotSelected = comboBoxType.SelectedIndex == -1,
                 ShouldCheckMileage = vehicle.VehicleType.IsOilBased(),
                 MileageIsNotDigit = textBoxMileage.Text.IsNotDigit(),
             };
@@ -109,14 +113,30 @@ namespace VehicleOrganizer.DesktopApp.Forms
                 return;
             }
 
+            VehicleView view = null;
             if (_isEditMode)
             {
-                _vehicleRepository.Update(vehicle);
+                if (!checkBoxDebugMode.Checked)
+                {
+                    _vehicleRepository.Update(vehicle);
+                }
+                view = _mapper.Map<VehicleView>(vehicle);
             }
             else
             {
-                await _vehicleRepository.AddVehicleAsync(vehicle, textBoxMileage.Text.ToInt());
+                var justAddedVehicle = !checkBoxDebugMode.Checked
+                    ? await _vehicleRepository.AddVehicleAsync(vehicle, textBoxMileage.Text.OrDefault("0").ToInt())
+                    : vehicle;
+                view = _mapper.Map<VehicleView>(justAddedVehicle);
             }
+
+            _mainForm.Init(view);
+            if (_isFromFirstRun)
+            {
+                _mainForm.ShowDialog();
+            }
+
+            Close();
         }
     }
 }

@@ -24,7 +24,12 @@ namespace VehicleOrganizer.Infrastructure.Validators
                 yield return "Brak nazwy pojazdu";
             }
 
-            if (criteria.ShouldCheckOilType)
+            if (_vehicleRepository.UserHasVehicleWithName(criteria.User, vehicle.Name))
+            {
+                yield return "Posiadasz już pojazd o tej nazwie. Użyj innej nazwy";
+            }
+
+            if (criteria.ShouldCheckOilType && vehicle.OilType.IsNullOrEmpty())
             {
                 yield return "Nie podano typu oleju";
             }
@@ -61,8 +66,38 @@ namespace VehicleOrganizer.Infrastructure.Validators
             var insuranceConclusionDate = vehicle.InsuranceConclusion.Date;
             var insuranceTerminationDate = vehicle.InsuranceTermination.Date;
 
+            if (yearOfProduction > insuranceConclusionDate.Year)
+            {
+                yield return "Podany rok produkcji jest wyższy, niż rok, w którym pojazd został ubezpieczony";
+            }
+
+            if (yearOfProduction > insuranceTerminationDate.Year)
+            {
+                yield return "Podany rok produkcji jest wyższy, niż rok, w którym ubezpieczenie pojazdu wygasa";
+            }
+            
+            if (insuranceConclusionDate > insuranceTerminationDate)
+            {
+                yield return "Data wygaśnięcia ubezpieczenia pojazdu nie może być wcześniejsza, niż data jego zawarcia";
+            }
+
             var lastTechnicalReviweDate = vehicle.LastTechnicalReview.Date;
             var nextTechnicalReviweDate = vehicle.NextTechnicalReview.Date;
+
+            if (yearOfProduction > lastTechnicalReviweDate.Year)
+            {
+                yield return "Podany rok produkcji jest wyższy, niż rok, w którym pojazd ostatnio przeszedł przegląd techniczny";
+            }
+
+            if (yearOfProduction > nextTechnicalReviweDate.Year)
+            {
+                yield return "Podany rok produkcji jest wyższy, niż rok, w którym upływa termin następnego przeglądu technicznego";
+            }
+            
+            if (lastTechnicalReviweDate > nextTechnicalReviweDate)
+            {
+                yield return "Data następnego przeglądu technicznego nie może być wcześniejsza, niż data ostatniego przeglądu";
+            }
         }
     }
 }

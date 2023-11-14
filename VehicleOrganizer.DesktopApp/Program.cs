@@ -33,16 +33,18 @@ namespace VehicleOrganizer.DesktopApp
 
                 var userHasVehicle = vehicleRepository.UserHasVehicle(User.Default);
 
+                var mainForm = serviceProvider.GetRequiredService<MainForm>();
                 if (!userHasVehicle)
                 {
                     MessageBox.Show("Brak pojazdów. Dodaj nowy teraz!");
                     var addVehicleForm = serviceProvider.GetRequiredService<AddOrEditVehicleForm>();
-                    addVehicleForm.Init(vehicle: null, isEditMode: false);
+                    addVehicleForm.Init(mainForm, vehicle: null, isEditMode: false, isFromFirstRun: true);
                     addVehicleForm.ShowDialog();
                 }
-
-                var form = serviceProvider.GetRequiredService<MainForm>();
-                Application.Run(form);
+                else
+                {
+                    Application.Run(mainForm);
+                }
             }
         }
 

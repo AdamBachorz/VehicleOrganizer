@@ -1,11 +1,12 @@
 ﻿using VehicleOrganizer.Infrastructure.Abstractions.Validators;
 using VehicleOrganizer.Infrastructure.Entities;
+using VehicleOrganizer.Infrastructure.Repositories;
 using VehicleOrganizer.Infrastructure.Validators;
 using VehicleOrganizer.Infrastructure.Validators.Criteria;
 
 namespace VehicleOrganizer.Infrastructure.Tests.Validators
 {
-    public class VehicleValidatorTests : BaseTests
+    public class VehicleValidatorTests : BaseDataBaseTests
     {
         private IValidator<Vehicle, VehicleValidationCriteria> _validator;
 
@@ -13,7 +14,7 @@ namespace VehicleOrganizer.Infrastructure.Tests.Validators
         public void Setup()
         {
             base.Setup();
-            _validator = new VehicleValidator(null);
+            _validator = new VehicleValidator(new VehicleRepository(_db));
         }
 
         [Test]
