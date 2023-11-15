@@ -81,20 +81,20 @@ namespace VehicleOrganizer.Infrastructure.Validators
                 yield return "Data wygaśnięcia ubezpieczenia pojazdu nie może być wcześniejsza, niż data jego zawarcia";
             }
 
-            var lastTechnicalReviweDate = vehicle.LastTechnicalReview.Date;
-            var nextTechnicalReviweDate = vehicle.NextTechnicalReview.Date;
+            var lastTechnicalReviewDate = vehicle.LastTechnicalReview.Date;
+            var nextTechnicalReviewDate = vehicle.NextTechnicalReview.Date;
 
-            if (yearOfProduction > lastTechnicalReviweDate.Year)
+            if (yearOfProduction > lastTechnicalReviewDate.Year)
             {
                 yield return "Podany rok produkcji jest wyższy, niż rok, w którym pojazd ostatnio przeszedł przegląd techniczny";
             }
 
-            if (yearOfProduction > nextTechnicalReviweDate.Year)
+            if (yearOfProduction > nextTechnicalReviewDate.Year)
             {
                 yield return "Podany rok produkcji jest wyższy, niż rok, w którym upływa termin następnego przeglądu technicznego";
             }
             
-            if (lastTechnicalReviweDate > nextTechnicalReviweDate)
+            if (lastTechnicalReviewDate > nextTechnicalReviewDate)
             {
                 yield return "Data następnego przeglądu technicznego nie może być wcześniejsza, niż data ostatniego przeglądu";
             }

@@ -5,6 +5,7 @@ using VehicleOrganizer.Infrastructure.Entities;
 using VehicleOrganizer.Core.Config;
 using BachorzLibrary.Common.Tools.Email;
 using VehicleOrganizer.Core.Services.Interfaces;
+using BachorzLibrary.Common.Extensions;
 
 namespace VehicleOrganizer.DesktopApp
 {
@@ -31,20 +32,24 @@ namespace VehicleOrganizer.DesktopApp
 
                 await backgroundActionInvokeService.InvokeAllAsync();
 
-                var userHasVehicle = vehicleRepository.UserHasVehicle(User.Default);
+                var vehiclesForUser = await vehicleRepository.GetVehiclesForUserAsync(User.Default, includeSold: false);
+                var userHasVehicle = vehiclesForUser.IsNotNullOrEmpty();
 
                 var mainForm = serviceProvider.GetRequiredService<MainForm>();
+                
                 if (!userHasVehicle)
                 {
                     MessageBox.Show("Brak pojazdów. Dodaj nowy teraz!");
                     var addVehicleForm = serviceProvider.GetRequiredService<AddOrEditVehicleForm>();
-                    addVehicleForm.Init(mainForm, vehicle: null, isEditMode: false, isFromFirstRun: true);
+                    addVehicleForm.Init(mainForm, vehicle: null, isEditMode: false);
                     addVehicleForm.ShowDialog();
                 }
                 else
                 {
-                    Application.Run(mainForm);
+                    
                 }
+
+                Application.Run(mainForm);
             }
         }
 

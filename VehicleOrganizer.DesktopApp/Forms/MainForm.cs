@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using BachorzLibrary.Common.Extensions;
+using VehicleOrganizer.Core.Services.Interfaces;
 using VehicleOrganizer.DesktopApp.Panels;
 using VehicleOrganizer.Domain.Abstractions.Views;
 using VehicleOrganizer.Infrastructure.Entities;
@@ -10,12 +12,18 @@ namespace VehicleOrganizer.DesktopApp.Forms
     {
         private readonly IMapper _mapper;
         private readonly IVehicleRepository _vehicleRepository;
+        private readonly IBackgroundActionInvokeService _backgroundActionInvokeService;
 
-        public MainForm(IMapper mapper, IVehicleRepository vehicleRepository)
+        private readonly AddOrEditVehicleForm _addOrEditVehicleForm;
+
+        public MainForm(IMapper mapper, IVehicleRepository vehicleRepository, IBackgroundActionInvokeService backgroundActionInvokeService, 
+            AddOrEditVehicleForm addOrEditVehicleForm)
         {
             InitializeComponent();
             _mapper = mapper;
             _vehicleRepository = vehicleRepository;
+            _backgroundActionInvokeService = backgroundActionInvokeService;
+            _addOrEditVehicleForm = addOrEditVehicleForm;
 
             toolStripMenuAdmin.Visible = toolStripMenuAdmin.Enabled = User.Default.IsWorthy;
         }
@@ -32,7 +40,8 @@ namespace VehicleOrganizer.DesktopApp.Forms
 
         private void toolStripMenuItemAddNewVehicle_Click(object sender, EventArgs e)
         {
-
+            _addOrEditVehicleForm.Init(this, vehicle: null, isEditMode: false);
+            _addOrEditVehicleForm.ShowDialog();
         }
 
         private void toolStripMenuItemSelectVehicle_Click(object sender, EventArgs e)
@@ -42,7 +51,9 @@ namespace VehicleOrganizer.DesktopApp.Forms
 
         private async void toolStripMenuItemRunReminders_Click(object sender, EventArgs e)
         {
-
+            await _backgroundActionInvokeService.RunRemindersAsync();
+            var errors = _backgroundActionInvokeService.CurrentErrors();
+            MessageBox.Show(errors.IsNotNullOrEmpty() ? errors.Select(x => x).Join(Environment.NewLine) : "Wysłano powiadomienia");       
         }
 
         private void PlacePanel(Control baseControl, Control control)

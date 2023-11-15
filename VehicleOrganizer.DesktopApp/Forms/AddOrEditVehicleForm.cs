@@ -21,7 +21,6 @@ namespace VehicleOrganizer.DesktopApp.Forms
         private MainForm _mainForm;
 
         private bool _isEditMode;
-        private bool _isFromFirstRun;
 
         public AddOrEditVehicleForm(IValidator<Vehicle, VehicleValidationCriteria> validator, IVehicleRepository vehicleRepository, IMapper mapper)
         {
@@ -35,35 +34,30 @@ namespace VehicleOrganizer.DesktopApp.Forms
             numericUpDownYearOfProduction.Maximum = numericUpDownYearOfProduction.Value = DateTime.Now.Year;
         }
 
-        public void Init(MainForm mainForm, Vehicle vehicle, bool isEditMode, bool isFromFirstRun = false)
+        public void Init(MainForm mainForm, Vehicle vehicle, bool isEditMode)
         {
             _mainForm = mainForm;
             _isEditMode = isEditMode;
-            _isFromFirstRun = isFromFirstRun;
             buttonAddOrUpdate.Text = isEditMode ? "Zaktualizuj dane" : "Dodaj pojazd";
-
-            if (isEditMode)
-            {
-                FillUpControls(vehicle);
-                textBoxMileage.Enabled = false;
-            }
+            FillUpControls(isEditMode ? vehicle : null);
+            textBoxMileage.Enabled = !isEditMode;
         }
 
         private void FillUpControls(Vehicle vehicle)
         {
-            textBoxName.Text = vehicle.Name;
-            comboBoxType.SelectedIndex = (int)vehicle.VehicleType;
-            textBoxOilType.Text = vehicle.OilType;
-            textBoxMileage.Text = vehicle.LatestMileage.ToString();
+            textBoxName.Text = vehicle?.Name ?? string.Empty;
+            comboBoxType.SelectedIndex = vehicle is not null ? (int)vehicle.VehicleType : 0;
+            textBoxOilType.Text = vehicle?.OilType ?? string.Empty;
+            textBoxMileage.Text = vehicle?.LatestMileage.ToString();
 
-            dateTimePickerPurchaseDate.Value = vehicle.PurchaseDate;
-            dateTimePickerRegistrationDate.Value = vehicle.RegistrationDate;
-            dateTimePickerInsuranceConclusion.Value = vehicle.InsuranceConclusion;
-            dateTimePickerInsuranceTermination.Value = vehicle.InsuranceTermination;
-            dateTimePickerLastTechnicalReview.Value = vehicle.LastTechnicalReview;
-            dateTimePickerNextTechnicalReview.Value = vehicle.NextTechnicalReview;
+            dateTimePickerPurchaseDate.Value = vehicle?.PurchaseDate ?? DateTime.Now.Date;
+            dateTimePickerRegistrationDate.Value = vehicle?.RegistrationDate ?? DateTime.Now.Date;
+            dateTimePickerInsuranceConclusion.Value = vehicle?.InsuranceConclusion ?? DateTime.Now.Date;
+            dateTimePickerInsuranceTermination.Value = vehicle?.InsuranceTermination ?? DateTime.Now.Date;
+            dateTimePickerLastTechnicalReview.Value = vehicle?.LastTechnicalReview ?? DateTime.Now.Date;
+            dateTimePickerNextTechnicalReview.Value = vehicle?.NextTechnicalReview ?? DateTime.Now.Date;
 
-            numericUpDownYearOfProduction.Value = vehicle.YearOfProduction;
+            numericUpDownYearOfProduction.Value = vehicle?.YearOfProduction ?? DateTime.Now.Year;
         }
 
         private Vehicle ApplyModelDataFromControls()
@@ -109,7 +103,7 @@ namespace VehicleOrganizer.DesktopApp.Forms
 
             if (validationResult.HasValue())
             {
-                MessageBox.Show(validationResult);
+                MessageBox.Show($"Wykryto następujące błędy:{Environment.NewLine}{Environment.NewLine}{validationResult}");
                 return;
             }
 
@@ -130,13 +124,8 @@ namespace VehicleOrganizer.DesktopApp.Forms
                 view = _mapper.Map<VehicleView>(justAddedVehicle);
             }
 
-            _mainForm.Init(view);
-            if (_isFromFirstRun)
-            {
-                _mainForm.ShowDialog();
-            }
-
             Close();
+            _mainForm.Init(view);
         }
     }
 }

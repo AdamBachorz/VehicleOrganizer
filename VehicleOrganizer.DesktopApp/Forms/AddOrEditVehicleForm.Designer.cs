@@ -121,9 +121,9 @@
             label3.AutoSize = true;
             label3.Location = new Point(23, 159);
             label3.Name = "label3";
-            label3.Size = new Size(291, 15);
+            label3.Size = new Size(258, 15);
             label3.TabIndex = 8;
-            label3.Text = "Przebieg w dniu nabycia (jeśli to pojazd mechaniczny)";
+            label3.Text = "Aktualny przebieg (jeśli to pojazd mechaniczny)";
             // 
             // textBoxMileage
             // 
