@@ -28,6 +28,13 @@ namespace VehicleOrganizer.Core.Config
                     .ForMember(dest => dest.DaysToInsuranceExpires, opt => opt.MapFrom(src => src.DaysToInsuranceExpires(DateTime.Now.Date) + " dni"))
                     .ForMember(dest => dest.DaysToNextTechnicalReview, opt => opt.MapFrom(src => src.DaysToInsuranceExpires(DateTime.Now.Date) + " dni"))
                     ;
+                cfg.CreateMap<OperationalActivity, OperationalActivityView>()
+                    .ForMember(dest => dest.Reference, opt => opt.MapFrom(src => src.Id))
+                    .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
+                    .ForMember(dest => dest.LastOperationDateOrMileageWhenPerformed, 
+                                opt => opt.MapFrom(src => src.IsDateOperated ? src.LastOperationDate.ToShortDateString() : src.MileageWhenPerformed.ToString()))
+                    .ForMember(dest => dest.SummaryPrompt, opt => opt.MapFrom(src => src.SummaryPrompt(DateTime.Now.Date, true)))
+                    ;
             return cfg;
         }
     }

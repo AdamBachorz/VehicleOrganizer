@@ -34,7 +34,7 @@ namespace VehicleOrganizer.Infrastructure.Entities
         public int ToNextAct(DateTime referenceDate) => 
             IsDateOperated ? (int)(NextOperationDate - referenceDate).TotalDays : NextOperationAtMilage - Vehicle.LatestMileage;
 
-        public string SummaryPrompt(DateTime referenceDate) => 
-            $"{Name} - Pozostało: {ToNextAct(referenceDate)} {(IsDateOperated ? "dni" : "kilometrów")}";
+        public string SummaryPrompt(DateTime referenceDate, bool shortVersion = false) => 
+            (!shortVersion ? $"{Name} - " : string.Empty) + $"Pozostało: {ToNextAct(referenceDate)} {(IsDateOperated ? "dni" : "kilometrów")}";
     }
 }

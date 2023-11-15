@@ -10,6 +10,7 @@
             {
                 ConfigureMembers = true
             });
+            _fixture.Behaviors.Add(new OmitOnRecursionBehavior());
         }
     }
 }

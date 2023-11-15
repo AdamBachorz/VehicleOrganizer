@@ -1,4 +1,5 @@
 using AutoMapper;
+using System.Xml;
 using VehicleOrganizer.Core.Config;
 using VehicleOrganizer.Domain.Abstractions;
 using VehicleOrganizer.Domain.Abstractions.Enums;
@@ -25,7 +26,7 @@ namespace VehicleOrganizer.Core.Tests.Config
         [TestCase(VehicleType.Bus, "5W-40", "5W-40")]
         [TestCase(VehicleType.Motorcycle, "something", Codes.None)]
         [TestCase(VehicleType.Trailer, "something", Codes.None)]
-        public void ShoudMap_Vehicle(VehicleType vehicleType, string oilType, string expectedOilType)
+        public void ShouldMap_Vehicle(VehicleType vehicleType, string oilType, string expectedOilType)
         {
             var source = new Vehicle 
             {
@@ -53,6 +54,25 @@ namespace VehicleOrganizer.Core.Tests.Config
                 Assert.That(result.DaysToInsuranceExpires, Does.EndWith("dni"));
                 Assert.That(result.DaysToNextTechnicalReview, Does.EndWith("dni"));
                 Assert.That(result.LatestMileage, Does.EndWith("km"));
+            });
+        }
+
+        [TestCase(true)]
+        [TestCase(false)]
+        public void ShouldMap_OperationalActivity(bool isDateOperated)
+        {
+            var source = _fixture.Create<OperationalActivity>();
+            source.IsDateOperated = isDateOperated;
+
+            var result = _mapper.Map<OperationalActivityView>(source);
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(result, Is.Not.Null);
+                Assert.That(result.Reference, Is.EqualTo(source.Id));
+                Assert.That(result.Name, Is.EqualTo(source.Name));
+                Assert.That(result.LastOperationDateOrMileageWhenPerformed, Is.EqualTo(isDateOperated ? source.LastOperationDate.ToShortDateString() : source.MileageWhenPerformed.ToString()));
+                Assert.That(result.SummaryPrompt, Does.EndWith(isDateOperated ? "dni" : "kilometrów"));
             });
         }
     }

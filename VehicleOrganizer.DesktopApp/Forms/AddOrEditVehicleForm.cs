@@ -2,6 +2,7 @@
 using BachorzLibrary.Common.Extensions;
 using BachorzLibrary.Common.Utils;
 using VehicleOrganizer.DesktopApp.Extensions;
+using VehicleOrganizer.DesktopApp.Interfaces;
 using VehicleOrganizer.Domain.Abstractions.Enums;
 using VehicleOrganizer.Domain.Abstractions.Extensions;
 using VehicleOrganizer.Domain.Abstractions.Views;
@@ -12,7 +13,7 @@ using VehicleOrganizer.Infrastructure.Validators.Criteria;
 
 namespace VehicleOrganizer.DesktopApp.Forms
 {
-    public partial class AddOrEditVehicleForm : Form
+    public partial class AddOrEditVehicleForm : Form, IModelable<Vehicle>, IDebugable
     {
         private readonly IValidator<Vehicle, VehicleValidationCriteria> _validator;
         private readonly IVehicleRepository _vehicleRepository;
@@ -21,6 +22,8 @@ namespace VehicleOrganizer.DesktopApp.Forms
         private MainForm _mainForm;
 
         private bool _isEditMode;
+
+        public bool IsDebugMode => checkBoxDebugMode.Checked;
 
         public AddOrEditVehicleForm(IValidator<Vehicle, VehicleValidationCriteria> validator, IVehicleRepository vehicleRepository, IMapper mapper)
         {
@@ -43,7 +46,7 @@ namespace VehicleOrganizer.DesktopApp.Forms
             textBoxMileage.Enabled = !isEditMode;
         }
 
-        private void FillUpControls(Vehicle vehicle)
+        public void FillUpControls(Vehicle vehicle)
         {
             textBoxName.Text = vehicle?.Name ?? string.Empty;
             comboBoxType.SelectedIndex = vehicle is not null ? (int)vehicle.VehicleType : 0;
@@ -60,7 +63,7 @@ namespace VehicleOrganizer.DesktopApp.Forms
             numericUpDownYearOfProduction.Value = vehicle?.YearOfProduction ?? DateTime.Now.Year;
         }
 
-        private Vehicle ApplyModelDataFromControls()
+        public Vehicle ApplyModelDataFromControls()
         {
             return new Vehicle
             {
@@ -110,7 +113,7 @@ namespace VehicleOrganizer.DesktopApp.Forms
             VehicleView view = null;
             if (_isEditMode)
             {
-                if (!checkBoxDebugMode.Checked)
+                if (!IsDebugMode)
                 {
                     _vehicleRepository.Update(vehicle);
                 }
@@ -118,9 +121,7 @@ namespace VehicleOrganizer.DesktopApp.Forms
             }
             else
             {
-                var justAddedVehicle = !checkBoxDebugMode.Checked
-                    ? await _vehicleRepository.AddVehicleAsync(vehicle, textBoxMileage.Text.OrDefault("0").ToInt())
-                    : vehicle;
+                var justAddedVehicle = !IsDebugMode ? await _vehicleRepository.AddVehicleAsync(vehicle, textBoxMileage.Text.OrDefault("0").ToInt()) : vehicle;
                 view = _mapper.Map<VehicleView>(justAddedVehicle);
             }
 
