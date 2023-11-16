@@ -7,9 +7,9 @@ using VehicleOrganizer.Domain.Abstractions.Enums;
 using VehicleOrganizer.Domain.Abstractions.Extensions;
 using VehicleOrganizer.Domain.Abstractions.Views;
 using VehicleOrganizer.Infrastructure.Abstractions.Validators;
+using VehicleOrganizer.Infrastructure.Abstractions.Validators.Criteria;
 using VehicleOrganizer.Infrastructure.Entities;
 using VehicleOrganizer.Infrastructure.Repositories.Interfaces;
-using VehicleOrganizer.Infrastructure.Validators.Criteria;
 
 namespace VehicleOrganizer.DesktopApp.Forms
 {
@@ -41,6 +41,7 @@ namespace VehicleOrganizer.DesktopApp.Forms
         {
             _mainForm = mainForm;
             _isEditMode = isEditMode;
+            Text = (isEditMode ? "Edycja" : "Dodawanie") + " pojazdu";
             buttonAddOrUpdate.Text = isEditMode ? "Zaktualizuj dane" : "Dodaj pojazd";
             FillUpControls(isEditMode ? vehicle : null);
             textBoxMileage.Enabled = !isEditMode;
@@ -67,6 +68,7 @@ namespace VehicleOrganizer.DesktopApp.Forms
         {
             return new Vehicle
             {
+                User = User.Default,
                 Name = textBoxName.Text,
                 VehicleType = (VehicleType)comboBoxType.SelectedIndex,
                 OilType = textBoxOilType.Text,

@@ -1,4 +1,5 @@
 ﻿using BachorzLibrary.Common.Extensions;
+using VehicleOrganizer.Infrastructure.Abstractions.Validators.Criteria;
 
 namespace VehicleOrganizer.Infrastructure.Abstractions.Validators
 {

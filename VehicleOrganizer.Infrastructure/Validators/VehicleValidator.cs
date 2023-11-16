@@ -1,8 +1,8 @@
 ﻿using BachorzLibrary.Common.Extensions;
 using VehicleOrganizer.Infrastructure.Abstractions.Validators;
+using VehicleOrganizer.Infrastructure.Abstractions.Validators.Criteria;
 using VehicleOrganizer.Infrastructure.Entities;
 using VehicleOrganizer.Infrastructure.Repositories.Interfaces;
-using VehicleOrganizer.Infrastructure.Validators.Criteria;
 
 namespace VehicleOrganizer.Infrastructure.Validators
 {
@@ -19,17 +19,17 @@ namespace VehicleOrganizer.Infrastructure.Validators
         {
             criteria ??= new VehicleValidationCriteria();
 
-            if (vehicle.Name.IsNullOrEmpty())
+            if (vehicle.Name.HasNotValue())
             {
                 yield return "Brak nazwy pojazdu";
             }
 
-            if (_vehicleRepository.UserHasVehicleWithName(criteria.User, vehicle.Name))
+            if (_vehicleRepository.UserHasVehicleWithName(vehicle.User, vehicle.Name))
             {
                 yield return "Posiadasz już pojazd o tej nazwie. Użyj innej nazwy";
             }
 
-            if (criteria.ShouldCheckOilType && vehicle.OilType.IsNullOrEmpty())
+            if (criteria.ShouldCheckOilType && vehicle.OilType.HasNotValue())
             {
                 yield return "Nie podano typu oleju";
             }

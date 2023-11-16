@@ -301,7 +301,7 @@
             Controls.Add(numericUpDownYearOfProduction);
             Controls.Add(textBoxName);
             Name = "AddOrEditVehicleForm";
-            Text = "Add or edit vehicle";
+            Text = "Dodawanie lub Edycja pojazdu";
             ((System.ComponentModel.ISupportInitialize)numericUpDownYearOfProduction).EndInit();
             ResumeLayout(false);
             PerformLayout();

@@ -10,12 +10,12 @@ using VehicleOrganizer.Core.Services.Interfaces;
 using VehicleOrganizer.Domain.Abstractions;
 using VehicleOrganizer.Infrastructure;
 using VehicleOrganizer.Infrastructure.Abstractions.Validators;
+using VehicleOrganizer.Infrastructure.Abstractions.Validators.Criteria;
 using VehicleOrganizer.Infrastructure.Entities;
 using VehicleOrganizer.Infrastructure.Repositories;
 using VehicleOrganizer.Infrastructure.Repositories.Interfaces;
 using VehicleOrganizer.Infrastructure.Services.Email;
 using VehicleOrganizer.Infrastructure.Validators;
-using VehicleOrganizer.Infrastructure.Validators.Criteria;
 
 namespace VehicleOrganizer.Core.Config
 {

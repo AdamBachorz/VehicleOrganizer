@@ -3,7 +3,6 @@ using VehicleOrganizer.DesktopApp.Forms;
 using VehicleOrganizer.Infrastructure.Repositories.Interfaces;
 using VehicleOrganizer.Infrastructure.Entities;
 using VehicleOrganizer.Core.Config;
-using BachorzLibrary.Common.Tools.Email;
 using VehicleOrganizer.Core.Services.Interfaces;
 using BachorzLibrary.Common.Extensions;
 
@@ -32,7 +31,7 @@ namespace VehicleOrganizer.DesktopApp
 
                 await backgroundActionInvokeService.InvokeAllAsync();
 
-                var vehiclesForUser = await vehicleRepository.GetVehiclesForUserAsync(User.Default, includeSold: false);
+                var vehiclesForUser = await vehicleRepository.GetVehiclesForUserAsync(User.Default, includeSold: true);
                 var userHasVehicle = vehiclesForUser.IsNotNullOrEmpty();
 
                 var mainForm = serviceProvider.GetRequiredService<MainForm>();
@@ -46,7 +45,9 @@ namespace VehicleOrganizer.DesktopApp
                 }
                 else
                 {
-                    
+                    var pickVehicleForm = serviceProvider.GetRequiredService<PickVehicleForm>();
+                    pickVehicleForm.Init(vehiclesForUser);
+                    pickVehicleForm.ShowDialog();
                 }
 
                 Application.Run(mainForm);
@@ -57,6 +58,7 @@ namespace VehicleOrganizer.DesktopApp
         {
             service.AddScoped<MainForm>();
             service.AddScoped<AddOrEditVehicleForm>();
+            service.AddScoped<PickVehicleForm>();
         }
     }
 }
