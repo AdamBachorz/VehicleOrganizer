@@ -3,6 +3,7 @@ using BachorzLibrary.Common.Extensions;
 using BachorzLibrary.Common.Utils;
 using VehicleOrganizer.DesktopApp.Extensions;
 using VehicleOrganizer.DesktopApp.Interfaces;
+using VehicleOrganizer.DesktopApp.Utils;
 using VehicleOrganizer.Domain.Abstractions.Enums;
 using VehicleOrganizer.Domain.Abstractions.Extensions;
 using VehicleOrganizer.Domain.Abstractions.Views;
@@ -70,7 +71,7 @@ namespace VehicleOrganizer.DesktopApp.Forms
             {
                 User = User.Default,
                 Name = textBoxName.Text,
-                VehicleType = (VehicleType)comboBoxType.SelectedIndex,
+                VehicleType = EnumUtils.ParseEnum<VehicleType>(comboBoxType.SelectedItem.ToString(), isEnumDescription: true),
                 OilType = textBoxOilType.Text,
                 PurchaseDate = dateTimePickerPurchaseDate.Value.Date,
                 RegistrationDate = dateTimePickerRegistrationDate.Value.Date,
