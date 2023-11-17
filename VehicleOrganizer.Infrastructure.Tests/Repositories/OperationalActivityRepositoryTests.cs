@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using VehicleOrganizer.Domain.Abstractions;
 using VehicleOrganizer.Infrastructure.Criteria;
 using VehicleOrganizer.Infrastructure.Entities;
 using VehicleOrganizer.Infrastructure.Repositories;
@@ -34,6 +33,9 @@ namespace VehicleOrganizer.Infrastructure.Tests.Repositories
             var vehicle4 = DummyVehicle(user);
             vehicle4.InsuranceTermination = referenceDate.AddDays(-10);
 
+            var vehicle5 = DummyVehicle(user);
+            vehicle5.MileageHistory = new List<MileageHistory> { new MileageHistory { Vehicle = vehicle5, Mileage = 10500 } };
+
             var operationalActivities = new List<OperationalActivity>
             {
                 DummyActivityDateBased(vehicle1, new DateTime(2023, 1, 6)),
@@ -45,6 +47,8 @@ namespace VehicleOrganizer.Infrastructure.Tests.Repositories
 
                 DummyActivityDateBased(vehicle3, new DateTime(2023, 12, 31)),
                 DummyActivityDateBased(vehicle4, new DateTime(2023, 12, 31)),
+
+                DummyActivityMileageBased(vehicle5, 10000, 1000),
             };
 
             await _db.OperationalActivities.AddRangeAsync(operationalActivities);
@@ -61,7 +65,7 @@ namespace VehicleOrganizer.Infrastructure.Tests.Repositories
             Assert.Multiple(() =>
             {
                 Assert.That(summaries, Is.Not.Null.Or.Empty);
-                Assert.That(summaries, Has.Count.EqualTo(2));
+                Assert.That(summaries, Has.Count.EqualTo(3));
 
                 Assert.That(summaries[0].VehicleName, Is.EqualTo(vehicle1.Name));
                 Assert.That(summaries[0].ActivitySummaries, Has.Count.EqualTo(1));
@@ -69,15 +73,56 @@ namespace VehicleOrganizer.Infrastructure.Tests.Repositories
                 Assert.That(summaries[1].VehicleName, Is.EqualTo(vehicle2.Name));
                 Assert.That(summaries[1].ActivitySummaries, Has.Count.EqualTo(1));
 
+                Assert.That(summaries[2].VehicleName, Is.EqualTo(vehicle5.Name));
+                Assert.That(summaries[2].ActivitySummaries, Has.Count.EqualTo(1));
+
                 if (shouldSetReminderDate)
                 {
                     foreach (var activity in operationalActivities.Where(oa => oa.ReminderDate.HasValue))
                     {
-                        Assert.That(activity.ReminderDate, Is.EqualTo(referenceDate)); 
+                        Assert.That(activity.ReminderDate, Is.EqualTo(referenceDate));
                     }
                 }
             });
         }
+
+        [Test]
+        public async Task ShouldNotReturnActivitySummariesDueToReminderDate_GetOpertationalActivitiesToRemindAsync()
+        {
+            var user = _fixture.Create<User>();
+            var referenceDate = new DateTime(2024, 5, 5);
+            var reminderDate = new DateTime(2024, 5, 1);
+
+            var vehicle = DummyVehicle(user);
+            vehicle.MileageHistory = new List<MileageHistory> { new MileageHistory { Vehicle = vehicle, Mileage = 10500 } };
+
+            var activityWithRemindDate = DummyActivityMileageBased(vehicle, 10000, 1000);
+            activityWithRemindDate.ReminderDate = reminderDate;
+
+            var operationalActivities = new List<OperationalActivity>
+            {
+                activityWithRemindDate
+            };
+
+            await _db.OperationalActivities.AddRangeAsync(operationalActivities);
+            await _db.SaveChangesAsync();
+
+            var criteria = new OperationalActivityCriteria
+            {
+                ReferenceDate = referenceDate,
+                ShouldSetReminderDate = true,
+            };
+
+            var summaries = await _sut.GetOpertationalActivitiesForUserToRemindAsync(user, criteria);
+            var activitiesFromDb = await _db.OperationalActivities.ToListAsync();
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(summaries, Is.Null.Or.Empty);
+                Assert.That(activitiesFromDb.First().ReminderDate, Is.EqualTo(reminderDate));
+            });
+        }
+        
 
         private Vehicle DummyVehicle(User user)
         {
@@ -98,6 +143,18 @@ namespace VehicleOrganizer.Infrastructure.Tests.Repositories
                 IsDateOperated = true,
                 LastOperationDate = lastOperationDate,
                 YearsStep = 1,
+            };
+        }
+
+        private OperationalActivity DummyActivityMileageBased(Vehicle vehicle, int mileageWhenPerformed, int mileageStep)
+        {
+            return new OperationalActivity
+            {
+                Name = _fixture.Create<string>(),
+                Vehicle = vehicle,
+                IsDateOperated = false,
+                MileageWhenPerformed = mileageWhenPerformed,
+                MileageStep = mileageStep,
             };
         }
     }

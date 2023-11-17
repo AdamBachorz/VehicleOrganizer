@@ -25,6 +25,8 @@ namespace VehicleOrganizer.Infrastructure.Tests.Services.Email
                 SenderHeader = Codes.AppName,
             };
 
+            _fixture.Customize<User>(x => x.With(x => x.Email, Codes.AdminEmail));
+
             _sut = new EmailService(new EmailSender(settings), _fixture.Create<HtmlHelper>(), 
                 new OperationalActivityRepository(_db), new VehicleRepository(_db));
         }
@@ -34,7 +36,6 @@ namespace VehicleOrganizer.Infrastructure.Tests.Services.Email
         public async Task ShouldSendReminderEmail_RemindUserAboutActivitiesAsync()
         {
             var user = _fixture.Create<User>();
-            user.Email = Codes.AdminEmail;
             var referenceDate = new DateTime(2024, 1, 1);
             var vehicle1 = DummyVehicle(user);
             var vehicle2 = DummyVehicle(user);
@@ -44,6 +45,8 @@ namespace VehicleOrganizer.Infrastructure.Tests.Services.Email
 
             var vehicle4 = DummyVehicle(user);
             vehicle4.InsuranceTermination = referenceDate.AddDays(-10);
+
+            var vehicle5 = DummyVehicle(user);
 
             //TODO Extend with other options like mileage and add Insurance reference
             var operationalActivities = new List<OperationalActivity>
@@ -57,6 +60,8 @@ namespace VehicleOrganizer.Infrastructure.Tests.Services.Email
 
                 DummyActivityDateBased(vehicle3, new DateTime(2023, 12, 31)),
                 DummyActivityDateBased(vehicle4, new DateTime(2023, 12, 31)),
+
+                DummyActivityMileageBased(vehicle5, 10000, 1000),
             };
 
             await _db.OperationalActivities.AddRangeAsync(operationalActivities);
@@ -64,7 +69,8 @@ namespace VehicleOrganizer.Infrastructure.Tests.Services.Email
 
             var criteria = new OperationalActivityCriteria()
             {
-                ReferenceDate = referenceDate
+                ReferenceDate = referenceDate,
+                MileageToRemind = 50
             };
 
             await _sut.RemindUserAboutActivitiesAsync(user, criteria);
@@ -77,7 +83,6 @@ namespace VehicleOrganizer.Infrastructure.Tests.Services.Email
         public async Task ShouldSendReminderEmail_RemindUserAboutVehicleInsuranceOrTechnicalReviewAsync()
         {
             var user = _fixture.Create<User>();
-            user.Email = Codes.AdminEmail;
             var referenceDate = new DateTime(2024, 1, 1);
             var vehicle1 = DummyVehicle(user);
             var vehicle2 = DummyVehicle(user);
@@ -165,6 +170,18 @@ namespace VehicleOrganizer.Infrastructure.Tests.Services.Email
                 IsDateOperated = true,
                 LastOperationDate = lastOperationDate,
                 YearsStep = 1,
+            };
+        }
+        
+        private OperationalActivity DummyActivityMileageBased(Vehicle vehicle, int mileageWhenPerformed, int mileageStep)
+        {
+            return new OperationalActivity
+            {
+                Name = _fixture.Create<string>(),
+                Vehicle = vehicle,
+                IsDateOperated = false,
+                MileageWhenPerformed = mileageWhenPerformed,
+                MileageStep = mileageStep,
             };
         }
     }

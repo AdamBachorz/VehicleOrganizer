@@ -13,6 +13,7 @@
             public const int DaysToRemindAboutActivity = 30;
             public const int DaysToRemindAboutInsuranceTermination = 30;
             public const int DaysToRemindAboutTechnicalReview = 30;
+            public const int DaysAboveWhichAnotherReminderCanBeSent = 7;
             public const int MileageToRemindAboutActivity = 500;
         }
 

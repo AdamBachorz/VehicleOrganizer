@@ -6,6 +6,7 @@ namespace VehicleOrganizer.Infrastructure.Criteria
     {
         public int DaysToRemind { get; set; } = Codes.Defaults.DaysToRemindAboutActivity;
         public int MileageToRemind { get; set; } = Codes.Defaults.MileageToRemindAboutActivity;
+        public int DaysAboveWhichAnotherReminderCanBeSent { get; set; } = Codes.Defaults.DaysAboveWhichAnotherReminderCanBeSent;
         public DateTime ReferenceDate { get; set; } = DateTime.Now.Date;
         public bool ShouldSetReminderDate { get; set; } = false;
     }

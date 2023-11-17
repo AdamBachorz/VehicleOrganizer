@@ -1,4 +1,5 @@
-﻿using VehicleOrganizer.Infrastructure.Entities;
+﻿using VehicleOrganizer.Domain.Abstractions;
+using VehicleOrganizer.Infrastructure.Entities;
 
 namespace VehicleOrganizer.Infrastructure.Tests.Entities
 {
@@ -16,7 +17,7 @@ namespace VehicleOrganizer.Infrastructure.Tests.Entities
             var operationalActivity = new OperationalActivity
             {
                 Name = _fixture.Create<string>(),
-                Vehicle = DummyVehicle(),
+                Vehicle = _fixture.Create<Vehicle>(),
                 LastOperationDate = new DateTime(2023, 5, 5),
                 YearsStep = 2,
             };
@@ -32,7 +33,7 @@ namespace VehicleOrganizer.Infrastructure.Tests.Entities
             var operationalActivity = new OperationalActivity
             {
                 Name = _fixture.Create<string>(),
-                Vehicle = DummyVehicle(),
+                Vehicle = _fixture.Create<Vehicle>(),
                 MileageWhenPerformed = 100000,
                 MileageStep = 1000,
             };
@@ -41,12 +42,26 @@ namespace VehicleOrganizer.Infrastructure.Tests.Entities
 
             Assert.That(operationalActivity.NextOperationAtMilage, Is.EqualTo(expectedValue));
         }
+
+        [TestCase(false, false, ExpectedResult = Codes.Defaults.DaysAboveWhichAnotherReminderCanBeSent + 1)]
+        [TestCase(true, false, ExpectedResult = 3)]
+        [TestCase(true, true, ExpectedResult = -3)]
+        public int ShouldReturnDaysAfterLastReminder_DaysAfterLastReminder(bool reminderDateIsSet, bool shiftReferenceDateForward)
+        {
+            var referenceDate = new DateTime(2025, 5, 5);
+            const int DayShift = 3;
+
+            _fixture.Customize<OperationalActivity>(x => x.With(x => x.ReminderDate, 
+                reminderDateIsSet ? referenceDate.AddDays(shiftReferenceDateForward ? DayShift : -DayShift) : null));
+
+            return _fixture.Create<OperationalActivity>().DaysAfterLastReminder(referenceDate);
+        }
         
         [TestCase(false)]
         [TestCase(true)]
         public void ShouldReturnValueToNextActAndSummaryPromptDependingOnDateOperatedFlag_ToNextAct_SummaryPrompt(bool isDateOperated)
         {
-            var vehcicle = DummyVehicle();
+            var vehcicle = _fixture.Create<Vehicle>();
             vehcicle.MileageHistory = new List<MileageHistory>
             {
                 new MileageHistory 
@@ -80,14 +95,5 @@ namespace VehicleOrganizer.Infrastructure.Tests.Entities
             });
         }
 
-        private Vehicle DummyVehicle()
-        {
-            return new Vehicle
-            {
-                Name = _fixture.Create<string>(),
-                OilType = _fixture.Create<string>(),
-                User = _fixture.Create<User>(),
-            };
-        }
     }
 }

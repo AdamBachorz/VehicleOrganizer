@@ -1,5 +1,6 @@
 ﻿using BachorzLibrary.Common.DbModel;
 using System.ComponentModel.DataAnnotations.Schema;
+using VehicleOrganizer.Domain.Abstractions;
 
 namespace VehicleOrganizer.Infrastructure.Entities
 {
@@ -33,6 +34,10 @@ namespace VehicleOrganizer.Infrastructure.Entities
 
         public int ToNextAct(DateTime referenceDate) => 
             IsDateOperated ? (int)(NextOperationDate - referenceDate).TotalDays : NextOperationAtMilage - Vehicle.LatestMileage;
+
+        public int DaysAfterLastReminder(DateTime referenceDate) => ReminderDate.HasValue 
+            ? (int)(referenceDate - ReminderDate.Value).TotalDays 
+            : Codes.Defaults.DaysAboveWhichAnotherReminderCanBeSent + 1;
 
         public string SummaryPrompt(DateTime referenceDate, bool shortVersion = false) => 
             (!shortVersion ? $"{Name} - " : string.Empty) + $"Pozostało: {ToNextAct(referenceDate)} {(IsDateOperated ? "dni" : "kilometrów")}";

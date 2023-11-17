@@ -15,6 +15,7 @@ namespace VehicleOrganizer.Infrastructure.Tests
             {
                 ConfigureMembers = true
             });
+            _fixture.Behaviors.Add(new OmitOnRecursionBehavior());
             _customConfig = JsonConvert.DeserializeObject<EFCCustomConfig>(File.ReadAllText(Codes.Files.DevConfig));
         }
     }

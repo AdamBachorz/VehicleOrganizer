@@ -22,6 +22,10 @@ namespace VehicleOrganizer.Infrastructure.Repositories
                 .ToListAsync();
 
             operationalActivitiesForUser = operationalActivitiesForUser
+                .Where(oa => oa.DaysAfterLastReminder(criteria.ReferenceDate) > criteria.DaysAboveWhichAnotherReminderCanBeSent)
+                .ToList();
+
+            operationalActivitiesForUser = operationalActivitiesForUser
                 .Where(oa => oa.IsDateOperated ? oa.ToNextAct(criteria.ReferenceDate) <= criteria.DaysToRemind
                                                : oa.ToNextAct(criteria.ReferenceDate) <= criteria.MileageToRemind)
                 .ToList();
