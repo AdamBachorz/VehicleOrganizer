@@ -45,7 +45,7 @@ namespace VehicleOrganizer.Core.Config
 
             service.AddTransient<HtmlHelper>();
 
-            service.AddEmailSenderService(settings =>
+            service.AddEmailSender(settings =>
             {
                 settings.SenderHeader = Codes.AppName;
                 settings.SenderValues = config.ValuesBag["Sender"] as string;

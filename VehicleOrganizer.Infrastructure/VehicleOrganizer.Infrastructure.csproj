@@ -21,7 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="BachorzLibrary.Common" Version="0.0.8" />
+    <PackageReference Include="BachorzLibrary.Common" Version="0.0.9" />
     <PackageReference Include="BachorzLibrary.DAL" Version="0.0.4" />
     <PackageReference Include="BachorzLibrary.DAL.DotNetSix" Version="0.0.4" />
     <PackageReference Include="BachorzLibrary.Web" Version="0.0.2" />
