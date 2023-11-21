@@ -11,15 +11,15 @@ namespace VehicleOrganizer.Infrastructure.Services.Email
 {
     public class EmailService : IEmailService
     {
-        private readonly EmailSender _emailSenderService;
+        private readonly EmailSender _emailSender;
         private readonly HtmlHelper _htmlHelper;
         private readonly IOperationalActivityRepository _operationalActivityRepository;
         private readonly IVehicleRepository _vehicleRepository;
 
-        public EmailService(EmailSender emailSenderService, HtmlHelper htmlHelper, IOperationalActivityRepository operationalActivityRepository, 
+        public EmailService(EmailSender emailSender, HtmlHelper htmlHelper, IOperationalActivityRepository operationalActivityRepository, 
             IVehicleRepository vehicleRepository)
         {
-            _emailSenderService = emailSenderService;
+            _emailSender = emailSender;
             _htmlHelper = htmlHelper;
             _operationalActivityRepository = operationalActivityRepository;
             _vehicleRepository = vehicleRepository;
@@ -44,7 +44,7 @@ namespace VehicleOrganizer.Infrastructure.Services.Email
             _htmlHelper.Table(rows: errors.Count, columns: 1, cellWidth: 500, cellHeight: 100, border: 10, tableContent);
             _htmlHelper.NextLine();
 
-            await _emailSenderService.SendEmailAsync("[Error] Wystąpiły błędy", _htmlHelper.EndWithResult(), Codes.AdminEmail, "Adam");
+            await _emailSender.SendEmailAsync("[Error] Wystąpiły błędy", _htmlHelper.EndWithResult(), Codes.AdminEmail, "Adam");
         }
 
         public async Task RemindUserAboutActivitiesAsync(User user, OperationalActivityCriteria criteria = null)
@@ -55,6 +55,7 @@ namespace VehicleOrganizer.Infrastructure.Services.Email
             }
 
             criteria ??= new OperationalActivityCriteria();
+            criteria.ShouldSetReminderDate = true;
             var operationalActivitiySummaries = await _operationalActivityRepository.GetOpertationalActivitiesForUserToRemindAsync(user, criteria);
 
             if (operationalActivitiySummaries.IsNullOrEmpty())
@@ -74,7 +75,7 @@ namespace VehicleOrganizer.Infrastructure.Services.Email
 
             var emailBody = _htmlHelper.EndWithResult();
 
-            await _emailSenderService.SendEmailAsync("Przypomnienie o nadchodzących czynnościach", emailBody, user.Email, user.Name);
+            await _emailSender.SendEmailAsync("Przypomnienie o nadchodzących czynnościach", emailBody, user.Email, user.Name);
         }
 
         public async Task RemindUserAboutVehicleInsuranceOrTechnicalReviewAsync(User user, DateTime referenceDate)
@@ -119,7 +120,7 @@ namespace VehicleOrganizer.Infrastructure.Services.Email
 
             var emailBody = _htmlHelper.EndWithResult();
 
-            await _emailSenderService.SendEmailAsync("Przypomnienie o nadchodzących terminach (ubezpieczenie lub przegląd techniczny)", 
+            await _emailSender.SendEmailAsync("Przypomnienie o nadchodzących terminach (ubezpieczenie lub przegląd techniczny)", 
                 emailBody, user.Email, user.Name);
         }
     }
