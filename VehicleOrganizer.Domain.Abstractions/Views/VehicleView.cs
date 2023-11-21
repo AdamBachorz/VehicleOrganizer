@@ -2,6 +2,7 @@
 {
     public class VehicleView
     {
+        public int Reference { get; set; }
         public string Name { get; set; }
         public string YearOfProduction { get; set; }
         public string VehicleType { get; set; }

@@ -18,6 +18,38 @@ namespace VehicleOrganizer.Infrastructure.Tests.Repositories
             _sut = new OperationalActivityRepository(_db);
         }
 
+        [Test]
+        public async Task ShouldReturnActivitiesForVehicleAndUser_GetOpertationalActivitiesForVehicleAndUserAsync()
+        {
+            var user = _fixture.Create<User>();
+            var otherUser = _fixture.Create<User>();
+            var vehicle = DummyVehicle(user);
+            var otherVehicle = DummyVehicle(otherUser);
+
+            var operationalActivities = new List<OperationalActivity>
+            {
+                DummyActivityDateBased(vehicle, _fixture.Create<DateTime>()),
+                DummyActivityDateBased(vehicle, _fixture.Create<DateTime>()),
+                DummyActivityDateBased(vehicle, _fixture.Create<DateTime>()),
+
+                DummyActivityDateBased(otherVehicle, _fixture.Create<DateTime>()),
+                DummyActivityDateBased(otherVehicle, _fixture.Create<DateTime>()),
+            };
+
+            await _db.OperationalActivities.AddRangeAsync(operationalActivities);
+            await _db.SaveChangesAsync();
+
+            var result = await _sut.GetOperationalActivitiesForVehicleAndUserAsync(vehicle.Id, user);
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(result, Is.Not.Null.Or.Empty);
+                Assert.That(result, Has.Count.EqualTo(3));
+
+                Assert.That(result.All(oa => oa.Vehicle.Id == vehicle.Id && oa.Vehicle.User.Id.Equals(user.Id)), Is.True);
+            });
+        }
+
         [TestCase(false)]
         [TestCase(true)]
         public async Task ShouldReturnActivitySummariesBasedOnDataBaseInfo_GetOpertationalActivitiesToRemindAsync(bool shouldSetReminderDate) 
@@ -60,7 +92,7 @@ namespace VehicleOrganizer.Infrastructure.Tests.Repositories
                 ShouldSetReminderDate = shouldSetReminderDate,
             };
 
-            var summaries = await _sut.GetOpertationalActivitiesForUserToRemindAsync(user, criteria);
+            var summaries = await _sut.GetOperationalActivitiesForUserToRemindAsync(user, criteria);
 
             Assert.Multiple(() =>
             {
@@ -113,7 +145,7 @@ namespace VehicleOrganizer.Infrastructure.Tests.Repositories
                 ShouldSetReminderDate = true,
             };
 
-            var summaries = await _sut.GetOpertationalActivitiesForUserToRemindAsync(user, criteria);
+            var summaries = await _sut.GetOperationalActivitiesForUserToRemindAsync(user, criteria);
             var activitiesFromDb = await _db.OperationalActivities.ToListAsync();
 
             Assert.Multiple(() =>

@@ -39,13 +39,13 @@
             labelRegistrationDate = new Label();
             labelPruchaseDate = new Label();
             tableLayoutPanel1 = new TableLayoutPanel();
-            label5 = new Label();
             labelYearOfProduction = new Label();
+            label5 = new Label();
             tableLayoutPanel2 = new TableLayoutPanel();
+            labelInsuranceTermination = new Label();
+            labelInsuranceConclusion = new Label();
             label6 = new Label();
             label7 = new Label();
-            labelInsuranceConclusion = new Label();
-            labelInsuranceTermination = new Label();
             label8 = new Label();
             buttonUpdateInsurance = new Button();
             tableLayoutPanel1.SuspendLayout();
@@ -190,17 +190,6 @@
             tableLayoutPanel1.Size = new Size(325, 145);
             tableLayoutPanel1.TabIndex = 10;
             // 
-            // label5
-            // 
-            label5.AutoSize = true;
-            label5.Dock = DockStyle.Fill;
-            label5.Location = new Point(3, 0);
-            label5.Name = "label5";
-            label5.Size = new Size(156, 29);
-            label5.TabIndex = 10;
-            label5.Text = "Rocznik";
-            label5.TextAlign = ContentAlignment.MiddleCenter;
-            // 
             // labelYearOfProduction
             // 
             labelYearOfProduction.AutoSize = true;
@@ -212,6 +201,17 @@
             labelYearOfProduction.TabIndex = 11;
             labelYearOfProduction.Text = "9999";
             labelYearOfProduction.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // label5
+            // 
+            label5.AutoSize = true;
+            label5.Dock = DockStyle.Fill;
+            label5.Location = new Point(3, 0);
+            label5.Name = "label5";
+            label5.Size = new Size(156, 29);
+            label5.TabIndex = 10;
+            label5.Text = "Rocznik";
+            label5.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // tableLayoutPanel2
             // 
@@ -229,6 +229,30 @@
             tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
             tableLayoutPanel2.Size = new Size(201, 58);
             tableLayoutPanel2.TabIndex = 11;
+            // 
+            // labelInsuranceTermination
+            // 
+            labelInsuranceTermination.AutoSize = true;
+            labelInsuranceTermination.Dock = DockStyle.Fill;
+            labelInsuranceTermination.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            labelInsuranceTermination.Location = new Point(103, 29);
+            labelInsuranceTermination.Name = "labelInsuranceTermination";
+            labelInsuranceTermination.Size = new Size(95, 29);
+            labelInsuranceTermination.TabIndex = 13;
+            labelInsuranceTermination.Text = "Wygaśnięcie";
+            labelInsuranceTermination.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // labelInsuranceConclusion
+            // 
+            labelInsuranceConclusion.AutoSize = true;
+            labelInsuranceConclusion.Dock = DockStyle.Fill;
+            labelInsuranceConclusion.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            labelInsuranceConclusion.Location = new Point(103, 0);
+            labelInsuranceConclusion.Name = "labelInsuranceConclusion";
+            labelInsuranceConclusion.Size = new Size(95, 29);
+            labelInsuranceConclusion.TabIndex = 12;
+            labelInsuranceConclusion.Text = "Utworzenie";
+            labelInsuranceConclusion.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // label6
             // 
@@ -251,30 +275,6 @@
             label7.TabIndex = 1;
             label7.Text = "Wygaśnięcie";
             label7.TextAlign = ContentAlignment.MiddleCenter;
-            // 
-            // labelInsuranceConclusion
-            // 
-            labelInsuranceConclusion.AutoSize = true;
-            labelInsuranceConclusion.Dock = DockStyle.Fill;
-            labelInsuranceConclusion.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            labelInsuranceConclusion.Location = new Point(103, 0);
-            labelInsuranceConclusion.Name = "labelInsuranceConclusion";
-            labelInsuranceConclusion.Size = new Size(95, 29);
-            labelInsuranceConclusion.TabIndex = 12;
-            labelInsuranceConclusion.Text = "Utworzenie";
-            labelInsuranceConclusion.TextAlign = ContentAlignment.MiddleCenter;
-            // 
-            // labelInsuranceTermination
-            // 
-            labelInsuranceTermination.AutoSize = true;
-            labelInsuranceTermination.Dock = DockStyle.Fill;
-            labelInsuranceTermination.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            labelInsuranceTermination.Location = new Point(103, 29);
-            labelInsuranceTermination.Name = "labelInsuranceTermination";
-            labelInsuranceTermination.Size = new Size(95, 29);
-            labelInsuranceTermination.TabIndex = 13;
-            labelInsuranceTermination.Text = "Wygaśnięcie";
-            labelInsuranceTermination.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // label8
             // 

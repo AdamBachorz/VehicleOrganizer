@@ -2,18 +2,18 @@
 
 namespace VehicleOrganizer.Infrastructure.Services.Email
 {
-    public class OpertationalActivitySummary
+    public class OperationalActivitySummary
     {
         public string VehicleName { get; set; }
         public IList<string> ActivitySummaries { get; set; } = new List<string>();
 
-        private OpertationalActivitySummary(string vehicleName, IList<string> activitySummaries)
+        private OperationalActivitySummary(string vehicleName, IList<string> activitySummaries)
         {
             VehicleName = vehicleName;
             ActivitySummaries = activitySummaries;
         }
 
-        public static IList<OpertationalActivitySummary> BuildList(IList<OperationalActivity>? operationalActivities, DateTime referenceDate)
+        public static IList<OperationalActivitySummary> BuildList(IList<OperationalActivity>? operationalActivities, DateTime referenceDate)
         {
             if (operationalActivities is null)
             {
@@ -22,14 +22,14 @@ namespace VehicleOrganizer.Infrastructure.Services.Email
 
             var vehicles = operationalActivities.Select(oa => oa.Vehicle).Distinct();
 
-            var summaries = new List<OpertationalActivitySummary>();
+            var summaries = new List<OperationalActivitySummary>();
             foreach (var vehicle in vehicles)
             {
                 var activitiesForSummaryPropmpts = operationalActivities.Where(oa => oa.Vehicle.Id == vehicle.Id)
                     .Select(a => a.SummaryPrompt(referenceDate))
                     .ToList();
 
-                var summary = new OpertationalActivitySummary(vehicle.Name, activitiesForSummaryPropmpts);                
+                var summary = new OperationalActivitySummary(vehicle.Name, activitiesForSummaryPropmpts);                
                 summaries.Add(summary);               
             }
 

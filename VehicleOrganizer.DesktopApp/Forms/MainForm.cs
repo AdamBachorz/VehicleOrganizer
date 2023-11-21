@@ -15,15 +15,19 @@ namespace VehicleOrganizer.DesktopApp.Forms
         private readonly IBackgroundActionInvokeService _backgroundActionInvokeService;
 
         private readonly AddOrEditVehicleForm _addOrEditVehicleForm;
+        private readonly OperationActivityPanel _operationActivityPanel;
 
-        public MainForm(IMapper mapper, IVehicleRepository vehicleRepository, IBackgroundActionInvokeService backgroundActionInvokeService, 
-            AddOrEditVehicleForm addOrEditVehicleForm)
+        private VehiclePanel _vehiclePanel;
+
+        public MainForm(IMapper mapper, IVehicleRepository vehicleRepository, IBackgroundActionInvokeService backgroundActionInvokeService,
+            AddOrEditVehicleForm addOrEditVehicleForm, OperationActivityPanel operationActivityPanel)
         {
             InitializeComponent();
             _mapper = mapper;
             _vehicleRepository = vehicleRepository;
             _backgroundActionInvokeService = backgroundActionInvokeService;
             _addOrEditVehicleForm = addOrEditVehicleForm;
+            _operationActivityPanel = operationActivityPanel;
 
             toolStripMenuAdmin.Visible = toolStripMenuAdmin.Enabled = User.Default.IsWorthy;
         }
@@ -32,7 +36,8 @@ namespace VehicleOrganizer.DesktopApp.Forms
         {
             if (vehicleView is not null)
             {
-                PlacePanel(new VehiclePanel(vehicleView)); 
+                _vehiclePanel = new VehiclePanel(this, vehicleView);
+                PlacePanel(_vehiclePanel);
             }
         }
 
@@ -53,7 +58,7 @@ namespace VehicleOrganizer.DesktopApp.Forms
         {
             await _backgroundActionInvokeService.RunRemindersAsync();
             var errors = _backgroundActionInvokeService.CurrentErrors();
-            MessageBox.Show(errors.IsNotNullOrEmpty() ? errors.Select(x => x).Join(Environment.NewLine) : "Wysłano powiadomienia");       
+            MessageBox.Show(errors.IsNotNullOrEmpty() ? errors.Select(x => x).Join(Environment.NewLine) : "Wysłano powiadomienia");
         }
 
         private void PlacePanel(Control baseControl, Control control)
@@ -62,5 +67,13 @@ namespace VehicleOrganizer.DesktopApp.Forms
             baseControl.Controls.Add(control);
         }
 
+        private async void toolStripMenuItemOpenActivities_Click(object sender, EventArgs e)
+        {
+            if (_vehiclePanel is not null)
+            {
+                await _operationActivityPanel.Init(this, _vehiclePanel);
+                PlacePanel(_operationActivityPanel);
+            }
+        }
     }
 }

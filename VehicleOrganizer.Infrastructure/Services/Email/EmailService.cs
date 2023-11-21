@@ -56,7 +56,7 @@ namespace VehicleOrganizer.Infrastructure.Services.Email
 
             criteria ??= new OperationalActivityCriteria();
             criteria.ShouldSetReminderDate = true;
-            var operationalActivitiySummaries = await _operationalActivityRepository.GetOpertationalActivitiesForUserToRemindAsync(user, criteria);
+            var operationalActivitiySummaries = await _operationalActivityRepository.GetOperationalActivitiesForUserToRemindAsync(user, criteria);
 
             if (operationalActivitiySummaries.IsNullOrEmpty())
             {

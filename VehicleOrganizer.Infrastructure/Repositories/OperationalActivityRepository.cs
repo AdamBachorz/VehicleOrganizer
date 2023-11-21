@@ -14,7 +14,12 @@ namespace VehicleOrganizer.Infrastructure.Repositories
         {
         }
 
-        public async Task<IList<OpertationalActivitySummary>> GetOpertationalActivitiesForUserToRemindAsync(User user, OperationalActivityCriteria criteria)
+        public async Task<IList<OperationalActivity>> GetOperationalActivitiesForVehicleAndUserAsync(int vehicleId, User user)
+        {
+            return await _db.OperationalActivities.Where(oa => oa.Vehicle.Id == vehicleId && oa.Vehicle.User.Id.Equals(user.Id)).ToListAsync();
+        }
+
+        public async Task<IList<OperationalActivitySummary>> GetOperationalActivitiesForUserToRemindAsync(User user, OperationalActivityCriteria criteria)
         {
             var operationalActivitiesForUser = await _db.OperationalActivities
                 .Include(oa => oa.Vehicle)
@@ -42,7 +47,7 @@ namespace VehicleOrganizer.Infrastructure.Repositories
                 await _db.SaveChangesAsync();
             }
 
-            return OpertationalActivitySummary.BuildList(operationalActivitiesForUser, criteria.ReferenceDate);
+            return OperationalActivitySummary.BuildList(operationalActivitiesForUser, criteria.ReferenceDate);
         }
     }
 }

@@ -5,6 +5,7 @@ using VehicleOrganizer.Infrastructure.Entities;
 using VehicleOrganizer.Core.Config;
 using VehicleOrganizer.Core.Services.Interfaces;
 using BachorzLibrary.Common.Extensions;
+using VehicleOrganizer.DesktopApp.Panels;
 
 namespace VehicleOrganizer.DesktopApp
 {
@@ -22,7 +23,7 @@ namespace VehicleOrganizer.DesktopApp
             var service = new ServiceCollection();
 
             DependencyInjection.RegisterModules(service);
-            RegisterForms(service);
+            RegisterFormsAndPanels(service);
 
             using (ServiceProvider serviceProvider = service.BuildServiceProvider())
             {
@@ -54,11 +55,13 @@ namespace VehicleOrganizer.DesktopApp
             }
         }
 
-        private static void RegisterForms(IServiceCollection service)
+        private static void RegisterFormsAndPanels(IServiceCollection service)
         {
             service.AddScoped<MainForm>();
             service.AddScoped<AddOrEditVehicleForm>();
             service.AddScoped<PickVehicleForm>();
+
+            service.AddScoped<OperationActivityPanel>();
         }
     }
 }

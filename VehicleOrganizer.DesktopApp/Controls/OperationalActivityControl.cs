@@ -1,6 +1,7 @@
 ﻿using BachorzLibrary.Common.Extensions;
 using BachorzLibrary.Common.Utils;
 using VehicleOrganizer.DesktopApp.Interfaces;
+using VehicleOrganizer.DesktopApp.Panels;
 using VehicleOrganizer.Domain.Abstractions.Views;
 using VehicleOrganizer.Infrastructure.Repositories.Interfaces;
 
@@ -18,12 +19,13 @@ namespace VehicleOrganizer.DesktopApp.Controls
         {
             InitializeComponent();
             _operationalActivityRepository = operationalActivityRepository;
+
             _reference = view.Reference;
             labelName.Text = view.Name;
             labelLastOperationDateOrMileageWhenPerformed.Text = view.LastOperationDateOrMileageWhenPerformed;
             labelSummaryPrompt.Text = view.SummaryPrompt;
         }
-    
+
         private void buttonEdit_Click(object sender, EventArgs e)
         {
 
@@ -31,7 +33,7 @@ namespace VehicleOrganizer.DesktopApp.Controls
 
         private void buttonDelete_Click(object sender, EventArgs e)
         {
-            if (_reference == 0) 
+            if (_reference == 0 && !IsDebugMode)
             {
                 MessageBox.Show("Nie można usunąć wskazanej aktywności ponieważ nie została ona poprawnie załadowana wcześniej");
                 return;
@@ -43,6 +45,8 @@ namespace VehicleOrganizer.DesktopApp.Controls
                 {
                     _operationalActivityRepository.Delete(_reference);
                 }
+
+                Dispose();
             }
             catch (Exception ex)
             {

@@ -34,6 +34,8 @@
             toolStripMenuOptions = new ToolStripMenuItem();
             toolStripMenuItemAddNewVehicle = new ToolStripMenuItem();
             toolStripMenuItemSelectVehicle = new ToolStripMenuItem();
+            pojazdToolStripMenuItem = new ToolStripMenuItem();
+            toolStripMenuItemOpenActivities = new ToolStripMenuItem();
             toolStripMenuAdmin = new ToolStripMenuItem();
             toolStripMenuItemRunReminders = new ToolStripMenuItem();
             tableLayoutPanel1.SuspendLayout();
@@ -52,7 +54,7 @@
             tableLayoutPanel1.RowCount = 2;
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 5.33333349F));
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 94.6666641F));
-            tableLayoutPanel1.Size = new Size(800, 450);
+            tableLayoutPanel1.Size = new Size(1000, 450);
             tableLayoutPanel1.TabIndex = 0;
             // 
             // mainPanel
@@ -66,10 +68,10 @@
             // menuStrip
             // 
             menuStrip.BackColor = SystemColors.ControlLight;
-            menuStrip.Items.AddRange(new ToolStripItem[] { toolStripMenuOptions, toolStripMenuAdmin });
+            menuStrip.Items.AddRange(new ToolStripItem[] { toolStripMenuOptions, pojazdToolStripMenuItem, toolStripMenuAdmin });
             menuStrip.Location = new Point(0, 0);
             menuStrip.Name = "menuStrip";
-            menuStrip.Size = new Size(800, 24);
+            menuStrip.Size = new Size(1000, 24);
             menuStrip.TabIndex = 1;
             menuStrip.Text = "menuStrip1";
             // 
@@ -94,6 +96,20 @@
             toolStripMenuItemSelectVehicle.Text = "Wybierz pojazd";
             toolStripMenuItemSelectVehicle.Click += toolStripMenuItemSelectVehicle_Click;
             // 
+            // pojazdToolStripMenuItem
+            // 
+            pojazdToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { toolStripMenuItemOpenActivities });
+            pojazdToolStripMenuItem.Name = "pojazdToolStripMenuItem";
+            pojazdToolStripMenuItem.Size = new Size(54, 20);
+            pojazdToolStripMenuItem.Text = "Pojazd";
+            // 
+            // toolStripMenuItemOpenActivities
+            // 
+            toolStripMenuItemOpenActivities.Name = "toolStripMenuItemOpenActivities";
+            toolStripMenuItemOpenActivities.Size = new Size(306, 22);
+            toolStripMenuItemOpenActivities.Text = "Zobacz aktualne czynności dla tego pojazdu";
+            toolStripMenuItemOpenActivities.Click += toolStripMenuItemOpenActivities_Click;
+            // 
             // toolStripMenuAdmin
             // 
             toolStripMenuAdmin.DropDownItems.AddRange(new ToolStripItem[] { toolStripMenuItemRunReminders });
@@ -113,7 +129,7 @@
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             AutoSize = true;
-            ClientSize = new Size(800, 450);
+            ClientSize = new Size(1000, 450);
             Controls.Add(tableLayoutPanel1);
             FormBorderStyle = FormBorderStyle.Fixed3D;
             MainMenuStrip = menuStrip;
@@ -138,5 +154,7 @@
         private ToolStripMenuItem toolStripMenuItemSelectVehicle;
         private ToolStripMenuItem toolStripMenuAdmin;
         private ToolStripMenuItem toolStripMenuItemRunReminders;
+        private ToolStripMenuItem pojazdToolStripMenuItem;
+        private ToolStripMenuItem toolStripMenuItemOpenActivities;
     }
 }
