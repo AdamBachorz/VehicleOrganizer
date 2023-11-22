@@ -19,6 +19,35 @@ namespace VehicleOrganizer.Infrastructure.Tests.Repositories
         }
 
         [Test]
+        public async Task ShouldAddOperationalActivity_AddOperationalActivityForVehicleAsync()
+        {
+            _fixture.Customize<OperationalActivity>(x => x.With(x => x.Vehicle, () => null));
+
+            var user = _fixture.Create<User>();
+            var vehicle = DummyVehicle(user);
+            var activity = _fixture.Create<OperationalActivity>();
+
+            await _db.Vehicles.AddAsync(vehicle);
+            await _db.SaveChangesAsync();
+
+            var result = await _sut.AddOperationalActivityForVehicleAsync(vehicle.Id, activity);
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(result, Is.Not.Null.Or.Empty);
+                Assert.That(result.Id, Is.GreaterThan(0)); 
+                Assert.That(result.Vehicle.Id, Is.EqualTo(vehicle.Id)); 
+            });
+        }
+
+        [Test]
+        public void ShouldThrowArgumentNullExceptionWhenAddingOperationalActivityForNonExtistingVehicle_AddOperationalActivityForVehicleAsync()
+        {
+            var nonExistingVehicle = _fixture.Create<Vehicle>();
+            Assert.That(async () => await _sut.AddOperationalActivityForVehicleAsync(nonExistingVehicle.Id, _fixture.Create<OperationalActivity>()), Throws.ArgumentNullException);
+        }
+
+        [Test]
         public async Task ShouldReturnActivitiesForVehicleAndUser_GetOpertationalActivitiesForVehicleAndUserAsync()
         {
             var user = _fixture.Create<User>();

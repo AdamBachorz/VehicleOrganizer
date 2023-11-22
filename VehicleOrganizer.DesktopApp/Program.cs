@@ -59,6 +59,7 @@ namespace VehicleOrganizer.DesktopApp
         {
             service.AddScoped<MainForm>();
             service.AddScoped<AddOrEditVehicleForm>();
+            service.AddScoped<AddOrEditOperationalActivityForm>();
             service.AddScoped<PickVehicleForm>();
 
             service.AddScoped<OperationActivityPanel>();

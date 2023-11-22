@@ -14,6 +14,22 @@ namespace VehicleOrganizer.Infrastructure.Repositories
         {
         }
 
+        public async Task<OperationalActivity> AddOperationalActivityForVehicleAsync(int vehicleId, OperationalActivity operationalActivity)
+        {
+            var vehicle = await _db.Vehicles.FindAsync(vehicleId);
+
+            if (vehicle is null)
+            {
+                throw new ArgumentNullException(nameof(vehicleId), "Vehicle with given ID does not exists");
+            }
+
+            operationalActivity.Vehicle = vehicle;
+            await _db.OperationalActivities.AddAsync(operationalActivity);
+            await _db.SaveChangesAsync();
+
+            return operationalActivity;
+        }
+
         public async Task<IList<OperationalActivity>> GetOperationalActivitiesForVehicleAndUserAsync(int vehicleId, User user)
         {
             return await _db.OperationalActivities.Where(oa => oa.Vehicle.Id == vehicleId && oa.Vehicle.User.Id.Equals(user.Id)).ToListAsync();

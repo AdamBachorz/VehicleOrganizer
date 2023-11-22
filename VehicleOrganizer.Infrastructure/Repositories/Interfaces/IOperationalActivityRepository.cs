@@ -7,6 +7,7 @@ namespace VehicleOrganizer.Infrastructure.Repositories.Interfaces
 {
     public interface IOperationalActivityRepository : IBaseDao<OperationalActivity, int>
     {
+        Task<OperationalActivity> AddOperationalActivityForVehicleAsync(int vehicleId, OperationalActivity operationalActivity);
         Task<IList<OperationalActivity>> GetOperationalActivitiesForVehicleAndUserAsync(int vehicleId, User user);
         Task<IList<OperationalActivitySummary>> GetOperationalActivitiesForUserToRemindAsync(User user, OperationalActivityCriteria criteria);
     }
