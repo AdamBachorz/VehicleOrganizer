@@ -44,6 +44,11 @@ namespace VehicleOrganizer.Infrastructure.Validators
                 yield return "W polu przebiegu pojazdu nie podano liczby";
             }
 
+            if (criteria.ShouldCheckMileage && criteria.MileageIsNegative)
+            {
+                yield return "Przebieg pojazdu nie może być ujemny";
+            }
+
             var yearOfProduction = vehicle.YearOfProduction;
             var purchaseDate = vehicle.PurchaseDate.Date;
             var registrationDate = vehicle.RegistrationDate.Date;

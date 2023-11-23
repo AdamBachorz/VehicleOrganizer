@@ -3,6 +3,7 @@ using BachorzLibrary.Common.Extensions;
 using BachorzLibrary.Common.Utils;
 using VehicleOrganizer.DesktopApp.Extensions;
 using VehicleOrganizer.DesktopApp.Interfaces;
+using VehicleOrganizer.DesktopApp.Panels;
 using VehicleOrganizer.DesktopApp.Utils;
 using VehicleOrganizer.Domain.Abstractions.Enums;
 using VehicleOrganizer.Domain.Abstractions.Extensions;
@@ -21,6 +22,7 @@ namespace VehicleOrganizer.DesktopApp.Forms
         private readonly IMapper _mapper;
 
         private MainForm _mainForm;
+        private Vehicle _vehicle;
 
         private bool _isEditMode;
 
@@ -38,14 +40,15 @@ namespace VehicleOrganizer.DesktopApp.Forms
             numericUpDownYearOfProduction.Maximum = numericUpDownYearOfProduction.Value = DateTime.Now.Year;
         }
 
-        public void Init(MainForm mainForm, Vehicle vehicle, bool isEditMode)
+        public void Init(MainForm mainForm, Vehicle vehicle)
         {
             _mainForm = mainForm;
-            _isEditMode = isEditMode;
-            Text = (isEditMode ? "Edycja" : "Dodawanie") + " pojazdu";
-            buttonAddOrUpdate.Text = isEditMode ? "Zaktualizuj dane" : "Dodaj pojazd";
-            FillUpControls(isEditMode ? vehicle : null);
-            textBoxMileage.Enabled = !isEditMode;
+            _vehicle = vehicle;
+            _isEditMode = vehicle is not null;
+            Text = (_isEditMode ? "Edycja" : "Dodawanie") + " pojazdu";
+            buttonAddOrUpdate.Text = _isEditMode ? "Zaktualizuj dane" : "Dodaj pojazd";
+            FillUpControls(_isEditMode ? vehicle : null);
+            textBoxMileage.Enabled = !_isEditMode;
         }
 
         public void FillUpControls(Vehicle vehicle)
@@ -104,6 +107,7 @@ namespace VehicleOrganizer.DesktopApp.Forms
                 VehicleTypeIsNotSelected = comboBoxType.SelectedIndex == -1,
                 ShouldCheckMileage = vehicle.VehicleType.IsOilBased(),
                 MileageIsNotDigit = textBoxMileage.Text.IsNotDigit(),
+                MileageIsNegative = textBoxMileage.Text.IsDigit() ? textBoxMileage.Text.ToInt() < 0 : false,
             };
             var validationResult = _validator.ValidateToBulletPointString(vehicle, criteria);
 
@@ -118,9 +122,9 @@ namespace VehicleOrganizer.DesktopApp.Forms
             {
                 if (!IsDebugMode)
                 {
-                    _vehicleRepository.Update(vehicle);
+                    _vehicleRepository.Update(_vehicle);
                 }
-                view = _mapper.Map<VehicleView>(vehicle);
+                view = _mapper.Map<VehicleView>(_vehicle);
             }
             else
             {
@@ -129,7 +133,7 @@ namespace VehicleOrganizer.DesktopApp.Forms
             }
 
             Close();
-            _mainForm.Init(view);
+            _mainForm.PlacePanel(new VehiclePanel(_mainForm, view));
         }
     }
 }

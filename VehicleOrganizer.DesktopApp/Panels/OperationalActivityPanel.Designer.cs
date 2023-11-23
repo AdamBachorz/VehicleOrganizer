@@ -1,6 +1,6 @@
 ﻿namespace VehicleOrganizer.DesktopApp.Panels
 {
-    partial class OperationActivityPanel
+    partial class OperationalActivityPanel
     {
         /// <summary> 
         /// Required designer variable.

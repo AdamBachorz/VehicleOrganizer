@@ -1,35 +1,53 @@
-﻿using BachorzLibrary.Common.Extensions;
+﻿using AutoMapper;
+using BachorzLibrary.Common.Extensions;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System.Windows.Forms;
 using VehicleOrganizer.DesktopApp.Interfaces;
 using VehicleOrganizer.DesktopApp.Panels;
+using VehicleOrganizer.Domain.Abstractions.Views;
+using VehicleOrganizer.Infrastructure.Abstractions.Validators;
+using VehicleOrganizer.Infrastructure.Abstractions.Validators.Criteria;
 using VehicleOrganizer.Infrastructure.Entities;
+using VehicleOrganizer.Infrastructure.Repositories;
 using VehicleOrganizer.Infrastructure.Repositories.Interfaces;
 
 namespace VehicleOrganizer.DesktopApp.Forms
 {
     public partial class AddOrEditOperationalActivityForm : Form, IModelable<OperationalActivity>, IDebugable
     {
+        private readonly IValidator<OperationalActivity, OperationalActivityValidationCriteria> _validator;
+        private readonly IMapper _mapper;
         private readonly IOperationalActivityRepository _operationalActivityRepository;
 
-        private OperationActivityPanel _operationActivityPanel;
+        private MainForm _mainForm;
+        private OperationalActivityPanel _operationalActivityPanel;
+
+        private OperationalActivity _operationActivity;
         private bool _isEditMode;
         private int _vehicleId;
 
         public bool IsDebugMode => checkBoxDebugMode.Checked;
 
-        public AddOrEditOperationalActivityForm(IOperationalActivityRepository operationalActivityRepository)
+        public AddOrEditOperationalActivityForm(IValidator<OperationalActivity, OperationalActivityValidationCriteria> validator,
+            IMapper mapper,
+            IOperationalActivityRepository operationalActivityRepository)
         {
             InitializeComponent();
+            _validator = validator;
+            _mapper = mapper;
             _operationalActivityRepository = operationalActivityRepository;
         }
 
-        public void Init(OperationActivityPanel operationActivityPanel, OperationalActivity operationalActivity, int vehicleId, bool isEditMode)
+        public void Init(MainForm mainForm, OperationalActivityPanel operationalActivityPanel, OperationalActivity operationalActivity, int vehicleId)
         {
-            _operationActivityPanel = operationActivityPanel;
-            _isEditMode = isEditMode;
+            _mainForm = mainForm;
+            _operationalActivityPanel = operationalActivityPanel;
+            _operationActivity = operationalActivity;
+            _isEditMode = operationalActivity is not null;
             _vehicleId = vehicleId;
 
-            Text = (isEditMode ? "Edycja" : "Dodawanie") + " czynności związanej z pojazdem";
-            FillUpControls(isEditMode ? operationalActivity : null);
+            Text = (_isEditMode ? "Edycja" : "Dodawanie") + " czynności związanej z pojazdem";
+            FillUpControls(_isEditMode ? operationalActivity : null);
         }
 
         public OperationalActivity ApplyModelDataFromControls()
@@ -38,18 +56,11 @@ namespace VehicleOrganizer.DesktopApp.Forms
             {
                 Name = textBoxName.Text,
                 IsDateOperated = radioButtonIsDateOperated.Checked,
+                LastOperationDate = dateTimePickerLastOperationDate.Value.Date,
+                YearsStep = (int)numericUpDownYearStep.Value,
+                MileageWhenPerformed = textBoxMileageWhenPerformed.Text.ToInt(),
+                MileageStep = textBoxMileageStep.Text.ToInt(),
             };
-
-            if (result.IsDateOperated)
-            {
-                result.LastOperationDate = dateTimePickerLastOperationDate.Value.Date;
-                result.YearsStep = (int)numericUpDownYearStep.Value;
-            }
-            else
-            {
-                result.MileageWhenPerformed = textBoxMileageWhenPerformed.Text.ToInt();
-                result.MileageStep = textBoxMileageStep.Text.ToInt();
-            }
 
             return result;
         }
@@ -71,14 +82,45 @@ namespace VehicleOrganizer.DesktopApp.Forms
             }
         }
 
-        private void buttonAddOrEditOperationalActivity_Click(object sender, EventArgs e)
+        private async void buttonAddOrEditOperationalActivity_Click(object sender, EventArgs e)
         {
             var operationalActivity = ApplyModelDataFromControls();
 
+            var criteria = new OperationalActivityValidationCriteria
+            {
+                MileageWhenPerformedIsNotDigit = textBoxMileageWhenPerformed.Text.IsNotDigit(),
+                MileageWhenPerformedIsNegative = textBoxMileageWhenPerformed.Text.IsDigit() ? textBoxMileageWhenPerformed.Text.ToInt() < 0 : false,
+                MileageStepIsNotDigit = textBoxMileageStep.Text.IsNotDigit(),
+                MileageStepIsNegative = textBoxMileageStep.Text.IsDigit() ? textBoxMileageStep.Text.ToInt() < 0 : false,
+            };
+            var validationResult = _validator.ValidateToBulletPointString(operationalActivity, criteria);
+
+            if (validationResult.HasValue())
+            {
+                MessageBox.Show($"Wykryto następujące błędy:{Environment.NewLine}{Environment.NewLine}{validationResult}");
+                return;
+            }
+
+            OperationalActivityView view = null;
             if (_isEditMode)
             {
-
+                if (!IsDebugMode && _operationActivity is not null)
+                {
+                    _operationalActivityRepository.Update(_operationActivity);
+                }
+                view = _mapper.Map<OperationalActivityView>(_operationActivity);
+                _operationalActivityPanel.UpdateActivityOnTable(_operationActivity.Name, view);
             }
+            else
+            {
+                var justAddedOperationalActivity = !IsDebugMode 
+                    ? await _operationalActivityRepository.AddOperationalActivityForVehicleAsync(_vehicleId, operationalActivity) 
+                    : operationalActivity;
+                view = _mapper.Map<OperationalActivityView>(justAddedOperationalActivity);
+                _operationalActivityPanel.AddActivityToTable(view);
+            }
+
+            Close();
         }
 
         private void radioButtonIsDateOperated_CheckedChanged(object sender, EventArgs e)

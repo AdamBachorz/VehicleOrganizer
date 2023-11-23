@@ -40,7 +40,7 @@ namespace VehicleOrganizer.DesktopApp.Forms
 
         private void buttonAddNewVehicle_Click(object sender, EventArgs e)
         {
-            _addOrEditVehicleForm.Init(_mainForm, vehicle: null, isEditMode: false);
+            _addOrEditVehicleForm.Init(_mainForm, vehicle: null);
             _addOrEditVehicleForm.ShowDialog();
         }
 

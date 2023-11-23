@@ -15,19 +15,19 @@ namespace VehicleOrganizer.DesktopApp.Forms
         private readonly IBackgroundActionInvokeService _backgroundActionInvokeService;
 
         private readonly AddOrEditVehicleForm _addOrEditVehicleForm;
-        private readonly OperationActivityPanel _operationActivityPanel;
+        private readonly OperationalActivityPanel _operationalActivityPanel;
 
         private VehiclePanel _vehiclePanel;
 
         public MainForm(IMapper mapper, IVehicleRepository vehicleRepository, IBackgroundActionInvokeService backgroundActionInvokeService,
-            AddOrEditVehicleForm addOrEditVehicleForm, OperationActivityPanel operationActivityPanel)
+            AddOrEditVehicleForm addOrEditVehicleForm, OperationalActivityPanel operationActivityPanel)
         {
             InitializeComponent();
             _mapper = mapper;
             _vehicleRepository = vehicleRepository;
             _backgroundActionInvokeService = backgroundActionInvokeService;
             _addOrEditVehicleForm = addOrEditVehicleForm;
-            _operationActivityPanel = operationActivityPanel;
+            _operationalActivityPanel = operationActivityPanel;
 
             toolStripMenuAdmin.Visible = toolStripMenuAdmin.Enabled = User.Default.IsWorthy;
         }
@@ -45,7 +45,7 @@ namespace VehicleOrganizer.DesktopApp.Forms
 
         private void toolStripMenuItemAddNewVehicle_Click(object sender, EventArgs e)
         {
-            _addOrEditVehicleForm.Init(this, vehicle: null, isEditMode: false);
+            _addOrEditVehicleForm.Init(this, vehicle: null);
             _addOrEditVehicleForm.ShowDialog();
         }
 
@@ -71,8 +71,8 @@ namespace VehicleOrganizer.DesktopApp.Forms
         {
             if (_vehiclePanel is not null)
             {
-                await _operationActivityPanel.Init(this, _vehiclePanel);
-                PlacePanel(_operationActivityPanel);
+                await _operationalActivityPanel.Init(this, _vehiclePanel);
+                PlacePanel(_operationalActivityPanel);
             }
         }
     }

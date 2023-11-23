@@ -9,7 +9,7 @@ using VehicleOrganizer.Infrastructure.Repositories.Interfaces;
 
 namespace VehicleOrganizer.DesktopApp.Panels
 {
-    public partial class OperationActivityPanel : UserControl, IDebugable
+    public partial class OperationalActivityPanel : UserControl, IDebugable
     {
         private readonly IMapper _mapper;
         private readonly IOperationalActivityRepository _operationalActivityRepository;
@@ -19,7 +19,7 @@ namespace VehicleOrganizer.DesktopApp.Panels
 
         public bool IsDebugMode => checkBoxDebugMode.Checked;
 
-        public OperationActivityPanel(IMapper mapper, IOperationalActivityRepository operationalActivityRepository)
+        public OperationalActivityPanel(IMapper mapper, IOperationalActivityRepository operationalActivityRepository)
         {
             InitializeComponent();
             _mapper = mapper;
@@ -40,19 +40,39 @@ namespace VehicleOrganizer.DesktopApp.Panels
                     var oav = new OperationalActivityView
                     {
                         Name = "Some name " + i,
-                        LastOperationDateOrMileageWhenPerformed = i + " km",
+                        LastOperationDateOrMileageWhenPerformed = (i + 1) * 100000 + " km",
                         SummaryPrompt = "Summary prompt " + i,
                     };
                     
-                    flowLayoutPanelActivities.Controls.Add(new OperationalActivityControl(_operationalActivityRepository, oav));
+                    AddActivityToTable(oav);
                 }
             }
 
             foreach (var activity in await _operationalActivityRepository.GetOperationalActivitiesForVehicleAndUserAsync(_vehiclePanel.GetVehicleReference(), User.Default))
             {
-                var control = new OperationalActivityControl(_operationalActivityRepository, _mapper.Map<OperationalActivityView>(activity));
-                flowLayoutPanelActivities.Controls.Add(control);
+                AddActivityToTable(_mapper.Map<OperationalActivityView>(activity));
             }         
+        }
+
+        public void AddActivityToTable(OperationalActivityView view)
+        {
+            flowLayoutPanelActivities.Controls.Add(new OperationalActivityControl(_operationalActivityRepository, view));
+        }
+
+        public void UpdateActivityOnTable(string operationalActivityName, OperationalActivityView newView)
+        {
+            var control = (OperationalActivityControl)flowLayoutPanelActivities.Controls.Find(operationalActivityName, searchAllChildren: false).FirstOrDefault();
+            
+            if (control is not null)
+            {
+                flowLayoutPanelActivities.Controls.Remove(control);
+                AddActivityToTable(newView);
+            }
+            else
+            {
+                throw new ArgumentNullException(nameof(control), "Cannot locate control with key: " + operationalActivityName);
+            }
+
         }
 
         private void buttonAddActivity_Click(object sender, EventArgs e)
