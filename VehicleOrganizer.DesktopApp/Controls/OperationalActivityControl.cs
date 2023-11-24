@@ -1,8 +1,11 @@
-﻿using BachorzLibrary.Common.Extensions;
+﻿using AutoMapper;
+using BachorzLibrary.Common.Extensions;
 using BachorzLibrary.Common.Utils;
+using VehicleOrganizer.DesktopApp.Forms;
 using VehicleOrganizer.DesktopApp.Interfaces;
 using VehicleOrganizer.DesktopApp.Panels;
 using VehicleOrganizer.Domain.Abstractions.Views;
+using VehicleOrganizer.Infrastructure.Entities;
 using VehicleOrganizer.Infrastructure.Repositories.Interfaces;
 
 namespace VehicleOrganizer.DesktopApp.Controls
@@ -10,17 +13,25 @@ namespace VehicleOrganizer.DesktopApp.Controls
     public partial class OperationalActivityControl : UserControl, IDebugable
     {
         private readonly IOperationalActivityRepository _operationalActivityRepository;
+        
+        private readonly AddOrEditOperationalActivityForm _addOrEditOperationalActivityForm;
 
-        private int _reference;
+        private OperationalActivity _reference;
+        private OperationalActivityPanel _operationalActivityPanel;
 
         public bool IsDebugMode => EnvUtils.GetValueDependingOnEnvironment(true, false);
 
-        public OperationalActivityControl(IOperationalActivityRepository operationalActivityRepository, OperationalActivityView view)
+        public OperationalActivityControl(IOperationalActivityRepository operationalActivityRepository, IMapper mapper,
+            AddOrEditOperationalActivityForm addOrEditOperationalActivityForm,
+            OperationalActivity reference, OperationalActivityPanel operationalActivityPanel)
         {
             InitializeComponent();
             _operationalActivityRepository = operationalActivityRepository;
+            _addOrEditOperationalActivityForm = addOrEditOperationalActivityForm;
+            _operationalActivityPanel = operationalActivityPanel;
 
-            _reference = view.Reference;
+            var view = mapper.Map<OperationalActivityView>(reference);
+            _reference = reference;
             labelName.Text = view.Name;
             labelLastOperationDateOrMileageWhenPerformed.Text = view.LastOperationDateOrMileageWhenPerformed;
             labelSummaryPrompt.Text = view.SummaryPrompt;
@@ -28,12 +39,13 @@ namespace VehicleOrganizer.DesktopApp.Controls
 
         private void buttonEdit_Click(object sender, EventArgs e)
         {
-
+            _addOrEditOperationalActivityForm.Init(_operationalActivityPanel, this, _reference, _reference.Vehicle.Id);
+            _addOrEditOperationalActivityForm.ShowDialog();
         }
 
         private void buttonDelete_Click(object sender, EventArgs e)
         {
-            if (_reference == 0 && !IsDebugMode)
+            if (_reference.Id == 0 && !IsDebugMode)
             {
                 MessageBox.Show("Nie można usunąć wskazanej aktywności ponieważ nie została ona poprawnie załadowana wcześniej");
                 return;
@@ -43,7 +55,7 @@ namespace VehicleOrganizer.DesktopApp.Controls
             {
                 if (!IsDebugMode)
                 {
-                    _operationalActivityRepository.Delete(_reference);
+                    _operationalActivityRepository.Delete(_reference.Id);
                 }
 
                 Dispose();

@@ -11,6 +11,7 @@ using VehicleOrganizer.Domain.Abstractions;
 using VehicleOrganizer.Infrastructure;
 using VehicleOrganizer.Infrastructure.Abstractions.Validators;
 using VehicleOrganizer.Infrastructure.Abstractions.Validators.Criteria;
+using VehicleOrganizer.Infrastructure.Criteria;
 using VehicleOrganizer.Infrastructure.Entities;
 using VehicleOrganizer.Infrastructure.Repositories;
 using VehicleOrganizer.Infrastructure.Repositories.Interfaces;
@@ -42,6 +43,7 @@ namespace VehicleOrganizer.Core.Config
             service.AddTransient<IOperationalActivityRepository, OperationalActivityRepository>();
 
             service.AddTransient<IValidator<Vehicle, VehicleValidationCriteria>, VehicleValidator>();
+            service.AddTransient<IValidator<OperationalActivity, OperationalActivityValidationCriteria>, OperationalActivityValidator>();
 
             service.AddTransient<HtmlHelper>();
 

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using BachorzLibrary.Common.Utils;
+using System.Diagnostics;
 using VehicleOrganizer.DesktopApp.Controls;
 using VehicleOrganizer.DesktopApp.Forms;
 using VehicleOrganizer.DesktopApp.Interfaces;
@@ -14,18 +15,22 @@ namespace VehicleOrganizer.DesktopApp.Panels
         private readonly IMapper _mapper;
         private readonly IOperationalActivityRepository _operationalActivityRepository;
 
+        private readonly AddOrEditOperationalActivityForm _addOrEditOperationalActivityForm;
+
         private MainForm _mainForm;
         private VehiclePanel _vehiclePanel;
 
         public bool IsDebugMode => checkBoxDebugMode.Checked;
 
-        public OperationalActivityPanel(IMapper mapper, IOperationalActivityRepository operationalActivityRepository)
+        public OperationalActivityPanel(IMapper mapper, IOperationalActivityRepository operationalActivityRepository, 
+            AddOrEditOperationalActivityForm addOrEditOperationalActivityForm)
         {
             InitializeComponent();
             _mapper = mapper;
             _operationalActivityRepository = operationalActivityRepository;
 
             checkBoxDebugMode.Visible = checkBoxDebugMode.Enabled = checkBoxDebugMode.Checked = EnvUtils.GetValueDependingOnEnvironment(true, false);
+            _addOrEditOperationalActivityForm = addOrEditOperationalActivityForm;
         }
 
         public async Task Init(MainForm mainForm, VehiclePanel vehiclePanel)
@@ -33,51 +38,76 @@ namespace VehicleOrganizer.DesktopApp.Panels
             _mainForm = mainForm;
             _vehiclePanel = vehiclePanel;
 
+            flowLayoutPanelActivities.Controls.Clear();
             if (IsDebugMode)
             {
-                for (int i = 0; i < 5; i++)
+                OperationalActivity oa = null;
+
+                for (int i = 0; i < 6; i++)
                 {
-                    var oav = new OperationalActivityView
+                    Vehicle vehicle = new Vehicle
                     {
-                        Name = "Some name " + i,
-                        LastOperationDateOrMileageWhenPerformed = (i + 1) * 100000 + " km",
-                        SummaryPrompt = "Summary prompt " + i,
+                        Id = i + 1,
+                        MileageHistory = new List<MileageHistory> { new MileageHistory { Mileage = 550 } }
                     };
+
+                    if (i % 2 == 0)
+                    {
+                        oa = new OperationalActivity
+                        {
+                            Name = "Some name (D)" + i,
+                            IsDateOperated = true,
+                            LastOperationDate = DateTime.Now.Date,
+                            YearsStep = 1,
+                            Vehicle = vehicle,
+                        }; 
+                    }
+                    else
+                    {
+                        oa = new OperationalActivity
+                        {
+                            Name = "Some name (M)" + i,
+                            IsDateOperated = false,
+                            MileageWhenPerformed = i * 10000,
+                            MileageStep = i * 100,
+                            Vehicle = vehicle,
+                        };
+                    }
                     
-                    AddActivityToTable(oav);
+                    AddActivityToTable(oa);
                 }
             }
 
             foreach (var activity in await _operationalActivityRepository.GetOperationalActivitiesForVehicleAndUserAsync(_vehiclePanel.GetVehicleReference(), User.Default))
             {
-                AddActivityToTable(_mapper.Map<OperationalActivityView>(activity));
+                AddActivityToTable(activity);
             }         
         }
 
-        public void AddActivityToTable(OperationalActivityView view)
+        public void AddActivityToTable(OperationalActivity activity)
         {
-            flowLayoutPanelActivities.Controls.Add(new OperationalActivityControl(_operationalActivityRepository, view));
+            var control = new OperationalActivityControl(_operationalActivityRepository, _mapper, _addOrEditOperationalActivityForm, activity, this);
+            flowLayoutPanelActivities.Controls.Add(control);
         }
 
-        public void UpdateActivityOnTable(string operationalActivityName, OperationalActivityView newView)
+        public void UpdateActivityOnTable(OperationalActivityControl control, OperationalActivity activity)
         {
-            var control = (OperationalActivityControl)flowLayoutPanelActivities.Controls.Find(operationalActivityName, searchAllChildren: false).FirstOrDefault();
-            
             if (control is not null)
             {
                 flowLayoutPanelActivities.Controls.Remove(control);
-                AddActivityToTable(newView);
+                AddActivityToTable(activity);
             }
             else
             {
-                throw new ArgumentNullException(nameof(control), "Cannot locate control with key: " + operationalActivityName);
+                throw new ArgumentNullException(nameof(control), "Cannot locate control");
             }
 
         }
 
         private void buttonAddActivity_Click(object sender, EventArgs e)
         {
-
+            _addOrEditOperationalActivityForm.Init(this, operationalActivityControl: null, operationalActivity: null, _vehiclePanel.GetVehicleReference());
+            _addOrEditOperationalActivityForm.ShowDialog();
         }
 
         private void buttonGoBack_Click(object sender, EventArgs e)

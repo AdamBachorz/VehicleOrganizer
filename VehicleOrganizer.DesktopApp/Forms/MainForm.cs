@@ -17,7 +17,7 @@ namespace VehicleOrganizer.DesktopApp.Forms
         private readonly AddOrEditVehicleForm _addOrEditVehicleForm;
         private readonly OperationalActivityPanel _operationalActivityPanel;
 
-        private VehiclePanel _vehiclePanel;
+        private Control _currentPanel;
 
         public MainForm(IMapper mapper, IVehicleRepository vehicleRepository, IBackgroundActionInvokeService backgroundActionInvokeService,
             AddOrEditVehicleForm addOrEditVehicleForm, OperationalActivityPanel operationActivityPanel)
@@ -29,16 +29,7 @@ namespace VehicleOrganizer.DesktopApp.Forms
             _addOrEditVehicleForm = addOrEditVehicleForm;
             _operationalActivityPanel = operationActivityPanel;
 
-            toolStripMenuAdmin.Visible = toolStripMenuAdmin.Enabled = User.Default.IsWorthy;
-        }
-
-        public void Init(VehicleView vehicleView)
-        {
-            if (vehicleView is not null)
-            {
-                _vehiclePanel = new VehiclePanel(this, vehicleView);
-                PlacePanel(_vehiclePanel);
-            }
+            UpdateToolStrips();
         }
 
         public void PlacePanel(Control control) => PlacePanel(mainPanel, control);
@@ -65,15 +56,24 @@ namespace VehicleOrganizer.DesktopApp.Forms
         {
             baseControl.Controls.Clear();
             baseControl.Controls.Add(control);
+            _currentPanel = control;
+            UpdateToolStrips();
+        }
+
+        private void UpdateToolStrips() 
+        {
+            toolStripMenuAdmin.Visible = toolStripMenuAdmin.Enabled = User.Default.IsWorthy;
+
+            toolStripMenuItemOpenActivities.Enabled = _currentPanel is not OperationalActivityPanel;
         }
 
         private async void toolStripMenuItemOpenActivities_Click(object sender, EventArgs e)
         {
-            if (_vehiclePanel is not null)
+            if (_currentPanel is not null)
             {
-                await _operationalActivityPanel.Init(this, _vehiclePanel);
-                PlacePanel(_operationalActivityPanel);
-            }
+                await _operationalActivityPanel.Init(this, _currentPanel as VehiclePanel);
+                PlacePanel(_operationalActivityPanel);  
+            }         
         }
     }
 }

@@ -2,7 +2,6 @@
 using VehicleOrganizer.Infrastructure.Abstractions.Validators;
 using VehicleOrganizer.Infrastructure.Abstractions.Validators.Criteria;
 using VehicleOrganizer.Infrastructure.Entities;
-using VehicleOrganizer.Infrastructure.Repositories.Interfaces;
 
 namespace VehicleOrganizer.Infrastructure.Validators
 {
@@ -18,24 +17,27 @@ namespace VehicleOrganizer.Infrastructure.Validators
                 yield return "Brak nazwy aktywności";
             }
 
-            if (criteria.MileageWhenPerformedIsNotDigit)
+            if (!criteria.ActivityIsDateOperated)
             {
-                yield return "W polu przebiegu pojazdu w momencie wykonania operacji nie podano liczby";
-            }
+                if (criteria.MileageWhenPerformedIsNotDigit)
+                {
+                    yield return "W polu przebiegu pojazdu w momencie wykonania operacji nie podano liczby";
+                }
 
-            if (criteria.MileageStepIsNotDigit)
-            {
-                yield return "W polu, w którym powinna znajdować się ilość kilometrów do następnej operacji nie podano liczby";
-            }
+                if (criteria.MileageStepIsNotDigit)
+                {
+                    yield return "W polu, w którym powinna znajdować się ilość kilometrów do następnej operacji nie podano liczby";
+                }
 
-            if (criteria.MileageWhenPerformedIsNegative)
-            {
-                yield return "Przebieg pojazdu w momencie wykonania operacji nie może byc ujemny";
-            }
+                if (criteria.MileageWhenPerformedIsNegative)
+                {
+                    yield return "Przebieg pojazdu w momencie wykonania operacji nie może byc ujemny";
+                }
 
-            if (criteria.MileageStepIsNegative)
-            {
-                yield return "Ilość kilometrów do następnej operacji nie może byc ujemny";
+                if (criteria.MileageStepIsNegative)
+                {
+                    yield return "Ilość kilometrów do następnej operacji nie może byc ujemny";
+                }
             }
         }
     }

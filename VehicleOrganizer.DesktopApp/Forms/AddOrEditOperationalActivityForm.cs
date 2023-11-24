@@ -2,6 +2,7 @@
 using BachorzLibrary.Common.Extensions;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.Windows.Forms;
+using VehicleOrganizer.DesktopApp.Controls;
 using VehicleOrganizer.DesktopApp.Interfaces;
 using VehicleOrganizer.DesktopApp.Panels;
 using VehicleOrganizer.Domain.Abstractions.Views;
@@ -19,8 +20,8 @@ namespace VehicleOrganizer.DesktopApp.Forms
         private readonly IMapper _mapper;
         private readonly IOperationalActivityRepository _operationalActivityRepository;
 
-        private MainForm _mainForm;
         private OperationalActivityPanel _operationalActivityPanel;
+        private OperationalActivityControl _operationalActivityControl;
 
         private OperationalActivity _operationActivity;
         private bool _isEditMode;
@@ -38,10 +39,11 @@ namespace VehicleOrganizer.DesktopApp.Forms
             _operationalActivityRepository = operationalActivityRepository;
         }
 
-        public void Init(MainForm mainForm, OperationalActivityPanel operationalActivityPanel, OperationalActivity operationalActivity, int vehicleId)
+        public void Init(OperationalActivityPanel operationalActivityPanel, OperationalActivityControl operationalActivityControl, 
+            OperationalActivity operationalActivity, int vehicleId)
         {
-            _mainForm = mainForm;
             _operationalActivityPanel = operationalActivityPanel;
+            _operationalActivityControl = operationalActivityControl;
             _operationActivity = operationalActivity;
             _isEditMode = operationalActivity is not null;
             _vehicleId = vehicleId;
@@ -88,6 +90,7 @@ namespace VehicleOrganizer.DesktopApp.Forms
 
             var criteria = new OperationalActivityValidationCriteria
             {
+                ActivityIsDateOperated = radioButtonIsDateOperated.Checked,
                 MileageWhenPerformedIsNotDigit = textBoxMileageWhenPerformed.Text.IsNotDigit(),
                 MileageWhenPerformedIsNegative = textBoxMileageWhenPerformed.Text.IsDigit() ? textBoxMileageWhenPerformed.Text.ToInt() < 0 : false,
                 MileageStepIsNotDigit = textBoxMileageStep.Text.IsNotDigit(),
@@ -101,23 +104,20 @@ namespace VehicleOrganizer.DesktopApp.Forms
                 return;
             }
 
-            OperationalActivityView view = null;
             if (_isEditMode)
             {
                 if (!IsDebugMode && _operationActivity is not null)
                 {
                     _operationalActivityRepository.Update(_operationActivity);
-                }
-                view = _mapper.Map<OperationalActivityView>(_operationActivity);
-                _operationalActivityPanel.UpdateActivityOnTable(_operationActivity.Name, view);
+                }//TODO fix data update
+                _operationalActivityPanel.UpdateActivityOnTable(_operationalActivityControl, _operationActivity);
             }
             else
             {
                 var justAddedOperationalActivity = !IsDebugMode 
                     ? await _operationalActivityRepository.AddOperationalActivityForVehicleAsync(_vehicleId, operationalActivity) 
                     : operationalActivity;
-                view = _mapper.Map<OperationalActivityView>(justAddedOperationalActivity);
-                _operationalActivityPanel.AddActivityToTable(view);
+                _operationalActivityPanel.AddActivityToTable(justAddedOperationalActivity);
             }
 
             Close();
