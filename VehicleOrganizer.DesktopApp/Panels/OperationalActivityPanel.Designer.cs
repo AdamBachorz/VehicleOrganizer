@@ -68,7 +68,7 @@
             // label2
             // 
             label2.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            label2.Location = new Point(255, 55);
+            label2.Location = new Point(642, 55);
             label2.Name = "label2";
             label2.Size = new Size(310, 26);
             label2.TabIndex = 3;
@@ -78,7 +78,7 @@
             // label3
             // 
             label3.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            label3.Location = new Point(571, 55);
+            label3.Location = new Point(240, 55);
             label3.Name = "label3";
             label3.Size = new Size(299, 26);
             label3.TabIndex = 4;
@@ -107,7 +107,7 @@
             checkBoxDebugMode.Text = "DEBUG MODE";
             checkBoxDebugMode.UseVisualStyleBackColor = true;
             // 
-            // OperationActivityPanel
+            // OperationalActivityPanel
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
@@ -118,7 +118,7 @@
             Controls.Add(label1);
             Controls.Add(buttonAddActivity);
             Controls.Add(flowLayoutPanelActivities);
-            Name = "OperationActivityPanel";
+            Name = "OperationalActivityPanel";
             Size = new Size(1259, 569);
             ResumeLayout(false);
             PerformLayout();

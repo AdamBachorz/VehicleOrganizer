@@ -22,10 +22,10 @@ namespace VehicleOrganizer.DesktopApp.Forms
         private readonly IMapper _mapper;
 
         private MainForm _mainForm;
-        private Vehicle _vehicle;
 
         private bool _isEditMode;
 
+        public Vehicle Model { get; set; }
         public bool IsDebugMode => checkBoxDebugMode.Checked;
 
         public AddOrEditVehicleForm(IValidator<Vehicle, VehicleValidationCriteria> validator, IVehicleRepository vehicleRepository, IMapper mapper)
@@ -42,12 +42,12 @@ namespace VehicleOrganizer.DesktopApp.Forms
 
         public void Init(MainForm mainForm, Vehicle vehicle)
         {
+            Model = vehicle;
             _mainForm = mainForm;
-            _vehicle = vehicle;
             _isEditMode = vehicle is not null;
             Text = (_isEditMode ? "Edycja" : "Dodawanie") + " pojazdu";
             buttonAddOrUpdate.Text = _isEditMode ? "Zaktualizuj dane" : "Dodaj pojazd";
-            FillUpControls(_isEditMode ? vehicle : null);
+            FillUpControls(_isEditMode ? Model : null);
             textBoxMileage.Enabled = !_isEditMode;
         }
 
@@ -86,6 +86,19 @@ namespace VehicleOrganizer.DesktopApp.Forms
             };
         }
 
+        public void SaveChangesToExistingEntity(Vehicle newData)
+        {
+            Model.Name = newData.Name;
+            Model.VehicleType = newData.VehicleType;
+            Model.OilType = newData.OilType;
+            Model.PurchaseDate = newData.PurchaseDate;
+            Model.RegistrationDate = newData.RegistrationDate;
+            Model.InsuranceConclusion = newData.InsuranceConclusion;
+            Model.InsuranceTermination = newData.InsuranceTermination;
+            Model.LastTechnicalReview = newData.LastTechnicalReview;
+            Model.NextTechnicalReview = newData.NextTechnicalReview;
+            Model.YearOfProduction = newData.YearOfProduction;
+        }
 
         private void dateTimePickerInsuranceConclusion_ValueChanged(object sender, EventArgs e)
         {
@@ -120,11 +133,12 @@ namespace VehicleOrganizer.DesktopApp.Forms
             VehicleView view = null;
             if (_isEditMode)
             {
+                SaveChangesToExistingEntity(vehicle);
                 if (!IsDebugMode)
                 {
-                    _vehicleRepository.Update(_vehicle);
+                    _vehicleRepository.Update(Model);
                 }
-                view = _mapper.Map<VehicleView>(_vehicle);
+                view = _mapper.Map<VehicleView>(Model);
             }
             else
             {
@@ -135,5 +149,6 @@ namespace VehicleOrganizer.DesktopApp.Forms
             Close();
             _mainForm.PlacePanel(new VehiclePanel(_mainForm, view));
         }
+
     }
 }

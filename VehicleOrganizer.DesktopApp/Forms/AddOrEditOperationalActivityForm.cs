@@ -1,15 +1,11 @@
 ﻿using AutoMapper;
 using BachorzLibrary.Common.Extensions;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using System.Windows.Forms;
 using VehicleOrganizer.DesktopApp.Controls;
 using VehicleOrganizer.DesktopApp.Interfaces;
 using VehicleOrganizer.DesktopApp.Panels;
-using VehicleOrganizer.Domain.Abstractions.Views;
 using VehicleOrganizer.Infrastructure.Abstractions.Validators;
 using VehicleOrganizer.Infrastructure.Abstractions.Validators.Criteria;
 using VehicleOrganizer.Infrastructure.Entities;
-using VehicleOrganizer.Infrastructure.Repositories;
 using VehicleOrganizer.Infrastructure.Repositories.Interfaces;
 
 namespace VehicleOrganizer.DesktopApp.Forms
@@ -23,11 +19,13 @@ namespace VehicleOrganizer.DesktopApp.Forms
         private OperationalActivityPanel _operationalActivityPanel;
         private OperationalActivityControl _operationalActivityControl;
 
-        private OperationalActivity _operationActivity;
+        
         private bool _isEditMode;
         private int _vehicleId;
 
+        public OperationalActivity Model { get; set; }
         public bool IsDebugMode => checkBoxDebugMode.Checked;
+
 
         public AddOrEditOperationalActivityForm(IValidator<OperationalActivity, OperationalActivityValidationCriteria> validator,
             IMapper mapper,
@@ -42,17 +40,17 @@ namespace VehicleOrganizer.DesktopApp.Forms
         public void Init(OperationalActivityPanel operationalActivityPanel, OperationalActivityControl operationalActivityControl, 
             OperationalActivity operationalActivity, int vehicleId)
         {
+            Model = operationalActivity;
             _operationalActivityPanel = operationalActivityPanel;
             _operationalActivityControl = operationalActivityControl;
-            _operationActivity = operationalActivity;
             _isEditMode = operationalActivity is not null;
             _vehicleId = vehicleId;
 
             Text = (_isEditMode ? "Edycja" : "Dodawanie") + " czynności związanej z pojazdem";
-            FillUpControls(_isEditMode ? operationalActivity : null);
+            FillUpControls(_isEditMode ? Model : null);
         }
 
-        public OperationalActivity ApplyModelDataFromControls()
+        public OperationalActivity ApplyModelDataFromControls( )
         {
             var result = new OperationalActivity
             {
@@ -64,7 +62,17 @@ namespace VehicleOrganizer.DesktopApp.Forms
                 MileageStep = textBoxMileageStep.Text.ToInt(),
             };
 
-            return result;
+            return result;        
+        }
+
+        public void SaveChangesToExistingEntity(OperationalActivity newData)
+        {
+            Model.Name = newData.Name;
+            Model.IsDateOperated = newData.IsDateOperated;
+            Model.LastOperationDate = newData.LastOperationDate;
+            Model.YearsStep = newData.YearsStep;
+            Model.MileageWhenPerformed = newData.MileageWhenPerformed;
+            Model.MileageStep = newData.MileageStep;
         }
 
         public void FillUpControls(OperationalActivity operationalActivity)
@@ -72,7 +80,7 @@ namespace VehicleOrganizer.DesktopApp.Forms
             textBoxName.Text = operationalActivity?.Name;
             EnableProperControls(operationalActivity);
 
-            if (operationalActivity.IsDateOperated)
+            if (operationalActivity?.IsDateOperated ?? true)
             {
                 dateTimePickerLastOperationDate.Value = operationalActivity?.LastOperationDate.Date ?? DateTime.Now.Date;
                 numericUpDownYearStep.Value = operationalActivity?.YearsStep ?? 1;
@@ -87,7 +95,7 @@ namespace VehicleOrganizer.DesktopApp.Forms
         private async void buttonAddOrEditOperationalActivity_Click(object sender, EventArgs e)
         {
             var operationalActivity = ApplyModelDataFromControls();
-
+            // Add Vehicle reference
             var criteria = new OperationalActivityValidationCriteria
             {
                 ActivityIsDateOperated = radioButtonIsDateOperated.Checked,
@@ -106,11 +114,12 @@ namespace VehicleOrganizer.DesktopApp.Forms
 
             if (_isEditMode)
             {
-                if (!IsDebugMode && _operationActivity is not null)
+                SaveChangesToExistingEntity(operationalActivity);
+                if (!IsDebugMode)
                 {
-                    _operationalActivityRepository.Update(_operationActivity);
-                }//TODO fix data update
-                _operationalActivityPanel.UpdateActivityOnTable(_operationalActivityControl, _operationActivity);
+                    _operationalActivityRepository.Update(Model);
+                }
+                _operationalActivityPanel.UpdateActivityOnTable(_operationalActivityControl, Model);
             }
             else
             {
@@ -174,5 +183,6 @@ namespace VehicleOrganizer.DesktopApp.Forms
 
             radioButtonIsDateOperated.Checked = false;
         }
+
     }
 }

@@ -31,9 +31,9 @@
             tableLayoutPanel1 = new TableLayoutPanel();
             buttonDelete = new Button();
             labelSummaryPrompt = new Label();
-            labelLastOperationDateOrMileageWhenPerformed = new Label();
             labelName = new Label();
             buttonEdit = new Button();
+            labelLastOperationDateOrMileageWhenPerformed = new Label();
             tableLayoutPanel1.SuspendLayout();
             SuspendLayout();
             // 
@@ -47,11 +47,11 @@
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 464F));
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 60F));
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 57F));
-            tableLayoutPanel1.Controls.Add(buttonDelete, 4, 0);
-            tableLayoutPanel1.Controls.Add(labelSummaryPrompt, 0, 0);
             tableLayoutPanel1.Controls.Add(labelLastOperationDateOrMileageWhenPerformed, 0, 0);
+            tableLayoutPanel1.Controls.Add(buttonDelete, 4, 0);
             tableLayoutPanel1.Controls.Add(labelName, 0, 0);
             tableLayoutPanel1.Controls.Add(buttonEdit, 3, 0);
+            tableLayoutPanel1.Controls.Add(labelSummaryPrompt, 2, 0);
             tableLayoutPanel1.Dock = DockStyle.Fill;
             tableLayoutPanel1.Location = new Point(0, 0);
             tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -76,24 +76,12 @@
             labelSummaryPrompt.AutoEllipsis = true;
             labelSummaryPrompt.AutoSize = true;
             labelSummaryPrompt.Dock = DockStyle.Fill;
-            labelSummaryPrompt.Location = new Point(159, 1);
+            labelSummaryPrompt.Location = new Point(372, 1);
             labelSummaryPrompt.Name = "labelSummaryPrompt";
-            labelSummaryPrompt.Size = new Size(206, 31);
+            labelSummaryPrompt.Size = new Size(458, 31);
             labelSummaryPrompt.TabIndex = 2;
             labelSummaryPrompt.Text = "Podsumowanie";
             labelSummaryPrompt.TextAlign = ContentAlignment.MiddleCenter;
-            // 
-            // labelLastOperationDateOrMileageWhenPerformed
-            // 
-            labelLastOperationDateOrMileageWhenPerformed.AutoEllipsis = true;
-            labelLastOperationDateOrMileageWhenPerformed.AutoSize = true;
-            labelLastOperationDateOrMileageWhenPerformed.Dock = DockStyle.Fill;
-            labelLastOperationDateOrMileageWhenPerformed.Location = new Point(372, 1);
-            labelLastOperationDateOrMileageWhenPerformed.Name = "labelLastOperationDateOrMileageWhenPerformed";
-            labelLastOperationDateOrMileageWhenPerformed.Size = new Size(458, 31);
-            labelLastOperationDateOrMileageWhenPerformed.TabIndex = 1;
-            labelLastOperationDateOrMileageWhenPerformed.Text = "Ostatnia operacja (data lub km)";
-            labelLastOperationDateOrMileageWhenPerformed.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // labelName
             // 
@@ -118,6 +106,18 @@
             buttonEdit.UseVisualStyleBackColor = true;
             buttonEdit.Click += buttonEdit_Click;
             // 
+            // labelLastOperationDateOrMileageWhenPerformed
+            // 
+            labelLastOperationDateOrMileageWhenPerformed.AutoEllipsis = true;
+            labelLastOperationDateOrMileageWhenPerformed.AutoSize = true;
+            labelLastOperationDateOrMileageWhenPerformed.Dock = DockStyle.Fill;
+            labelLastOperationDateOrMileageWhenPerformed.Location = new Point(159, 1);
+            labelLastOperationDateOrMileageWhenPerformed.Name = "labelLastOperationDateOrMileageWhenPerformed";
+            labelLastOperationDateOrMileageWhenPerformed.Size = new Size(206, 31);
+            labelLastOperationDateOrMileageWhenPerformed.TabIndex = 5;
+            labelLastOperationDateOrMileageWhenPerformed.Text = "Ostatnia operacja (data lub km)";
+            labelLastOperationDateOrMileageWhenPerformed.TextAlign = ContentAlignment.MiddleCenter;
+            // 
             // OperationalActivityControl
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -135,9 +135,9 @@
 
         private TableLayoutPanel tableLayoutPanel1;
         private Label labelName;
-        private Label labelLastOperationDateOrMileageWhenPerformed;
         private Label labelSummaryPrompt;
         private Button buttonDelete;
         private Button buttonEdit;
+        private Label labelLastOperationDateOrMileageWhenPerformed;
     }
 }
