@@ -1,5 +1,6 @@
 ﻿using VehicleOrganizer.DesktopApp.Forms;
 using VehicleOrganizer.Domain.Abstractions.Views;
+using VehicleOrganizer.Infrastructure.Entities;
 
 namespace VehicleOrganizer.DesktopApp.Panels
 {
@@ -8,11 +9,14 @@ namespace VehicleOrganizer.DesktopApp.Panels
         private VehicleView _vehicleView;
         private MainForm _mainForm;
 
-        public VehiclePanel(MainForm mainForm, VehicleView vehicleView)
+        public Vehicle VehicleReference { get; private set; }
+
+        public VehiclePanel(MainForm mainForm, VehicleView vehicleView, Vehicle vehicleReference)
         {
             InitializeComponent();
             _mainForm = mainForm;
             _vehicleView = vehicleView;
+            VehicleReference = vehicleReference;
 
             if (!vehicleView.IsOilBased)
             {
@@ -20,8 +24,6 @@ namespace VehicleOrganizer.DesktopApp.Panels
             }
             FillUpControls();
         }
-
-        public int GetVehicleReference() => _vehicleView?.Reference ?? 0;
 
         private void FillUpControls()
         {

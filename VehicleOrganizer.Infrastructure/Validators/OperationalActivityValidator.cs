@@ -39,6 +39,13 @@ namespace VehicleOrganizer.Infrastructure.Validators
                     yield return "Ilość kilometrów do następnej operacji nie może byc ujemny";
                 }
             }
+            else // Mileage operated
+            {
+                if (criteria.MileageWhenPerformedIsLessThanLatestMileage)
+                {
+                    yield return "Podany przebieg pojazdu w momencie wykonania operacji jest mniejszy, niż jego aktualny przebieg";
+                }
+            }
         }
     }
 }

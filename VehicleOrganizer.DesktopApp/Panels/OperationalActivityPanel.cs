@@ -78,7 +78,7 @@ namespace VehicleOrganizer.DesktopApp.Panels
                 }
             }
 
-            foreach (var activity in await _operationalActivityRepository.GetOperationalActivitiesForVehicleAndUserAsync(_vehiclePanel.GetVehicleReference(), User.Default))
+            foreach (var activity in await _operationalActivityRepository.GetOperationalActivitiesForVehicleAndUserAsync(_vehiclePanel.VehicleReference.Id, User.Default))
             {
                 AddActivityToTable(activity);
             }         
@@ -106,7 +106,7 @@ namespace VehicleOrganizer.DesktopApp.Panels
 
         private void buttonAddActivity_Click(object sender, EventArgs e)
         {
-            _addOrEditOperationalActivityForm.Init(this, operationalActivityControl: null, operationalActivity: null, _vehiclePanel.GetVehicleReference());
+            _addOrEditOperationalActivityForm.Init(this, operationalActivityControl: null, operationalActivity: null, _vehiclePanel.VehicleReference);
             _addOrEditOperationalActivityForm.ShowDialog();
         }
 

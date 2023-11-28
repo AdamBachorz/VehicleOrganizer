@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using BachorzLibrary.Common.Extensions;
+using BachorzLibrary.Common.Tools;
 using BachorzLibrary.Common.Utils;
 using VehicleOrganizer.DesktopApp.Extensions;
 using VehicleOrganizer.DesktopApp.Interfaces;
@@ -139,15 +140,23 @@ namespace VehicleOrganizer.DesktopApp.Forms
                     _vehicleRepository.Update(Model);
                 }
                 view = _mapper.Map<VehicleView>(Model);
+
+                _mainForm.PlacePanel(new VehiclePanel(_mainForm, view, Model));
             }
             else
             {
                 var justAddedVehicle = !IsDebugMode ? await _vehicleRepository.AddVehicleAsync(vehicle, textBoxMileage.Text.OrDefault("0").ToInt()) : vehicle;
+
+                if (IsDebugMode)
+                {
+                    justAddedVehicle.Id = RandomFactory.RandomNumber(1, 1000, includeBound: true);
+                }
+
                 view = _mapper.Map<VehicleView>(justAddedVehicle);
+                _mainForm.PlacePanel(new VehiclePanel(_mainForm, view, justAddedVehicle));
             }
 
             Close();
-            _mainForm.PlacePanel(new VehiclePanel(_mainForm, view));
         }
 
     }

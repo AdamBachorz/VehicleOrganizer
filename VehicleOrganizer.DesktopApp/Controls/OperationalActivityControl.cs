@@ -39,7 +39,7 @@ namespace VehicleOrganizer.DesktopApp.Controls
 
         private void buttonEdit_Click(object sender, EventArgs e)
         {
-            _addOrEditOperationalActivityForm.Init(_operationalActivityPanel, this, _reference, _reference.Vehicle.Id);
+            _addOrEditOperationalActivityForm.Init(_operationalActivityPanel, this, _reference, _reference.Vehicle);
             _addOrEditOperationalActivityForm.ShowDialog();
         }
 
