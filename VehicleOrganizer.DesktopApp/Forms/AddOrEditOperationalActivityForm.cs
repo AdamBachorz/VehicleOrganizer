@@ -101,13 +101,15 @@ namespace VehicleOrganizer.DesktopApp.Forms
             
             var criteria = new OperationalActivityValidationCriteria
             {
-                ActivityIsDateOperated = radioButtonIsDateOperated.Checked,
+                ActivityOperationIsNotSet = !radioButtonIsDateOperated.Checked && !radioButtonIsMileageOperated.Checked,
                 MileageWhenPerformedIsNotDigit = textBoxMileageWhenPerformed.Text.IsNotDigit(),
                 MileageWhenPerformedIsNegative = textBoxMileageWhenPerformed.Text.IsDigit() ? textBoxMileageWhenPerformed.Text.ToInt() < 0 : false,
-                MileageWhenPerformedIsLessThanLatestMileage = textBoxMileageWhenPerformed.Text.IsDigit() //TODO Check this condition
+                MileageWhenPerformedIsLessThanLatestMileage = textBoxMileageWhenPerformed.Text.IsDigit()
                                                             ? textBoxMileageWhenPerformed.Text.ToInt() < operationalActivity.Vehicle.LatestMileage : false,
                 MileageStepIsNotDigit = textBoxMileageStep.Text.IsNotDigit(),
                 MileageStepIsNegative = textBoxMileageStep.Text.IsDigit() ? textBoxMileageStep.Text.ToInt() < 0 : false,
+                LastOperationDateIsEarlierThanVehiclePurchaseDate = operationalActivity.IsDateOperated 
+                                                                  ? dateTimePickerLastOperationDate.Value < operationalActivity.Vehicle.PurchaseDate : false,
 
             };
             var validationResult = _validator.ValidateToBulletPointString(operationalActivity, criteria);
@@ -143,7 +145,7 @@ namespace VehicleOrganizer.DesktopApp.Forms
 
             Close();
         }
-        // TODO Fix conditions of enanbling button
+        
         private void radioButtonIsDateOperated_CheckedChanged(object sender, EventArgs e)
         {
             EnableDateOperatedControls();

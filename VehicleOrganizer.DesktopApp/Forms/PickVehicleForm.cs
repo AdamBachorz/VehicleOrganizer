@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BachorzLibrary.Desktop.Extensions;
 using VehicleOrganizer.DesktopApp.Panels;
+using VehicleOrganizer.Domain.Abstractions;
 using VehicleOrganizer.Domain.Abstractions.Views;
 using VehicleOrganizer.Infrastructure.Entities;
 
@@ -11,16 +12,14 @@ namespace VehicleOrganizer.DesktopApp.Forms
         private readonly IMapper _mapper;
 
         private readonly MainForm _mainForm;
-        private readonly VehiclePanel _vehiclePanel;
         private readonly AddOrEditVehicleForm _addOrEditVehicleForm;
 
         private IList<Vehicle> _vehicles;
 
-        public PickVehicleForm(IMapper mapper, VehiclePanel vehiclePanel, AddOrEditVehicleForm addOrEditVehicleForm, MainForm mainForm)
+        public PickVehicleForm(IMapper mapper, AddOrEditVehicleForm addOrEditVehicleForm, MainForm mainForm)
         {
             InitializeComponent();
             _mapper = mapper;
-            _vehiclePanel = vehiclePanel;
             _addOrEditVehicleForm = addOrEditVehicleForm;
             _mainForm = mainForm;
         }
@@ -28,7 +27,7 @@ namespace VehicleOrganizer.DesktopApp.Forms
         public void Init(IList<Vehicle> vehicles)
         {
             _vehicles = vehicles;
-            comboBoxVehicles.LoadData(vehicles, v => v.Name + (v.IsSold ? " [SPRZEDANY]" : string.Empty));
+            comboBoxVehicles.LoadData(vehicles, v => v.Name + (v.IsSold ? $" {Codes.VehicleSoldIndicator}" : string.Empty));
         }
 
         private void buttonPickVehicle_Click(object sender, EventArgs e)

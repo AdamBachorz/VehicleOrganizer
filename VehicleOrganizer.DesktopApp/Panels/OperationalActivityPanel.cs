@@ -41,47 +41,46 @@ namespace VehicleOrganizer.DesktopApp.Panels
             flowLayoutPanelActivities.Controls.Clear();
             if (IsDebugMode)
             {
-                OperationalActivity oa = null;
-
-                for (int i = 0; i < 6; i++)
-                {
-                    Vehicle vehicle = new Vehicle
-                    {
-                        Id = i + 1,
-                        MileageHistory = new List<MileageHistory> { new MileageHistory { Mileage = 550 } }
-                    };
-
-                    if (i % 2 == 0)
-                    {
-                        oa = new OperationalActivity
-                        {
-                            Name = "Some name (D)" + i,
-                            IsDateOperated = true,
-                            LastOperationDate = DateTime.Now.Date,
-                            YearsStep = 1,
-                            Vehicle = vehicle,
-                        }; 
-                    }
-                    else
-                    {
-                        oa = new OperationalActivity
-                        {
-                            Name = "Some name (M)" + i,
-                            IsDateOperated = false,
-                            MileageWhenPerformed = i * 10000,
-                            MileageStep = i * 100,
-                            Vehicle = vehicle,
-                        };
-                    }
-                    
-                    AddActivityToTable(oa);
-                }
+                SetMockData(count: 6);
             }
 
             foreach (var activity in await _operationalActivityRepository.GetOperationalActivitiesForVehicleAndUserAsync(_vehiclePanel.VehicleReference.Id, User.Default))
             {
                 AddActivityToTable(activity);
             }         
+        }
+
+        private void SetMockData(int count)
+        {
+            OperationalActivity oa = null;
+
+            for (int i = 0; i < count; i++)
+            {
+                if (i % 2 == 0)
+                {
+                    oa = new OperationalActivity
+                    {
+                        Name = "Some name (D)" + i,
+                        IsDateOperated = true,
+                        LastOperationDate = DateTime.Now.Date,
+                        YearsStep = 1,
+                        Vehicle = _vehiclePanel.VehicleReference,
+                    };
+                }
+                else
+                {
+                    oa = new OperationalActivity
+                    {
+                        Name = "Some name (M)" + i,
+                        IsDateOperated = false,
+                        MileageWhenPerformed = i * 10000,
+                        MileageStep = i * 100,
+                        Vehicle = _vehiclePanel.VehicleReference,
+                    };
+                }
+
+                AddActivityToTable(oa);
+            }
         }
 
         public void AddActivityToTable(OperationalActivity activity)

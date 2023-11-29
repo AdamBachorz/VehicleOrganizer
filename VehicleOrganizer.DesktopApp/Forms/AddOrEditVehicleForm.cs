@@ -145,11 +145,20 @@ namespace VehicleOrganizer.DesktopApp.Forms
             }
             else
             {
-                var justAddedVehicle = !IsDebugMode ? await _vehicleRepository.AddVehicleAsync(vehicle, textBoxMileage.Text.OrDefault("0").ToInt()) : vehicle;
+                var justAddedVehicle = !IsDebugMode ? await _vehicleRepository.AddVehicleAsync(vehicle, textBoxMileage.Text.ToInt()) : vehicle;
 
                 if (IsDebugMode)
                 {
                     justAddedVehicle.Id = RandomFactory.RandomNumber(1, 1000, includeBound: true);
+                    justAddedVehicle.MileageHistory = new List<MileageHistory> 
+                    { 
+                        new MileageHistory 
+                        {
+                            Id = RandomFactory.RandomNumber(1, 1000, includeBound: true),
+                            Mileage = textBoxMileage.Text.ToInt(),
+                            Vehicle = justAddedVehicle,
+                        } 
+                    };
                 }
 
                 view = _mapper.Map<VehicleView>(justAddedVehicle);

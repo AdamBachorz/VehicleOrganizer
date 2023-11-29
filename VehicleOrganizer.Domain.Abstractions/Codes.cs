@@ -7,6 +7,7 @@
         public static string MainPath = Path.Combine(@"C:\", Directories.Main, AppName, Directories.Data);
         public const string ReferenceCode = "b32ba5a7-9812-4bac-9c37-005c86c176e2";
         public const string None = "N/A";
+        public const string VehicleSoldIndicator = "[SPRZEDANY]";
 
         public struct Defaults
         {

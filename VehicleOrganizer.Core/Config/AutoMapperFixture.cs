@@ -16,7 +16,7 @@ namespace VehicleOrganizer.Core.Config
                 //    ;
                 cfg.CreateMap<Vehicle, VehicleView>()
                     .ForMember(dest => dest.Reference, opt => opt.MapFrom(src => src.Id))
-                    .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
+                    .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name + (src.IsSold ? $" {Codes.VehicleSoldIndicator}" : string.Empty)))
                     .ForMember(dest => dest.YearOfProduction, opt => opt.MapFrom(src => src.YearOfProduction.ToString()))
                     .ForMember(dest => dest.VehicleType, opt => opt.MapFrom(src => src.VehicleType.ToString()))
                     .ForMember(dest => dest.IsOilBased, opt => opt.MapFrom(src => src.VehicleType.IsOilBased()))

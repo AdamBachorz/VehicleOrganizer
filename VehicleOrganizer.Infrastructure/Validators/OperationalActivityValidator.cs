@@ -17,33 +17,44 @@ namespace VehicleOrganizer.Infrastructure.Validators
                 yield return "Brak nazwy aktywności";
             }
 
-            if (!criteria.ActivityIsDateOperated)
+            if (criteria.ActivityOperationIsNotSet)
+            {
+                yield return "Nie określono, czy czynność/operacja ma się opierać na dacie czy na przebiegu. Wybierz jedną z opcji";
+                yield break;
+            }
+
+            if (!operationalActivity.IsDateOperated)
             {
                 if (criteria.MileageWhenPerformedIsNotDigit)
                 {
-                    yield return "W polu przebiegu pojazdu w momencie wykonania operacji nie podano liczby";
+                    yield return "W polu przebiegu pojazdu w momencie wykonania czynności/operacji nie podano liczby";
                 }
 
                 if (criteria.MileageStepIsNotDigit)
                 {
-                    yield return "W polu, w którym powinna znajdować się ilość kilometrów do następnej operacji nie podano liczby";
+                    yield return "W polu, w którym powinna znajdować się ilość kilometrów do następnej czynności/operacji nie podano liczby";
                 }
 
                 if (criteria.MileageWhenPerformedIsNegative)
                 {
-                    yield return "Przebieg pojazdu w momencie wykonania operacji nie może byc ujemny";
+                    yield return "Przebieg pojazdu w momencie wykonania czynności/operacji nie może byc ujemny";
                 }
 
                 if (criteria.MileageStepIsNegative)
                 {
-                    yield return "Ilość kilometrów do następnej operacji nie może byc ujemny";
+                    yield return "Ilość kilometrów do następnej czynności/operacji nie może byc ujemny";
                 }
-            }
-            else // Mileage operated
-            {
+
                 if (criteria.MileageWhenPerformedIsLessThanLatestMileage)
                 {
-                    yield return "Podany przebieg pojazdu w momencie wykonania operacji jest mniejszy, niż jego aktualny przebieg";
+                    yield return "Podany przebieg pojazdu w momencie wykonania czynności/operacji jest mniejszy, niż jego aktualny przebieg";
+                }
+            }
+            else // Date operated
+            {
+                if (criteria.LastOperationDateIsEarlierThanVehiclePurchaseDate)
+                {
+                    yield return "Podana data wykonania czynności/operacji jest wcześniejsza, niż data nabycia pojazdu";
                 }
             }
         }
