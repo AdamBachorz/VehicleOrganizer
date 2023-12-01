@@ -37,7 +37,7 @@
             pojazdToolStripMenuItem = new ToolStripMenuItem();
             toolStripMenuItemOpenActivities = new ToolStripMenuItem();
             toolStripMenuAdmin = new ToolStripMenuItem();
-            toolStripMenuItemRunReminders = new ToolStripMenuItem();
+            toolStripMenuItemOpenAdminTools = new ToolStripMenuItem();
             tableLayoutPanel1.SuspendLayout();
             menuStrip.SuspendLayout();
             SuspendLayout();
@@ -112,17 +112,17 @@
             // 
             // toolStripMenuAdmin
             // 
-            toolStripMenuAdmin.DropDownItems.AddRange(new ToolStripItem[] { toolStripMenuItemRunReminders });
+            toolStripMenuAdmin.DropDownItems.AddRange(new ToolStripItem[] { toolStripMenuItemOpenAdminTools });
             toolStripMenuAdmin.Name = "toolStripMenuAdmin";
             toolStripMenuAdmin.Size = new Size(55, 20);
             toolStripMenuAdmin.Text = "Admin";
             // 
-            // toolStripMenuItemRunReminders
+            // toolStripMenuItemOpenAdminTools
             // 
-            toolStripMenuItemRunReminders.Name = "toolStripMenuItemRunReminders";
-            toolStripMenuItemRunReminders.Size = new Size(206, 22);
-            toolStripMenuItemRunReminders.Text = "Uruchom przypomnienia";
-            toolStripMenuItemRunReminders.Click += toolStripMenuItemRunReminders_Click;
+            toolStripMenuItemOpenAdminTools.Name = "toolStripMenuItemOpenAdminTools";
+            toolStripMenuItemOpenAdminTools.Size = new Size(180, 22);
+            toolStripMenuItemOpenAdminTools.Text = "Okno Admina";
+            toolStripMenuItemOpenAdminTools.Click += toolStripMenuItemOpenAdminTools_Click;
             // 
             // MainForm
             // 
@@ -153,8 +153,8 @@
         private ToolStripMenuItem toolStripMenuItemAddNewVehicle;
         private ToolStripMenuItem toolStripMenuItemSelectVehicle;
         private ToolStripMenuItem toolStripMenuAdmin;
-        private ToolStripMenuItem toolStripMenuItemRunReminders;
         private ToolStripMenuItem pojazdToolStripMenuItem;
         private ToolStripMenuItem toolStripMenuItemOpenActivities;
+        private ToolStripMenuItem toolStripMenuItemOpenAdminTools;
     }
 }

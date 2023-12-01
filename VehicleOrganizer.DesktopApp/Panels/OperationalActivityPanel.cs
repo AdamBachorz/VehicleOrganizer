@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
 using BachorzLibrary.Common.Utils;
 using System.Diagnostics;
+using VehicleOrganizer.Core;
 using VehicleOrganizer.DesktopApp.Controls;
 using VehicleOrganizer.DesktopApp.Forms;
 using VehicleOrganizer.DesktopApp.Interfaces;
-using VehicleOrganizer.Domain.Abstractions.Views;
 using VehicleOrganizer.Infrastructure.Entities;
 using VehicleOrganizer.Infrastructure.Repositories.Interfaces;
 
@@ -28,9 +28,10 @@ namespace VehicleOrganizer.DesktopApp.Panels
             InitializeComponent();
             _mapper = mapper;
             _operationalActivityRepository = operationalActivityRepository;
-
-            checkBoxDebugMode.Visible = checkBoxDebugMode.Enabled = checkBoxDebugMode.Checked = EnvUtils.GetValueDependingOnEnvironment(true, false);
             _addOrEditOperationalActivityForm = addOrEditOperationalActivityForm;
+
+            checkBoxDebugMode.Visible = checkBoxDebugMode.Enabled = EnvUtils.GetValueDependingOnEnvironment(true, false);
+            checkBoxDebugMode.Checked = CommonPool.IsDebugMode;
         }
 
         public async Task Init(MainForm mainForm, VehiclePanel vehiclePanel)

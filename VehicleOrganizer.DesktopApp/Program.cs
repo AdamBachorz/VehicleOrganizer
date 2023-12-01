@@ -6,6 +6,8 @@ using VehicleOrganizer.Core.Config;
 using VehicleOrganizer.Core.Services.Interfaces;
 using BachorzLibrary.Common.Extensions;
 using VehicleOrganizer.DesktopApp.Panels;
+using BachorzLibrary.DAL.DotNetSix.EntityFrameworkCore;
+using VehicleOrganizer.Core;
 
 namespace VehicleOrganizer.DesktopApp
 {
@@ -27,6 +29,8 @@ namespace VehicleOrganizer.DesktopApp
 
             using (ServiceProvider serviceProvider = service.BuildServiceProvider())
             {
+                var config = serviceProvider.GetRequiredService<IEFCCustomConfig>();
+                CommonPool.IsDebugMode = Convert.ToBoolean(config.ValuesBag["DebugMode"]);
                 var vehicleRepository = serviceProvider.GetRequiredService<IVehicleRepository>();
                 var backgroundActionInvokeService = serviceProvider.GetRequiredService<IBackgroundActionInvokeService>();
 
@@ -61,6 +65,7 @@ namespace VehicleOrganizer.DesktopApp
             service.AddScoped<AddOrEditVehicleForm>();
             service.AddScoped<AddOrEditOperationalActivityForm>();
             service.AddScoped<PickVehicleForm>();
+            service.AddScoped<AdminToolsForm>();
 
             service.AddScoped<OperationalActivityPanel>();
         }

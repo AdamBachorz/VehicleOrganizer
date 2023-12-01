@@ -1,32 +1,21 @@
-﻿using AutoMapper;
-using BachorzLibrary.Common.Extensions;
-using VehicleOrganizer.Core.Services.Interfaces;
-using VehicleOrganizer.DesktopApp.Panels;
-using VehicleOrganizer.Domain.Abstractions.Views;
+﻿using VehicleOrganizer.DesktopApp.Panels;
 using VehicleOrganizer.Infrastructure.Entities;
-using VehicleOrganizer.Infrastructure.Repositories.Interfaces;
 
 namespace VehicleOrganizer.DesktopApp.Forms
 {
     public partial class MainForm : Form
     {
-        private readonly IMapper _mapper;
-        private readonly IVehicleRepository _vehicleRepository;
-        private readonly IBackgroundActionInvokeService _backgroundActionInvokeService;
-
         private readonly AddOrEditVehicleForm _addOrEditVehicleForm;
+        private readonly AdminToolsForm _adminToolsForm;
         private readonly OperationalActivityPanel _operationalActivityPanel;
 
         private Control _currentPanel;
 
-        public MainForm(IMapper mapper, IVehicleRepository vehicleRepository, IBackgroundActionInvokeService backgroundActionInvokeService,
-            AddOrEditVehicleForm addOrEditVehicleForm, OperationalActivityPanel operationActivityPanel)
+        public MainForm(AddOrEditVehicleForm addOrEditVehicleForm, AdminToolsForm adminToolsForm, OperationalActivityPanel operationActivityPanel)
         {
             InitializeComponent();
-            _mapper = mapper;
-            _vehicleRepository = vehicleRepository;
-            _backgroundActionInvokeService = backgroundActionInvokeService;
             _addOrEditVehicleForm = addOrEditVehicleForm;
+            _adminToolsForm = adminToolsForm;
             _operationalActivityPanel = operationActivityPanel;
 
             UpdateToolStrips();
@@ -42,14 +31,7 @@ namespace VehicleOrganizer.DesktopApp.Forms
 
         private void toolStripMenuItemSelectVehicle_Click(object sender, EventArgs e)
         {
-
-        }
-
-        private async void toolStripMenuItemRunReminders_Click(object sender, EventArgs e)
-        {
-            await _backgroundActionInvokeService.RunRemindersAsync();
-            var errors = _backgroundActionInvokeService.CurrentErrors();
-            MessageBox.Show(errors.IsNotNullOrEmpty() ? errors.Select(x => x).Join(Environment.NewLine) : "Wysłano powiadomienia");
+            
         }
 
         private void PlacePanel(Control baseControl, Control control)
@@ -60,7 +42,7 @@ namespace VehicleOrganizer.DesktopApp.Forms
             UpdateToolStrips();
         }
 
-        private void UpdateToolStrips() 
+        private void UpdateToolStrips()
         {
             toolStripMenuAdmin.Visible = toolStripMenuAdmin.Enabled = User.Default.IsWorthy;
 
@@ -72,8 +54,13 @@ namespace VehicleOrganizer.DesktopApp.Forms
             if (_currentPanel is not null)
             {
                 await _operationalActivityPanel.Init(this, _currentPanel as VehiclePanel);
-                PlacePanel(_operationalActivityPanel);  
-            }         
+                PlacePanel(_operationalActivityPanel);
+            }
+        }
+
+        private void toolStripMenuItemOpenAdminTools_Click(object sender, EventArgs e)
+        {
+            _adminToolsForm.ShowDialog();
         }
     }
 }

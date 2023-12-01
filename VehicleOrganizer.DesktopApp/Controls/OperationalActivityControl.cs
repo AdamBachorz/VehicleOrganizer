@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using BachorzLibrary.Common.Extensions;
-using BachorzLibrary.Common.Utils;
+using VehicleOrganizer.Core;
 using VehicleOrganizer.DesktopApp.Forms;
 using VehicleOrganizer.DesktopApp.Interfaces;
 using VehicleOrganizer.DesktopApp.Panels;
@@ -19,7 +19,7 @@ namespace VehicleOrganizer.DesktopApp.Controls
         private OperationalActivity _reference;
         private OperationalActivityPanel _operationalActivityPanel;
 
-        public bool IsDebugMode => EnvUtils.GetValueDependingOnEnvironment(true, false);
+        public bool IsDebugMode => CommonPool.IsDebugMode;
 
         public OperationalActivityControl(IOperationalActivityRepository operationalActivityRepository, IMapper mapper,
             AddOrEditOperationalActivityForm addOrEditOperationalActivityForm,

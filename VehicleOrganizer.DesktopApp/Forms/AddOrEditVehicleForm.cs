@@ -2,6 +2,7 @@
 using BachorzLibrary.Common.Extensions;
 using BachorzLibrary.Common.Tools;
 using BachorzLibrary.Common.Utils;
+using VehicleOrganizer.Core;
 using VehicleOrganizer.DesktopApp.Extensions;
 using VehicleOrganizer.DesktopApp.Interfaces;
 using VehicleOrganizer.DesktopApp.Panels;
@@ -36,7 +37,8 @@ namespace VehicleOrganizer.DesktopApp.Forms
             _vehicleRepository = vehicleRepository;
             _mapper = mapper;
 
-            checkBoxDebugMode.Visible = checkBoxDebugMode.Enabled = checkBoxDebugMode.Checked = EnvUtils.GetValueDependingOnEnvironment(true, false);
+            checkBoxDebugMode.Visible = checkBoxDebugMode.Enabled = EnvUtils.GetValueDependingOnEnvironment(true, false);
+            checkBoxDebugMode.Checked = CommonPool.IsDebugMode;
             comboBoxType.LoadWithEnums<VehicleType>(useEnumDescriptions: true, autoPickFirstItem: true);
             numericUpDownYearOfProduction.Maximum = numericUpDownYearOfProduction.Value = DateTime.Now.Year;
         }

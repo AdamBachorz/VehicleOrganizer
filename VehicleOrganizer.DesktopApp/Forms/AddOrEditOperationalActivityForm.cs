@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using BachorzLibrary.Common.Extensions;
 using BachorzLibrary.Common.Tools;
+using BachorzLibrary.Common.Utils;
+using VehicleOrganizer.Core;
 using VehicleOrganizer.DesktopApp.Controls;
 using VehicleOrganizer.DesktopApp.Interfaces;
 using VehicleOrganizer.DesktopApp.Panels;
@@ -36,6 +38,9 @@ namespace VehicleOrganizer.DesktopApp.Forms
             _validator = validator;
             _mapper = mapper;
             _operationalActivityRepository = operationalActivityRepository;
+
+            checkBoxDebugMode.Visible = checkBoxDebugMode.Enabled = EnvUtils.GetValueDependingOnEnvironment(true, false);
+            checkBoxDebugMode.Checked = CommonPool.IsDebugMode;
         }
 
         public void Init(OperationalActivityPanel operationalActivityPanel, OperationalActivityControl operationalActivityControl, 

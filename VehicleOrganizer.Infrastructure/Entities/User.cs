@@ -17,10 +17,15 @@ namespace VehicleOrganizer.Infrastructure.Entities
         public string ReferenceCode { get; set; } = Codes.None;
 
         [NotMapped]
+        [JsonIgnore]
         public bool IsEmailOk => Email is not null ? Regex.IsMatch(Email, Consts.RegexPatterns.Email) : false;
+        
         [NotMapped]
+        [JsonIgnore]
         public bool IsWorthy => ReferenceCode.Equals(Codes.ReferenceCode);
+        
         [NotMapped]
+        [JsonIgnore]
         public static User Default => JsonConvert.DeserializeObject<User>(File.ReadAllText(Codes.Files.DefaultUser));
 
         public static void RefreshData(User user) => File.WriteAllText(Codes.Files.DefaultUser, JsonConvert.SerializeObject(user));
