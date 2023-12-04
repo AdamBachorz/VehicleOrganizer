@@ -18,6 +18,12 @@
             public const int MileageToRemindAboutActivity = 500;
         }
 
+        public struct Icos
+        {
+            public const string Edit = "✎";
+            public const string Delete = "🗑";
+        }
+
         public struct Directories
         {
             public const string Main = "ABSolutions";

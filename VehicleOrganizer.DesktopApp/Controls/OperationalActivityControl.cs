@@ -4,6 +4,7 @@ using VehicleOrganizer.Core;
 using VehicleOrganizer.DesktopApp.Forms;
 using VehicleOrganizer.DesktopApp.Interfaces;
 using VehicleOrganizer.DesktopApp.Panels;
+using VehicleOrganizer.Domain.Abstractions;
 using VehicleOrganizer.Domain.Abstractions.Views;
 using VehicleOrganizer.Infrastructure.Entities;
 using VehicleOrganizer.Infrastructure.Repositories.Interfaces;
@@ -35,6 +36,9 @@ namespace VehicleOrganizer.DesktopApp.Controls
             labelName.Text = view.Name;
             labelLastOperationDateOrMileageWhenPerformed.Text = view.LastOperationDateOrMileageWhenPerformed;
             labelSummaryPrompt.Text = view.SummaryPrompt;
+
+            buttonEdit.Text = Codes.Icos.Edit;
+            buttonDelete.Text = Codes.Icos.Delete;
         }
 
         private void buttonEdit_Click(object sender, EventArgs e)
