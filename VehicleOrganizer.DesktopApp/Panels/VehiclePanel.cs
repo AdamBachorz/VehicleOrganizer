@@ -7,14 +7,12 @@ namespace VehicleOrganizer.DesktopApp.Panels
     public partial class VehiclePanel : UserControl
     {
         private VehicleView _vehicleView;
-        private MainForm _mainForm;
 
         public Vehicle VehicleReference { get; private set; }
 
-        public VehiclePanel(MainForm mainForm, VehicleView vehicleView, Vehicle vehicleReference)
+        public VehiclePanel(VehicleView vehicleView, Vehicle vehicleReference)
         {
             InitializeComponent();
-            _mainForm = mainForm;
             _vehicleView = vehicleView;
             VehicleReference = vehicleReference;
 
@@ -36,6 +34,9 @@ namespace VehicleOrganizer.DesktopApp.Panels
 
             labelInsuranceConclusion.Text = _vehicleView.InsuranceConclusion;
             labelInsuranceTermination.Text = _vehicleView.InsuranceTermination;
+
+            labelLastTechnicalReview.Text = _vehicleView.LastTechnicalReview;
+            labelNextTechnicalReview.Text = _vehicleView.NextTechnicalReview;
         }
 
         private void buttonUpdateMileage_Click(object sender, EventArgs e)

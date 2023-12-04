@@ -25,6 +25,8 @@ namespace VehicleOrganizer.Core.Config
                     .ForMember(dest => dest.RegistrationDate, opt => opt.MapFrom(src => src.RegistrationDate.ToShortDateString()))
                     .ForMember(dest => dest.InsuranceConclusion, opt => opt.MapFrom(src => src.InsuranceConclusion.ToShortDateString()))
                     .ForMember(dest => dest.InsuranceTermination, opt => opt.MapFrom(src => src.InsuranceTermination.ToShortDateString()))
+                    .ForMember(dest => dest.LastTechnicalReview, opt => opt.MapFrom(src => src.LastTechnicalReview.ToShortDateString()))
+                    .ForMember(dest => dest.NextTechnicalReview, opt => opt.MapFrom(src => src.NextTechnicalReview.ToShortDateString()))
                     .ForMember(dest => dest.LatestMileage, opt => opt.MapFrom(src => src.LatestMileage + " km"))
                     .ForMember(dest => dest.DaysToInsuranceExpires, opt => opt.MapFrom(src => src.DaysToInsuranceExpires(DateTime.Now.Date) + " dni"))
                     .ForMember(dest => dest.DaysToNextTechnicalReview, opt => opt.MapFrom(src => src.DaysToInsuranceExpires(DateTime.Now.Date) + " dni"))
