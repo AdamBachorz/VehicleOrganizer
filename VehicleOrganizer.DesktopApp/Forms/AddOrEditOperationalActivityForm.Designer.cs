@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            buttonAddOrEditOperationalActivity = new Button();
+            buttonAddOrUpdate = new Button();
             label1 = new Label();
             textBoxName = new TextBox();
             groupBoxDateOperated = new GroupBox();
@@ -52,15 +52,15 @@
             groupBoxMileageOperated.SuspendLayout();
             SuspendLayout();
             // 
-            // buttonAddOrEditOperationalActivity
+            // buttonAddOrUpdate
             // 
-            buttonAddOrEditOperationalActivity.Location = new Point(158, 313);
-            buttonAddOrEditOperationalActivity.Name = "buttonAddOrEditOperationalActivity";
-            buttonAddOrEditOperationalActivity.Size = new Size(260, 23);
-            buttonAddOrEditOperationalActivity.TabIndex = 0;
-            buttonAddOrEditOperationalActivity.Text = "Zaktualizuj dane";
-            buttonAddOrEditOperationalActivity.UseVisualStyleBackColor = true;
-            buttonAddOrEditOperationalActivity.Click += buttonAddOrEditOperationalActivity_Click;
+            buttonAddOrUpdate.Location = new Point(158, 313);
+            buttonAddOrUpdate.Name = "buttonAddOrUpdate";
+            buttonAddOrUpdate.Size = new Size(260, 23);
+            buttonAddOrUpdate.TabIndex = 0;
+            buttonAddOrUpdate.Text = "Zaktualizuj dane";
+            buttonAddOrUpdate.UseVisualStyleBackColor = true;
+            buttonAddOrUpdate.Click += buttonAddOrAddOrUpdate_Click;
             // 
             // label1
             // 
@@ -249,7 +249,7 @@
             Controls.Add(groupBoxDateOperated);
             Controls.Add(textBoxName);
             Controls.Add(label1);
-            Controls.Add(buttonAddOrEditOperationalActivity);
+            Controls.Add(buttonAddOrUpdate);
             Name = "AddOrEditOperationalActivityForm";
             Text = "AddOrEditOperationalActivityForm";
             groupBoxDateOperated.ResumeLayout(false);
@@ -263,7 +263,7 @@
 
         #endregion
 
-        private Button buttonAddOrEditOperationalActivity;
+        private Button buttonAddOrUpdate;
         private Label label1;
         private TextBox textBoxName;
         private GroupBox groupBoxDateOperated;

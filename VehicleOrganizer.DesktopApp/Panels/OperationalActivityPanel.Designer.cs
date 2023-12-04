@@ -35,6 +35,7 @@
             label3 = new Label();
             buttonGoBack = new Button();
             checkBoxDebugMode = new CheckBox();
+            label4 = new Label();
             SuspendLayout();
             // 
             // flowLayoutPanelActivities
@@ -60,7 +61,7 @@
             label1.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
             label1.Location = new Point(27, 55);
             label1.Name = "label1";
-            label1.Size = new Size(222, 26);
+            label1.Size = new Size(152, 26);
             label1.TabIndex = 2;
             label1.Text = "Nazwa";
             label1.TextAlign = ContentAlignment.MiddleCenter;
@@ -68,9 +69,9 @@
             // label2
             // 
             label2.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            label2.Location = new Point(642, 55);
+            label2.Location = new Point(409, 55);
             label2.Name = "label2";
-            label2.Size = new Size(310, 26);
+            label2.Size = new Size(528, 26);
             label2.TabIndex = 3;
             label2.Text = "Podsumowanie";
             label2.TextAlign = ContentAlignment.MiddleCenter;
@@ -78,9 +79,9 @@
             // label3
             // 
             label3.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            label3.Location = new Point(240, 55);
+            label3.Location = new Point(185, 55);
             label3.Name = "label3";
-            label3.Size = new Size(299, 26);
+            label3.Size = new Size(218, 26);
             label3.TabIndex = 4;
             label3.Text = "Ostatnia operacja (data lub km)";
             label3.TextAlign = ContentAlignment.MiddleCenter;
@@ -107,10 +108,21 @@
             checkBoxDebugMode.Text = "DEBUG MODE";
             checkBoxDebugMode.UseVisualStyleBackColor = true;
             // 
+            // label4
+            // 
+            label4.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            label4.Location = new Point(943, 55);
+            label4.Name = "label4";
+            label4.Size = new Size(308, 26);
+            label4.TabIndex = 7;
+            label4.Text = "Operacje";
+            label4.TextAlign = ContentAlignment.MiddleCenter;
+            // 
             // OperationalActivityPanel
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            Controls.Add(label4);
             Controls.Add(checkBoxDebugMode);
             Controls.Add(buttonGoBack);
             Controls.Add(label3);
@@ -133,5 +145,6 @@
         private Label label3;
         private Button buttonGoBack;
         private CheckBox checkBoxDebugMode;
+        private Label label4;
     }
 }

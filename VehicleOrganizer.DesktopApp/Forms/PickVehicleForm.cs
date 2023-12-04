@@ -35,7 +35,7 @@ namespace VehicleOrganizer.DesktopApp.Forms
             var selectedVehicle = _vehicles[comboBoxVehicles.SelectedIndex];
             var vehicleView = _mapper.Map<VehicleView>(selectedVehicle);
             Close();
-            _mainForm.PlacePanel(new VehiclePanel(_mainForm, vehicleView, selectedVehicle));
+            _mainForm.PlacePanel(new VehiclePanel(vehicleView, selectedVehicle));
         }
 
         private void buttonAddNewVehicle_Click(object sender, EventArgs e)

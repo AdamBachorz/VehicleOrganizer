@@ -22,7 +22,6 @@ namespace VehicleOrganizer.DesktopApp.Forms
         private OperationalActivityPanel _operationalActivityPanel;
         private OperationalActivityControl _operationalActivityControl;
 
-        
         private bool _isEditMode;
         private Vehicle _vehicle;
 
@@ -43,7 +42,7 @@ namespace VehicleOrganizer.DesktopApp.Forms
             checkBoxDebugMode.Checked = CommonPool.IsDebugMode;
         }
 
-        public void Init(OperationalActivityPanel operationalActivityPanel, OperationalActivityControl operationalActivityControl, 
+        public void Init(OperationalActivityPanel operationalActivityPanel, OperationalActivityControl operationalActivityControl,
             OperationalActivity operationalActivity, Vehicle vehicle)
         {
             Model = operationalActivity;
@@ -53,7 +52,7 @@ namespace VehicleOrganizer.DesktopApp.Forms
             _vehicle = vehicle;
 
             Text = (_isEditMode ? "Edycja" : "Dodawanie") + " czynności związanej z pojazdem";
-            buttonAddOrEditOperationalActivity.Text = _isEditMode ? "Zaktualizuj dane" : "Dodaj czynność";
+            buttonAddOrUpdate.Text = _isEditMode ? "Zaktualizuj dane" : "Dodaj czynność";
             FillUpControls(_isEditMode ? Model : null);
         }
 
@@ -70,7 +69,7 @@ namespace VehicleOrganizer.DesktopApp.Forms
                 Vehicle = _vehicle,
             };
 
-            return result;        
+            return result;
         }
 
         public void SaveChangesToExistingEntity(OperationalActivity newData)
@@ -100,10 +99,10 @@ namespace VehicleOrganizer.DesktopApp.Forms
             }
         }
 
-        private async void buttonAddOrEditOperationalActivity_Click(object sender, EventArgs e)
+        private async void buttonAddOrAddOrUpdate_Click(object sender, EventArgs e)
         {
             var operationalActivity = ApplyModelDataFromControls();
-            
+
             var criteria = new OperationalActivityValidationCriteria
             {
                 ActivityOperationIsNotSet = !radioButtonIsDateOperated.Checked && !radioButtonIsMileageOperated.Checked,
@@ -113,7 +112,7 @@ namespace VehicleOrganizer.DesktopApp.Forms
                                                             ? textBoxMileageWhenPerformed.Text.ToInt() < operationalActivity.Vehicle.LatestMileage : false,
                 MileageStepIsNotDigit = textBoxMileageStep.Text.IsNotDigit(),
                 MileageStepIsNegative = textBoxMileageStep.Text.IsDigit() ? textBoxMileageStep.Text.ToInt() < 0 : false,
-                LastOperationDateIsEarlierThanVehiclePurchaseDate = operationalActivity.IsDateOperated 
+                LastOperationDateIsEarlierThanVehiclePurchaseDate = operationalActivity.IsDateOperated
                                                                   ? dateTimePickerLastOperationDate.Value < operationalActivity.Vehicle.PurchaseDate : false,
 
             };
@@ -136,8 +135,8 @@ namespace VehicleOrganizer.DesktopApp.Forms
             }
             else
             {
-                var justAddedOperationalActivity = !IsDebugMode 
-                    ? await _operationalActivityRepository.AddOperationalActivityForVehicleAsync(_vehicle.Id, operationalActivity) 
+                var justAddedOperationalActivity = !IsDebugMode
+                    ? await _operationalActivityRepository.AddOperationalActivityForVehicleAsync(_vehicle.Id, operationalActivity)
                     : operationalActivity;
 
                 if (IsDebugMode)
@@ -150,7 +149,7 @@ namespace VehicleOrganizer.DesktopApp.Forms
 
             Close();
         }
-        
+
         private void radioButtonIsDateOperated_CheckedChanged(object sender, EventArgs e)
         {
             EnableDateOperatedControls();
