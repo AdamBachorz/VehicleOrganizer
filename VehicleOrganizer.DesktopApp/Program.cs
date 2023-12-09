@@ -52,7 +52,7 @@ namespace VehicleOrganizer.DesktopApp
                 if (vehiclesForUser.Count == 1)
                 {
                     var vehicle = vehiclesForUser.First();
-                    mainForm.PlacePanel(new VehiclePanel(mapper.Map<VehicleView>(vehicle), vehicle));
+                    mainForm.PlacePanel(new VehiclePanel(mapper.Map<VehicleView>(vehicle), vehicle, vehicleRepository));
                 }
 
                 if (vehiclesForUser.Count > 1)

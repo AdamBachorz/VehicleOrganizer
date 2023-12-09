@@ -4,23 +4,26 @@ using VehicleOrganizer.DesktopApp.Panels;
 using VehicleOrganizer.Domain.Abstractions;
 using VehicleOrganizer.Domain.Abstractions.Views;
 using VehicleOrganizer.Infrastructure.Entities;
+using VehicleOrganizer.Infrastructure.Repositories.Interfaces;
 
 namespace VehicleOrganizer.DesktopApp.Forms
 {
     public partial class PickVehicleForm : Form
     {
         private readonly IMapper _mapper;
-      
+        private readonly IVehicleRepository _vehicleRepository;
+
         private readonly AddOrEditVehicleForm _addOrEditVehicleForm;
 
         private MainForm _mainForm;
         private IList<Vehicle> _vehicles;
 
-        public PickVehicleForm(IMapper mapper, AddOrEditVehicleForm addOrEditVehicleForm)
+        public PickVehicleForm(IMapper mapper, AddOrEditVehicleForm addOrEditVehicleForm, IVehicleRepository vehicleRepository)
         {
             InitializeComponent();
             _mapper = mapper;
             _addOrEditVehicleForm = addOrEditVehicleForm;
+            _vehicleRepository = vehicleRepository;
         }
 
         public void Init(MainForm mainForm, IList<Vehicle> vehicles)
@@ -35,7 +38,7 @@ namespace VehicleOrganizer.DesktopApp.Forms
             var selectedVehicle = _vehicles[comboBoxVehicles.SelectedIndex];
             var vehicleView = _mapper.Map<VehicleView>(selectedVehicle);
             Close();
-            _mainForm.PlacePanel(new VehiclePanel(vehicleView, selectedVehicle));
+            _mainForm.PlacePanel(new VehiclePanel(vehicleView, selectedVehicle, _vehicleRepository));
         }
 
         private void buttonAddNewVehicle_Click(object sender, EventArgs e)

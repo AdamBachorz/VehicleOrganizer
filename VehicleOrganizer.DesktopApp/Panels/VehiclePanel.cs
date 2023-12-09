@@ -1,16 +1,19 @@
 ﻿using VehicleOrganizer.DesktopApp.Forms;
 using VehicleOrganizer.Domain.Abstractions.Views;
 using VehicleOrganizer.Infrastructure.Entities;
+using VehicleOrganizer.Infrastructure.Repositories.Interfaces;
 
 namespace VehicleOrganizer.DesktopApp.Panels
 {
     public partial class VehiclePanel : UserControl
     {
+        private readonly IVehicleRepository _vehicleRepository;
+
         private VehicleView _vehicleView;
 
         public Vehicle VehicleReference { get; private set; }
 
-        public VehiclePanel(VehicleView vehicleView, Vehicle vehicleReference)
+        public VehiclePanel(VehicleView vehicleView, Vehicle vehicleReference, IVehicleRepository vehicleRepository)
         {
             InitializeComponent();
             _vehicleView = vehicleView;
@@ -21,6 +24,7 @@ namespace VehicleOrganizer.DesktopApp.Panels
                 buttonUpdateMileage.Enabled = false;
             }
             FillUpControls();
+            _vehicleRepository = vehicleRepository;
         }
 
         private void FillUpControls()
@@ -41,13 +45,22 @@ namespace VehicleOrganizer.DesktopApp.Panels
 
         private void buttonUpdateMileage_Click(object sender, EventArgs e)
         {
-
+            
         }
 
         private void buttonUpdateInsurance_Click(object sender, EventArgs e)
         {
-
+            new DatePickForm(pickedDate => {
+                
+            }).ShowDialog();
         }
 
+        private void buttonUpdateTechnicalReview_Click(object sender, EventArgs e)
+        {
+            new DatePickForm(pickedDate => {
+                
+
+            }).ShowDialog();
+        }
     }
 }

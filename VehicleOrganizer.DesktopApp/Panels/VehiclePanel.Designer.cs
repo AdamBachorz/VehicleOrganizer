@@ -62,7 +62,7 @@
             // 
             // labelVehicleName
             // 
-            labelVehicleName.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point);
+            labelVehicleName.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold);
             labelVehicleName.Location = new Point(14, 11);
             labelVehicleName.Name = "labelVehicleName";
             labelVehicleName.Size = new Size(325, 36);
@@ -85,7 +85,7 @@
             // 
             labelOilType.AutoSize = true;
             labelOilType.Dock = DockStyle.Fill;
-            labelOilType.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            labelOilType.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             labelOilType.Location = new Point(165, 29);
             labelOilType.Name = "labelOilType";
             labelOilType.Size = new Size(157, 29);
@@ -97,7 +97,7 @@
             // 
             labelLatestMileage.AutoSize = true;
             labelLatestMileage.Dock = DockStyle.Fill;
-            labelLatestMileage.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            labelLatestMileage.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             labelLatestMileage.Location = new Point(165, 58);
             labelLatestMileage.Name = "labelLatestMileage";
             labelLatestMileage.Size = new Size(157, 29);
@@ -152,7 +152,7 @@
             // 
             labelRegistrationDate.AutoSize = true;
             labelRegistrationDate.Dock = DockStyle.Fill;
-            labelRegistrationDate.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            labelRegistrationDate.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             labelRegistrationDate.Location = new Point(165, 116);
             labelRegistrationDate.Name = "labelRegistrationDate";
             labelRegistrationDate.Size = new Size(157, 29);
@@ -164,7 +164,7 @@
             // 
             labelPruchaseDate.AutoSize = true;
             labelPruchaseDate.Dock = DockStyle.Fill;
-            labelPruchaseDate.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            labelPruchaseDate.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             labelPruchaseDate.Location = new Point(165, 87);
             labelPruchaseDate.Name = "labelPruchaseDate";
             labelPruchaseDate.Size = new Size(157, 29);
@@ -202,7 +202,7 @@
             // 
             labelYearOfProduction.AutoSize = true;
             labelYearOfProduction.Dock = DockStyle.Fill;
-            labelYearOfProduction.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            labelYearOfProduction.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             labelYearOfProduction.Location = new Point(165, 0);
             labelYearOfProduction.Name = "labelYearOfProduction";
             labelYearOfProduction.Size = new Size(157, 29);
@@ -242,7 +242,7 @@
             // 
             labelInsuranceTermination.AutoSize = true;
             labelInsuranceTermination.Dock = DockStyle.Fill;
-            labelInsuranceTermination.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            labelInsuranceTermination.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             labelInsuranceTermination.Location = new Point(103, 29);
             labelInsuranceTermination.Name = "labelInsuranceTermination";
             labelInsuranceTermination.Size = new Size(95, 29);
@@ -254,7 +254,7 @@
             // 
             labelInsuranceConclusion.AutoSize = true;
             labelInsuranceConclusion.Dock = DockStyle.Fill;
-            labelInsuranceConclusion.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            labelInsuranceConclusion.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             labelInsuranceConclusion.Location = new Point(103, 0);
             labelInsuranceConclusion.Name = "labelInsuranceConclusion";
             labelInsuranceConclusion.Size = new Size(95, 29);
@@ -286,7 +286,7 @@
             // 
             // label8
             // 
-            label8.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            label8.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             label8.Location = new Point(365, 20);
             label8.Name = "label8";
             label8.Size = new Size(201, 20);
@@ -312,10 +312,11 @@
             buttonUpdateTechnicalReview.TabIndex = 16;
             buttonUpdateTechnicalReview.Text = "Zaktualizuj przegląd";
             buttonUpdateTechnicalReview.UseVisualStyleBackColor = true;
+            buttonUpdateTechnicalReview.Click += buttonUpdateTechnicalReview_Click;
             // 
             // label9
             // 
-            label9.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            label9.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             label9.Location = new Point(601, 20);
             label9.Name = "label9";
             label9.Size = new Size(201, 20);
@@ -344,7 +345,7 @@
             // 
             labelNextTechnicalReview.AutoSize = true;
             labelNextTechnicalReview.Dock = DockStyle.Fill;
-            labelNextTechnicalReview.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            labelNextTechnicalReview.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             labelNextTechnicalReview.Location = new Point(103, 29);
             labelNextTechnicalReview.Name = "labelNextTechnicalReview";
             labelNextTechnicalReview.Size = new Size(95, 29);
@@ -356,7 +357,7 @@
             // 
             labelLastTechnicalReview.AutoSize = true;
             labelLastTechnicalReview.Dock = DockStyle.Fill;
-            labelLastTechnicalReview.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            labelLastTechnicalReview.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             labelLastTechnicalReview.Location = new Point(103, 0);
             labelLastTechnicalReview.Name = "labelLastTechnicalReview";
             labelLastTechnicalReview.Size = new Size(95, 29);
