@@ -30,7 +30,7 @@ namespace VehicleOrganizer.DesktopApp.Panels
             _operationalActivityRepository = operationalActivityRepository;
             _addOrEditOperationalActivityForm = addOrEditOperationalActivityForm;
 
-            checkBoxDebugMode.Visible = checkBoxDebugMode.Enabled = EnvUtils.GetValueDependingOnEnvironment(true, false);
+            checkBoxDebugMode.Visible = checkBoxDebugMode.Enabled = EnvUtils.IsDev();
             checkBoxDebugMode.Checked = CommonPool.IsDebugMode;
         }
 

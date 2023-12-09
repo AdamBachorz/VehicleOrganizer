@@ -37,7 +37,7 @@ namespace VehicleOrganizer.DesktopApp.Forms
             _vehicleRepository = vehicleRepository;
             _mapper = mapper;
 
-            checkBoxDebugMode.Visible = checkBoxDebugMode.Enabled = EnvUtils.GetValueDependingOnEnvironment(true, false);
+            checkBoxDebugMode.Visible = checkBoxDebugMode.Enabled = EnvUtils.IsDev();
             checkBoxDebugMode.Checked = CommonPool.IsDebugMode;
             comboBoxType.LoadWithEnums<VehicleType>(useEnumDescriptions: true, autoPickFirstItem: true);
             numericUpDownYearOfProduction.Maximum = numericUpDownYearOfProduction.Value = DateTime.Now.Year;
