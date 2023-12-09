@@ -8,6 +8,7 @@ namespace VehicleOrganizer.Infrastructure.Entities
     {
         public string Name { get; set; }
         public Vehicle Vehicle { get; set; }
+        [Column(TypeName = "datetime")]
         public DateTime LastOperationDate { get; set; } = DateTime.Now.Date;
         public int MileageWhenPerformed { get; set; }
         public bool IsDateOperated { get; set; }
@@ -21,10 +22,11 @@ namespace VehicleOrganizer.Infrastructure.Entities
         /// How many years can pass to the next this type operation 
         /// </summary>
         public int YearsStep { get; set; }
-        
+
         /// <summary>
         /// Date when last reminder was send/announced
         /// </summary>
+        [Column(TypeName = "datetime")]
         public DateTime? ReminderDate { get; set; }
 
         [NotMapped]

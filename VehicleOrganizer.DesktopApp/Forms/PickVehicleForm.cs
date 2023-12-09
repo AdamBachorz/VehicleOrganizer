@@ -10,22 +10,22 @@ namespace VehicleOrganizer.DesktopApp.Forms
     public partial class PickVehicleForm : Form
     {
         private readonly IMapper _mapper;
-
-        private readonly MainForm _mainForm;
+      
         private readonly AddOrEditVehicleForm _addOrEditVehicleForm;
 
+        private MainForm _mainForm;
         private IList<Vehicle> _vehicles;
 
-        public PickVehicleForm(IMapper mapper, AddOrEditVehicleForm addOrEditVehicleForm, MainForm mainForm)
+        public PickVehicleForm(IMapper mapper, AddOrEditVehicleForm addOrEditVehicleForm)
         {
             InitializeComponent();
             _mapper = mapper;
             _addOrEditVehicleForm = addOrEditVehicleForm;
-            _mainForm = mainForm;
         }
 
-        public void Init(IList<Vehicle> vehicles)
+        public void Init(MainForm mainForm, IList<Vehicle> vehicles)
         {
+            _mainForm = mainForm;
             _vehicles = vehicles;
             comboBoxVehicles.LoadData(vehicles, v => v.Name + (v.IsSold ? $" {Codes.VehicleSoldIndicator}" : string.Empty));
         }

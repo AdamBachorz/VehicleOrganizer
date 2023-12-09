@@ -120,7 +120,7 @@
             // toolStripMenuItemOpenAdminTools
             // 
             toolStripMenuItemOpenAdminTools.Name = "toolStripMenuItemOpenAdminTools";
-            toolStripMenuItemOpenAdminTools.Size = new Size(180, 22);
+            toolStripMenuItemOpenAdminTools.Size = new Size(148, 22);
             toolStripMenuItemOpenAdminTools.Text = "Okno Admina";
             toolStripMenuItemOpenAdminTools.Click += toolStripMenuItemOpenAdminTools_Click;
             // 
@@ -137,6 +137,7 @@
             Name = "MainForm";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "MainForm";
+            Load += MainForm_Load;
             tableLayoutPanel1.ResumeLayout(false);
             tableLayoutPanel1.PerformLayout();
             menuStrip.ResumeLayout(false);

@@ -7,7 +7,7 @@ using VehicleOrganizer.Domain.Abstractions;
 
 namespace VehicleOrganizer.Infrastructure.Entities
 {
-    public class User : Entity<string>
+    public class User : Entity<Guid>
     {
         public bool IsActive { get; set; }
         public string Name { get; set; }

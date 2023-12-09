@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace VehicleOrganizer.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class Init : Migration
+    public partial class MSSQL_Migration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -15,10 +15,11 @@ namespace VehicleOrganizer.Infrastructure.Migrations
                 name: "User",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Name = table.Column<string>(type: "TEXT", nullable: false),
-                    Email = table.Column<string>(type: "TEXT", nullable: false)
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ReferenceCode = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -29,14 +30,20 @@ namespace VehicleOrganizer.Infrastructure.Migrations
                 name: "Vehicles",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Name = table.Column<string>(type: "TEXT", nullable: false),
-                    VehicleType = table.Column<int>(type: "INTEGER", nullable: false),
-                    OilType = table.Column<string>(type: "TEXT", nullable: false),
-                    InsuranceConclusion = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    InsuranceTermination = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    UserId = table.Column<int>(type: "INTEGER", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    YearOfProduction = table.Column<int>(type: "int", nullable: false),
+                    PurchaseDate = table.Column<DateTime>(type: "datetime", nullable: false),
+                    RegistrationDate = table.Column<DateTime>(type: "datetime", nullable: false),
+                    VehicleType = table.Column<int>(type: "int", nullable: false),
+                    OilType = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    InsuranceConclusion = table.Column<DateTime>(type: "datetime", nullable: false),
+                    InsuranceTermination = table.Column<DateTime>(type: "datetime", nullable: false),
+                    LastTechnicalReview = table.Column<DateTime>(type: "datetime", nullable: false),
+                    NextTechnicalReview = table.Column<DateTime>(type: "datetime", nullable: false),
+                    SaleDate = table.Column<DateTime>(type: "datetime", nullable: true),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -53,11 +60,11 @@ namespace VehicleOrganizer.Infrastructure.Migrations
                 name: "MileageHistories",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Mileage = table.Column<int>(type: "INTEGER", nullable: false),
-                    AddDate = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    VehicleId = table.Column<int>(type: "INTEGER", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Mileage = table.Column<int>(type: "int", nullable: false),
+                    AddDate = table.Column<DateTime>(type: "datetime", nullable: false),
+                    VehicleId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -74,15 +81,16 @@ namespace VehicleOrganizer.Infrastructure.Migrations
                 name: "OperationalActivities",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Name = table.Column<string>(type: "TEXT", nullable: false),
-                    VehicleId = table.Column<int>(type: "INTEGER", nullable: false),
-                    IsDateOperated = table.Column<bool>(type: "INTEGER", nullable: false),
-                    MileageStep = table.Column<int>(type: "INTEGER", nullable: false),
-                    YearsStep = table.Column<int>(type: "INTEGER", nullable: false),
-                    MileageWhenPerformed = table.Column<int>(type: "INTEGER", nullable: false),
-                    LastOperationDate = table.Column<DateTime>(type: "TEXT", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    VehicleId = table.Column<int>(type: "int", nullable: false),
+                    LastOperationDate = table.Column<DateTime>(type: "datetime", nullable: false),
+                    MileageWhenPerformed = table.Column<int>(type: "int", nullable: false),
+                    IsDateOperated = table.Column<bool>(type: "bit", nullable: false),
+                    MileageStep = table.Column<int>(type: "int", nullable: false),
+                    YearsStep = table.Column<int>(type: "int", nullable: false),
+                    ReminderDate = table.Column<DateTime>(type: "datetime", nullable: true)
                 },
                 constraints: table =>
                 {

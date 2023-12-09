@@ -61,8 +61,8 @@ namespace VehicleOrganizer.Infrastructure.Tests.Repositories
 
             Assert.Multiple(() =>
             {
-                Assert.That(newUser.Id, Is.Not.Null.Or.Empty);
-                Assert.That(existingUser.Id, Is.Not.Null.Or.Empty);
+                Assert.That(newUser.Id.ToString(), Is.Not.Null.Or.Empty);
+                Assert.That(existingUser.Id.ToString(), Is.Not.Null.Or.Empty);
                 Assert.That(newUser.Id, Is.Not.EqualTo(oldIdValue));
                 Assert.That(allUsers, Has.Count.EqualTo(2));
             });

@@ -1,24 +1,38 @@
-﻿using VehicleOrganizer.DesktopApp.Panels;
+﻿using VehicleOrganizer.Core.Services.Interfaces;
+using VehicleOrganizer.DesktopApp.Panels;
 using VehicleOrganizer.Infrastructure.Entities;
+using VehicleOrganizer.Infrastructure.Repositories.Interfaces;
 
 namespace VehicleOrganizer.DesktopApp.Forms
 {
     public partial class MainForm : Form
     {
+        private readonly IVehicleRepository _vehicleRepository;
+        private readonly IBackgroundActionInvokeService _backgroundActionInvokeService;
+
         private readonly AddOrEditVehicleForm _addOrEditVehicleForm;
         private readonly AdminToolsForm _adminToolsForm;
         private readonly OperationalActivityPanel _operationalActivityPanel;
+        private readonly PickVehicleForm _pickVehicleForm;
 
         private Control _currentPanel;
 
-        public MainForm(AddOrEditVehicleForm addOrEditVehicleForm, AdminToolsForm adminToolsForm, OperationalActivityPanel operationActivityPanel)
+        public MainForm(IVehicleRepository vehicleRepository, AddOrEditVehicleForm addOrEditVehicleForm, AdminToolsForm adminToolsForm,
+            OperationalActivityPanel operationActivityPanel, PickVehicleForm pickVehicleForm, IBackgroundActionInvokeService backgroundActionInvokeService)
         {
             InitializeComponent();
+            _vehicleRepository = vehicleRepository;
             _addOrEditVehicleForm = addOrEditVehicleForm;
             _adminToolsForm = adminToolsForm;
+            _pickVehicleForm = pickVehicleForm;
             _operationalActivityPanel = operationActivityPanel;
 
             UpdateToolStrips();
+            _backgroundActionInvokeService = backgroundActionInvokeService;
+        }
+        private async void MainForm_Load(object sender, EventArgs e)
+        {
+            await _backgroundActionInvokeService.InvokeAllAsync();
         }
 
         public void PlacePanel(Control control) => PlacePanel(mainPanel, control);
@@ -29,9 +43,26 @@ namespace VehicleOrganizer.DesktopApp.Forms
             _addOrEditVehicleForm.ShowDialog();
         }
 
-        private void toolStripMenuItemSelectVehicle_Click(object sender, EventArgs e)
+        private async void toolStripMenuItemSelectVehicle_Click(object sender, EventArgs e)
         {
-            
+            var vehiclesForUser = await _vehicleRepository.GetVehiclesForUserAsync(User.Default, includeSold: true);
+
+            if (vehiclesForUser.Count > 1)
+            {
+                _pickVehicleForm.Init(this, vehiclesForUser);
+                _pickVehicleForm.ShowDialog();
+            }
+            else
+            {
+                //Vehicle currentReference = null;
+                //if (_currentPanel is VehiclePanel vp)
+                //{
+                //    currentReference = vp.VehicleReference;
+                //}
+
+                //var innerText = vehiclesForUser.First().Id
+                //var dialogResult = MessageBox.Show("Aktualnie nie posiadasz żadnego innego", "Dodawanie nowego pojazdu", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            }
         }
 
         private void PlacePanel(Control baseControl, Control control)
@@ -62,5 +93,6 @@ namespace VehicleOrganizer.DesktopApp.Forms
         {
             _adminToolsForm.ShowDialog();
         }
+
     }
 }

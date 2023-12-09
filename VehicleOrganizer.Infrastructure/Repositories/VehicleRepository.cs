@@ -41,13 +41,13 @@ namespace VehicleOrganizer.Infrastructure.Repositories
 
         public async Task<IList<Vehicle>> GetVehiclesForUserAsync(User user, bool includeSold = false)
         {
-            var query = _db.Vehicles.Where(v => v.User.Id == user.Id);
+            var query = _db.Vehicles.Include(v => v.MileageHistory).Where(v => v.User.Id == user.Id);
 
             if (!includeSold)
             {
                 query = query.Where(v => !v.SaleDate.HasValue);
             }
-
+            
             return await query.OrderBy(v => v.PurchaseDate).ToListAsync();
         }
 

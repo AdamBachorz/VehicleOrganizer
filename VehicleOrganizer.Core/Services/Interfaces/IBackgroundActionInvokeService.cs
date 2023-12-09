@@ -1,7 +1,4 @@
-﻿using VehicleOrganizer.Infrastructure.Entities;
-using VehicleOrganizer.Infrastructure.Repositories;
-
-namespace VehicleOrganizer.Core.Services.Interfaces
+﻿namespace VehicleOrganizer.Core.Services.Interfaces
 {
     public interface IBackgroundActionInvokeService
     {

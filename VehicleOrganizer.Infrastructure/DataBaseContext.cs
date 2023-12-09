@@ -25,6 +25,7 @@ public class DataBaseContext : BaseDbContext
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         base.OnConfiguring(optionsBuilder);
+        //optionsBuilder.EnableSensitiveDataLogging();
         DbContextUtils.ExplicitConfig(optionsBuilder, EnvUtils.GetValueDependingOnEnvironment(Codes.Files.DevConfig, Codes.Files.ProdConfig));
     }
 

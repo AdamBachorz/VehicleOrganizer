@@ -10,14 +10,21 @@ namespace VehicleOrganizer.Infrastructure.Entities
     {
         public string Name { get; set; }
         public int YearOfProduction { get; set; }
+        [Column(TypeName = "datetime")]
         public DateTime PurchaseDate { get; set; } = DateTime.Now.Date;
+        [Column(TypeName = "datetime")]
         public DateTime RegistrationDate { get; set; } = DateTime.Now.Date;
         public VehicleType VehicleType { get; set; }
         public string OilType { get; set; } = Codes.None;
+        [Column(TypeName = "datetime")] 
         public DateTime InsuranceConclusion { get; set; } = DateTime.Now.Date;
+        [Column(TypeName = "datetime")]
         public DateTime InsuranceTermination { get; set; } = DateTime.Now.Date.AddYears(1);
+        [Column(TypeName = "datetime")]
         public DateTime LastTechnicalReview { get; set; } = DateTime.Now.Date;
+        [Column(TypeName = "datetime")]
         public DateTime NextTechnicalReview { get; set; } = DateTime.Now.Date.AddYears(1);
+        [Column(TypeName = "datetime")]
         public DateTime? SaleDate { get; set; } = null;
         public User User { get; set; } = User.Default;
         public IList<MileageHistory> MileageHistory { get; set; }

@@ -8,6 +8,8 @@ using BachorzLibrary.Common.Extensions;
 using VehicleOrganizer.DesktopApp.Panels;
 using BachorzLibrary.DAL.DotNetSix.EntityFrameworkCore;
 using VehicleOrganizer.Core;
+using AutoMapper;
+using VehicleOrganizer.Domain.Abstractions.Views;
 
 namespace VehicleOrganizer.DesktopApp
 {
@@ -30,11 +32,9 @@ namespace VehicleOrganizer.DesktopApp
             using (ServiceProvider serviceProvider = service.BuildServiceProvider())
             {
                 var config = serviceProvider.GetRequiredService<IEFCCustomConfig>();
+                var mapper = serviceProvider.GetRequiredService<IMapper>();
                 CommonPool.IsDebugMode = Convert.ToBoolean(config.ValuesBag["DebugMode"]);
                 var vehicleRepository = serviceProvider.GetRequiredService<IVehicleRepository>();
-                var backgroundActionInvokeService = serviceProvider.GetRequiredService<IBackgroundActionInvokeService>();
-
-                await backgroundActionInvokeService.InvokeAllAsync();
 
                 var vehiclesForUser = await vehicleRepository.GetVehiclesForUserAsync(User.Default, includeSold: true);
                 var userHasVehicle = vehiclesForUser.IsNotNullOrEmpty();
@@ -48,10 +48,17 @@ namespace VehicleOrganizer.DesktopApp
                     addVehicleForm.Init(mainForm, vehicle: null);
                     addVehicleForm.ShowDialog();
                 }
-                else
+
+                if (vehiclesForUser.Count == 1)
+                {
+                    var vehicle = vehiclesForUser.First();
+                    mainForm.PlacePanel(new VehiclePanel(mapper.Map<VehicleView>(vehicle), vehicle));
+                }
+
+                if (vehiclesForUser.Count > 1)
                 {
                     var pickVehicleForm = serviceProvider.GetRequiredService<PickVehicleForm>();
-                    pickVehicleForm.Init(vehiclesForUser);
+                    pickVehicleForm.Init(mainForm, vehiclesForUser);
                     pickVehicleForm.ShowDialog();
                 }
 
