@@ -143,7 +143,7 @@ namespace VehicleOrganizer.DesktopApp.Forms
                 }
                 view = _mapper.Map<VehicleView>(Model);
 
-                _mainForm.PlacePanel(new VehiclePanel(view, Model, _vehicleRepository));
+                _mainForm.PlacePanel(new VehiclePanel(Model, _vehicleRepository, _mapper));
             }
             else
             {
@@ -164,7 +164,7 @@ namespace VehicleOrganizer.DesktopApp.Forms
                 }
 
                 view = _mapper.Map<VehicleView>(justAddedVehicle);
-                _mainForm.PlacePanel(new VehiclePanel(view, justAddedVehicle, _vehicleRepository));
+                _mainForm.PlacePanel(new VehiclePanel(justAddedVehicle, _vehicleRepository, _mapper));
             }
 
             Dispose();

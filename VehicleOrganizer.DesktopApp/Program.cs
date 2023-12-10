@@ -3,13 +3,11 @@ using VehicleOrganizer.DesktopApp.Forms;
 using VehicleOrganizer.Infrastructure.Repositories.Interfaces;
 using VehicleOrganizer.Infrastructure.Entities;
 using VehicleOrganizer.Core.Config;
-using VehicleOrganizer.Core.Services.Interfaces;
 using BachorzLibrary.Common.Extensions;
 using VehicleOrganizer.DesktopApp.Panels;
 using BachorzLibrary.DAL.DotNetSix.EntityFrameworkCore;
 using VehicleOrganizer.Core;
 using AutoMapper;
-using VehicleOrganizer.Domain.Abstractions.Views;
 
 namespace VehicleOrganizer.DesktopApp
 {
@@ -52,7 +50,7 @@ namespace VehicleOrganizer.DesktopApp
                 if (vehiclesForUser.Count == 1)
                 {
                     var vehicle = vehiclesForUser.First();
-                    mainForm.PlacePanel(new VehiclePanel(mapper.Map<VehicleView>(vehicle), vehicle, vehicleRepository));
+                    mainForm.PlacePanel(new VehiclePanel(vehicle, vehicleRepository, mapper));
                 }
 
                 if (vehiclesForUser.Count > 1)

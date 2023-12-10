@@ -1,4 +1,7 @@
-﻿using VehicleOrganizer.DesktopApp.Forms;
+﻿using AutoMapper;
+using BachorzLibrary.Common.Extensions;
+using VehicleOrganizer.DesktopApp.Forms;
+using VehicleOrganizer.Domain.Abstractions.Extensions;
 using VehicleOrganizer.Domain.Abstractions.Views;
 using VehicleOrganizer.Infrastructure.Entities;
 using VehicleOrganizer.Infrastructure.Repositories.Interfaces;
@@ -7,28 +10,31 @@ namespace VehicleOrganizer.DesktopApp.Panels
 {
     public partial class VehiclePanel : UserControl
     {
+        private readonly IMapper _mapper;
         private readonly IVehicleRepository _vehicleRepository;
 
         private VehicleView _vehicleView;
 
         public Vehicle VehicleReference { get; private set; }
 
-        public VehiclePanel(VehicleView vehicleView, Vehicle vehicleReference, IVehicleRepository vehicleRepository)
+        public VehiclePanel(Vehicle vehicleReference, IVehicleRepository vehicleRepository, IMapper mapper)
         {
             InitializeComponent();
-            _vehicleView = vehicleView;
             VehicleReference = vehicleReference;
 
-            if (!vehicleView.IsOilBased)
+            if (!VehicleReference.VehicleType.IsOilBased())
             {
                 buttonUpdateMileage.Enabled = false;
             }
-            FillUpControls();
             _vehicleRepository = vehicleRepository;
+            _mapper = mapper;
+
+            FillUpControls();
         }
 
         private void FillUpControls()
         {
+            _vehicleView = _mapper.Map<VehicleView>(VehicleReference);
             labelVehicleName.Text = _vehicleView.Name;
             labelYearOfProduction.Text = _vehicleView.YearOfProduction;
             labelOilType.Text = _vehicleView.OilType;
@@ -45,7 +51,30 @@ namespace VehicleOrganizer.DesktopApp.Panels
 
         private void buttonUpdateMileage_Click(object sender, EventArgs e)
         {
-            
+            new ValuePickForm(async pickedValue => {
+                
+                if (pickedValue.IsNotDigit())
+                {
+                    MessageBox.Show("Podana wartość musi być liczbą");
+                    return;
+                }
+
+                try
+                {
+                    await _vehicleRepository.UpdateMileageAsync(VehicleReference, pickedValue.ToInt());
+                    FillUpControls();
+                    MessageBox.Show("Pomyślnie zaktualizowano przebieg pojazdu");
+                }
+                catch (ArgumentException aex)
+                {
+                    MessageBox.Show(aex.Message);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.FullMessageWithStackTrace());
+                }
+
+            }).ShowDialog();
         }
 
         private void buttonUpdateInsurance_Click(object sender, EventArgs e)
