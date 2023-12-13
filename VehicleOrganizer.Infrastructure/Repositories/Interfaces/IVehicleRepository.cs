@@ -10,6 +10,8 @@ namespace VehicleOrganizer.Infrastructure.Repositories.Interfaces
         Task<IList<Vehicle>> GetVehiclesForUserAsync(User user, bool includeSold = false);
         Task<Vehicle> AddVehicleAsync(Vehicle vehcle, int mileage);
         Task UpdateMileageAsync(Vehicle vehicle, int mileage);
+        Task UpdateInsuranceDateAsync(Vehicle vehicle, DateTime newInsuranceConclusionDate);
+        Task UpdateTechnicalReviewDateAsync(Vehicle vehicle, DateTime latestReviewDate);
         Task SaleVehicleAsync(Vehicle vehicle, DateTime saleDate);
         Task<IList<Vehicle>> GetVehiclesWithCloseInsuranceTermination(User user, DateTime referenceDate);
         Task<IList<Vehicle>> GetVehiclesWithCloseNextReviewDate(User user, DateTime referenceDate);

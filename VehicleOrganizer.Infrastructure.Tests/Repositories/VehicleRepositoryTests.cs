@@ -1,4 +1,5 @@
 ﻿using VehicleOrganizer.Domain.Abstractions.Enums;
+using VehicleOrganizer.Domain.Abstractions.Exceptions;
 using VehicleOrganizer.Infrastructure.Entities;
 using VehicleOrganizer.Infrastructure.Repositories;
 using VehicleOrganizer.Infrastructure.Repositories.Interfaces;
@@ -171,14 +172,7 @@ namespace VehicleOrganizer.Infrastructure.Tests.Repositories
         [Test]
         public async Task ShouldUpdateMileage_UpdateMileage()
         {
-            var user = _fixture.Create<User>();
-
-            var vehicle = new Vehicle
-            {
-                Name = _fixture.Create<string>(),
-                OilType = _fixture.Create<string>(),
-                User = user
-            };
+            var vehicle = _fixture.Create<Vehicle>();
             vehicle.MileageHistory = new List<MileageHistory> 
             {
                 new MileageHistory{ Vehicle = vehicle, Mileage = 100 }
@@ -204,14 +198,7 @@ namespace VehicleOrganizer.Infrastructure.Tests.Repositories
         [Test]
         public async Task ShouldThrowException_SmallerMileage_UpdateMileage()
         {
-            var user = _fixture.Create<User>();
-
-            var vehicle = new Vehicle
-            {
-                Name = _fixture.Create<string>(),
-                OilType = _fixture.Create<string>(),
-                User = user
-            };
+            var vehicle = _fixture.Create<Vehicle>();
             vehicle.MileageHistory = new List<MileageHistory> 
             {
                 new MileageHistory{ Vehicle = vehicle, Mileage = 100 }
@@ -222,17 +209,89 @@ namespace VehicleOrganizer.Infrastructure.Tests.Repositories
 
             var newMileage = 1;
 
-            Assert.That(() => _sut.UpdateMileageAsync(vehicle, newMileage), Throws.ArgumentException);
+            Assert.That(() => _sut.UpdateMileageAsync(vehicle, newMileage), Throws.InstanceOf<CustomArgumentException>());
+        }
+
+        [Test]
+        public async Task ShouldUpdateInsurance_UpdateInsuranceDate()
+        {
+            var newInsuranceConclusionDate = _fixture.Create<DateTime>();
+            _fixture.Customize<Vehicle>(x => x.With(x => x.InsuranceTermination, newInsuranceConclusionDate.AddMonths(-1)));
+
+            var vehicle = _fixture.Create<Vehicle>();
+
+            await _db.Vehicles.AddAsync(vehicle);
+            await _db.SaveChangesAsync();
+           
+            await _sut.UpdateInsuranceDateAsync(vehicle, newInsuranceConclusionDate);
+
+            var updatedVehicle = _db.Vehicles.FirstOrDefault(x => x.Id == vehicle.Id);
+            Assert.Multiple(() =>
+            {
+                Assert.That(updatedVehicle, Is.Not.Null);
+                Assert.That(updatedVehicle.Id, Is.GreaterThan(0));
+                Assert.That(updatedVehicle.InsuranceConclusion, Is.EqualTo(newInsuranceConclusionDate));
+                Assert.That(updatedVehicle.InsuranceTermination, Is.EqualTo(newInsuranceConclusionDate.AddYears(1)));
+            });
+
+        }
+
+        [Test]
+        public async Task ShouldThrowException_NewInsuranceTerminationDateTooEarly_UpdateInsuranceDate()
+        {
+            var newInsuranceConclusionDate = _fixture.Create<DateTime>();
+            _fixture.Customize<Vehicle>(x => x.With(x => x.InsuranceTermination, newInsuranceConclusionDate.AddYears(2)));
+
+            var vehicle = _fixture.Create<Vehicle>();
+
+            await _db.Vehicles.AddAsync(vehicle);
+            await _db.SaveChangesAsync();
+           
+            Assert.That(() => _sut.UpdateInsuranceDateAsync(vehicle, newInsuranceConclusionDate), Throws.InstanceOf<CustomArgumentException>());
+        }
+
+        [Test]
+        public async Task ShouldUpdateTechnicalReviewDate_UpdateTechnicalReviewDate()
+        {
+            var latestReviewDate = _fixture.Create<DateTime>();
+            _fixture.Customize<Vehicle>(x => x.With(x => x.LastTechnicalReview, latestReviewDate.AddMonths(-1)));
+
+            var vehicle = _fixture.Create<Vehicle>();
+
+            await _db.Vehicles.AddAsync(vehicle);
+            await _db.SaveChangesAsync();
+           
+            await _sut.UpdateTechnicalReviewDateAsync(vehicle, latestReviewDate);
+
+            var updatedVehicle = _db.Vehicles.FirstOrDefault(x => x.Id == vehicle.Id);
+            Assert.Multiple(() =>
+            {
+                Assert.That(updatedVehicle, Is.Not.Null);
+                Assert.That(updatedVehicle.Id, Is.GreaterThan(0));
+                Assert.That(updatedVehicle.LastTechnicalReview, Is.EqualTo(latestReviewDate));
+                Assert.That(updatedVehicle.NextTechnicalReview, Is.EqualTo(latestReviewDate.AddYears(1)));
+            });
+
+        }
+
+        [Test]
+        public async Task ShouldThrowException_NewInsuranceTerminationDateTooEarly_UpdateTechnicalReviewDate()
+        {
+            var latestReviewDate = _fixture.Create<DateTime>();
+            _fixture.Customize<Vehicle>(x => x.With(x => x.LastTechnicalReview, latestReviewDate.AddYears(2)));
+
+            var vehicle = _fixture.Create<Vehicle>();
+
+            await _db.Vehicles.AddAsync(vehicle);
+            await _db.SaveChangesAsync();
+           
+            Assert.That(() => _sut.UpdateTechnicalReviewDateAsync(vehicle, latestReviewDate), Throws.InstanceOf<CustomArgumentException>());
         }
 
         [Test]
         public async Task ShouldSellVehicle_SellVehicle()
         {
-            var vehicle = new Vehicle
-            {
-                Name = _fixture.Create<string>(),
-                OilType = _fixture.Create<string>(),
-            };
+            var vehicle = _fixture.Create<Vehicle>();
             var mileage = _fixture.Create<int>();
             var resultVehicle = await _sut.AddVehicleAsync(vehicle, mileage);
             var saleDate = _fixture.Create<DateTime>();
@@ -259,31 +318,18 @@ namespace VehicleOrganizer.Infrastructure.Tests.Repositories
         {
             var targetUser = _fixture.Create<User>();
             var referenceDate = new DateTime(2024, 5, 5);
-            var vehicles = new List<Vehicle>()
+            var daysAppartValues = new[] { 60, 30, 10 };
+            var currentId = 1;
+            _fixture.Customize<Vehicle>(x => x.With(x => x.User, targetUser).Without(x => x.SaleDate));
+
+            foreach (var daysAdded in daysAppartValues)
             {
-                new Vehicle { Id = 1, Name = _fixture.Create<string>(),
-                    OilType = _fixture.Create<string>(),
-                    VehicleType = _fixture.Create<VehicleType>(),
-                    User = targetUser,
-                    InsuranceTermination = referenceDate.AddDays(60),
-                },
-
-                new Vehicle { Id = 2, Name = _fixture.Create<string>(),
-                    OilType = _fixture.Create<string>(),
-                    VehicleType = _fixture.Create<VehicleType>(),
-                    User = targetUser,
-                    InsuranceTermination = referenceDate.AddDays(30),
-                },
-
-                new Vehicle { Id = 3, Name = _fixture.Create<string>(),
-                    OilType = _fixture.Create<string>(),
-                    VehicleType = _fixture.Create<VehicleType>(),
-                    User = targetUser,
-                    InsuranceTermination = referenceDate.AddDays(10),
-                },
-            };
-            
-            await _db.Vehicles.AddRangeAsync(vehicles);
+                var vehicle = _fixture.Create<Vehicle>();
+                vehicle.Id = currentId++;
+                vehicle.InsuranceTermination = referenceDate.AddDays(daysAdded);
+                await _db.Vehicles.AddAsync(vehicle);
+            }
+                        
             await _db.SaveChangesAsync();
 
             var resultVehicles = await _sut.GetVehiclesWithCloseInsuranceTermination(targetUser, referenceDate);

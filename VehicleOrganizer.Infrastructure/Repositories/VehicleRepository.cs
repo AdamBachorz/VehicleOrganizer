@@ -1,6 +1,7 @@
 ﻿using BachorzLibrary.DAL.DotNetSix.Repositories;
 using Microsoft.EntityFrameworkCore;
 using VehicleOrganizer.Domain.Abstractions;
+using VehicleOrganizer.Domain.Abstractions.Exceptions;
 using VehicleOrganizer.Infrastructure.Entities;
 using VehicleOrganizer.Infrastructure.Repositories.Interfaces;
 
@@ -62,7 +63,7 @@ namespace VehicleOrganizer.Infrastructure.Repositories
 
             if (vehicle.LatestMileage > mileage)
             {
-                throw new ArgumentException("Given mileage is smaller than current mileage");
+                throw new CustomArgumentException("Given mileage is smaller than current mileage");
             }
 
             var mileageHistory = new MileageHistory
@@ -73,6 +74,46 @@ namespace VehicleOrganizer.Infrastructure.Repositories
             };
 
             vehicle.MileageHistory.Add(mileageHistory);
+            await _db.SaveChangesAsync();
+        }
+
+        public async Task UpdateInsuranceDateAsync(Vehicle vehicle, DateTime newInsuranceConclusionDate)
+        {
+            vehicle = await _db.Vehicles.FindAsync(vehicle.Id);
+
+            if (vehicle == null)
+            {
+                throw new ArgumentNullException("Vehicle not found");
+            }
+
+            if (vehicle.InsuranceTermination > newInsuranceConclusionDate)
+            {
+                throw new CustomArgumentException("Date of new insurance cannot be earlier than date of the previous insurance termination");
+            }
+
+            vehicle.InsuranceConclusion = newInsuranceConclusionDate;
+            vehicle.InsuranceTermination = newInsuranceConclusionDate.AddYears(1);
+
+            await _db.SaveChangesAsync();
+        }
+
+        public async Task UpdateTechnicalReviewDateAsync(Vehicle vehicle, DateTime latestReviewDate)
+        {
+            vehicle = await _db.Vehicles.FindAsync(vehicle.Id);
+
+            if (vehicle == null)
+            {
+                throw new ArgumentNullException("Vehicle not found");
+            }
+
+            if (vehicle.LastTechnicalReview > latestReviewDate)
+            {
+                throw new CustomArgumentException("Date of new technical review cannot be earlier than date of the previous review");
+            }
+
+            vehicle.LastTechnicalReview = latestReviewDate;
+            vehicle.NextTechnicalReview = latestReviewDate.AddYears(1);
+
             await _db.SaveChangesAsync();
         }
 
@@ -100,5 +141,6 @@ namespace VehicleOrganizer.Infrastructure.Repositories
             var vehiclesForUser = await GetVehiclesForUserAsync(user);
             return vehiclesForUser.Where(v => v.DaysToNextTechnicalReview(referenceDate) <= Codes.Defaults.DaysToRemindAboutTechnicalReview).ToList();
         }
+
     }
 }
