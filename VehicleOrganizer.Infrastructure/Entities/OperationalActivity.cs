@@ -41,7 +41,24 @@ namespace VehicleOrganizer.Infrastructure.Entities
             ? (int)(referenceDate - ReminderDate.Value).TotalDays 
             : Codes.Defaults.DaysAboveWhichAnotherReminderCanBeSent + 1;
 
-        public string SummaryPrompt(DateTime referenceDate, bool shortVersion = false) => 
-            (!shortVersion ? $"{Name} - " : string.Empty) + $"Pozostało: {ToNextAct(referenceDate)} {(IsDateOperated ? "dni" : "kilometrów")}";
+        public string SummaryPrompt(DateTime referenceDate, bool shortVersion = false)
+        {
+            var prefix = (!shortVersion ? $"{Name} - " : string.Empty);
+            var toNextAct = ToNextAct(referenceDate);
+
+            if (toNextAct == 0)
+            {
+                return prefix + "Pora podjąc działanie !";
+            }
+
+            if (toNextAct > 0)
+            {
+                return prefix + $"Pozostało: {toNextAct} {(IsDateOperated ? "dni" : "kilometrów")}";
+            }
+            else
+            {
+                return prefix + $"Minęło: {Math.Abs(toNextAct)} {(IsDateOperated ? "dni" : "kilometrów")}";
+            }
+        }
     }
 }

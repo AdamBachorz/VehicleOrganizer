@@ -2,12 +2,14 @@
 {
     public partial class DatePickForm : Form
     {
-        Action<DateTime> _onPickedDateAction;
+        private readonly Action<DateTime> _onPickedDateAction;
 
-        public DatePickForm(Action<DateTime> onPickedDateAction)
+        public DatePickForm(string caption, string desctiption, Action<DateTime> onPickedDateAction)
         {
             InitializeComponent();
             _onPickedDateAction = onPickedDateAction;
+            Text = caption;
+            label1.Text = desctiption;
         }
 
         private void buttonPickDate_Click(object sender, EventArgs e)

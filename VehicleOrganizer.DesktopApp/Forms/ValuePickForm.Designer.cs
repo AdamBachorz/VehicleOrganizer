@@ -46,14 +46,14 @@
             // 
             textBox1.Location = new Point(12, 36);
             textBox1.Name = "textBox1";
-            textBox1.Size = new Size(157, 23);
+            textBox1.Size = new Size(224, 23);
             textBox1.TabIndex = 1;
             // 
             // buttonApply
             // 
             buttonApply.Location = new Point(12, 65);
             buttonApply.Name = "buttonApply";
-            buttonApply.Size = new Size(157, 23);
+            buttonApply.Size = new Size(224, 23);
             buttonApply.TabIndex = 2;
             buttonApply.Text = "Zastosuj";
             buttonApply.UseVisualStyleBackColor = true;
@@ -63,7 +63,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(186, 101);
+            ClientSize = new Size(248, 101);
             Controls.Add(buttonApply);
             Controls.Add(textBox1);
             Controls.Add(label1);

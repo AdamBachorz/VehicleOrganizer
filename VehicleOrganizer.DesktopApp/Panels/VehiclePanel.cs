@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BachorzLibrary.Common.Extensions;
 using VehicleOrganizer.DesktopApp.Forms;
+using VehicleOrganizer.Domain.Abstractions.Exceptions;
 using VehicleOrganizer.Domain.Abstractions.Extensions;
 using VehicleOrganizer.Domain.Abstractions.Views;
 using VehicleOrganizer.Infrastructure.Entities;
@@ -51,7 +52,7 @@ namespace VehicleOrganizer.DesktopApp.Panels
 
         private void buttonUpdateMileage_Click(object sender, EventArgs e)
         {
-            new ValuePickForm(async pickedValue => {
+            new ValuePickForm("Aktualizacja przebiegu", "Podaj aktualny przebieg:", async pickedValue => {
                 
                 if (pickedValue.IsNotDigit())
                 {
@@ -65,9 +66,9 @@ namespace VehicleOrganizer.DesktopApp.Panels
                     FillUpControls();
                     MessageBox.Show("Pomyślnie zaktualizowano przebieg pojazdu");
                 }
-                catch (ArgumentException aex)
+                catch (CustomArgumentException caex)
                 {
-                    MessageBox.Show(aex.Message);
+                    MessageBox.Show(caex.Message);
                 }
                 catch (Exception ex)
                 {
@@ -79,15 +80,43 @@ namespace VehicleOrganizer.DesktopApp.Panels
 
         private void buttonUpdateInsurance_Click(object sender, EventArgs e)
         {
-            new DatePickForm(pickedDate => {
-                
+            new DatePickForm("Aktualizacja ubezpieczenia", "Podaj datę zawarcia nowego ubezpieczenia:", async pickedDate => {
+                try
+                {
+                    await _vehicleRepository.UpdateInsuranceDateAsync(VehicleReference, pickedDate);
+                    FillUpControls();
+                    MessageBox.Show("Pomyślnie zaktualizowano dane o ubezpieczeniu");
+                }
+                catch (CustomArgumentException caex)
+                {
+                    MessageBox.Show(caex.Message);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.FullMessageWithStackTrace());
+                }
+
             }).ShowDialog();
         }
 
         private void buttonUpdateTechnicalReview_Click(object sender, EventArgs e)
         {
-            new DatePickForm(pickedDate => {
-                
+            new DatePickForm("Aktualizacja przeglądu", "Podaj datę ostatnio przeprowadzonego przeglądu technicznego:", async pickedDate => {
+
+                try
+                {
+                    await _vehicleRepository.UpdateTechnicalReviewDateAsync(VehicleReference, pickedDate);
+                    FillUpControls();
+                    MessageBox.Show("Pomyślnie zaktualizowano datę przeglądu technicznego");
+                }
+                catch (ArgumentException aex)
+                {
+                    MessageBox.Show(aex.Message);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.FullMessageWithStackTrace());
+                }
 
             }).ShowDialog();
         }

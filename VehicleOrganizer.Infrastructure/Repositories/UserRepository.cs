@@ -13,12 +13,12 @@ namespace VehicleOrganizer.Infrastructure.Repositories
 
         public async Task<IList<User>> GetAllActiveAsync()
         {
-            return await _db.Users.Where(u => u.IsActive).ToListAsync();
+            return await _db.Users.AsNoTrackingWithIdentityResolution().Where(u => u.IsActive).ToListAsync();
         }
 
         public async Task AuthorizeUserAsync(User user, bool refreshUserAsDefault = true)
         {
-            var existingUser = await _db.Users.FirstOrDefaultAsync(u => u.Id.Equals(user.Id));
+            var existingUser = await _db.Users.AsNoTrackingWithIdentityResolution().FirstOrDefaultAsync(u => u.Id.Equals(user.Id));
 
             if (existingUser is null) 
             {

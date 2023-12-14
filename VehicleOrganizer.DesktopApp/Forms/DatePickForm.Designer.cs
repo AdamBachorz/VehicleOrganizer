@@ -35,9 +35,9 @@
             // 
             // buttonPickDate
             // 
-            buttonPickDate.Location = new Point(57, 81);
+            buttonPickDate.Location = new Point(12, 81);
             buttonPickDate.Name = "buttonPickDate";
-            buttonPickDate.Size = new Size(106, 23);
+            buttonPickDate.Size = new Size(380, 23);
             buttonPickDate.TabIndex = 0;
             buttonPickDate.Text = "Wybierz datę";
             buttonPickDate.UseVisualStyleBackColor = true;
@@ -47,7 +47,7 @@
             // 
             dateTimePicker1.Location = new Point(12, 38);
             dateTimePicker1.Name = "dateTimePicker1";
-            dateTimePicker1.Size = new Size(200, 23);
+            dateTimePicker1.Size = new Size(380, 23);
             dateTimePicker1.TabIndex = 1;
             // 
             // label1
@@ -63,7 +63,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(227, 116);
+            ClientSize = new Size(404, 116);
             Controls.Add(label1);
             Controls.Add(dateTimePicker1);
             Controls.Add(buttonPickDate);

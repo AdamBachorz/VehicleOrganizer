@@ -33,7 +33,7 @@ namespace VehicleOrganizer.Infrastructure.Repositories
                     Mileage = mileage 
                 }
             };
-
+            // TODO Fix key duplication
             await _db.Vehicles.AddAsync(vehcle);
             await _db.SaveChangesAsync();
 

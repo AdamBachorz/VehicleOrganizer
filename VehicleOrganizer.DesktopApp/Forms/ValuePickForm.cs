@@ -6,10 +6,12 @@ namespace VehicleOrganizer.DesktopApp.Forms
     {
         private readonly Action<string> _onValuePick;
 
-        public ValuePickForm(Action<string> onValuePick)
+        public ValuePickForm(string caption, string desctiption, Action<string> onValuePick)
         {
             InitializeComponent();
             _onValuePick = onValuePick;
+            Text = caption;
+            label1.Text = desctiption;
         }
 
         private void buttonApply_Click(object sender, EventArgs e)
