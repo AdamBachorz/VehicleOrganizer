@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using BachorzLibrary.Common.Utils;
-using System.Diagnostics;
 using VehicleOrganizer.Core;
 using VehicleOrganizer.DesktopApp.Controls;
 using VehicleOrganizer.DesktopApp.Forms;

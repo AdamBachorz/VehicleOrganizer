@@ -21,6 +21,7 @@ namespace VehicleOrganizer.DesktopApp.Forms
     {
         private readonly IValidator<Vehicle, VehicleValidationCriteria> _validator;
         private readonly IVehicleRepository _vehicleRepository;
+        private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
 
         private MainForm _mainForm;
@@ -30,7 +31,7 @@ namespace VehicleOrganizer.DesktopApp.Forms
         public Vehicle Model { get; set; }
         public bool IsDebugMode => checkBoxDebugMode.Checked;
 
-        public AddOrEditVehicleForm(IValidator<Vehicle, VehicleValidationCriteria> validator, IVehicleRepository vehicleRepository, IMapper mapper)
+        public AddOrEditVehicleForm(IValidator<Vehicle, VehicleValidationCriteria> validator, IVehicleRepository vehicleRepository, IMapper mapper, IUserRepository userRepository)
         {
             InitializeComponent();
             _validator = validator;
@@ -41,6 +42,7 @@ namespace VehicleOrganizer.DesktopApp.Forms
             checkBoxDebugMode.Checked = CommonPool.IsDebugMode;
             comboBoxType.LoadWithEnums<VehicleType>(useEnumDescriptions: true, autoPickFirstItem: true);
             numericUpDownYearOfProduction.Maximum = numericUpDownYearOfProduction.Value = DateTime.Now.Year;
+            _userRepository = userRepository;
         }
 
         public void Init(MainForm mainForm, Vehicle vehicle)
@@ -75,7 +77,7 @@ namespace VehicleOrganizer.DesktopApp.Forms
         {
             return new Vehicle
             {
-                User = User.Default,
+                User = _userRepository.GetDefault(),
                 Name = textBoxName.Text,
                 VehicleType = EnumUtils.ParseEnum<VehicleType>(comboBoxType.SelectedItem.ToString(), isEnumDescription: true),
                 OilType = textBoxOilType.Text,

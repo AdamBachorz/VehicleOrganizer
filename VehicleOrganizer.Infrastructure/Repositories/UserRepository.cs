@@ -11,6 +11,8 @@ namespace VehicleOrganizer.Infrastructure.Repositories
         {
         }
 
+        public User GetDefault() => GetOneById(User.Default.Id);
+
         public async Task<IList<User>> GetAllActiveAsync()
         {
             return await _db.Users.AsNoTrackingWithIdentityResolution().Where(u => u.IsActive).ToListAsync();
@@ -31,5 +33,6 @@ namespace VehicleOrganizer.Infrastructure.Repositories
                 }
             }
         }
+
     }
 }

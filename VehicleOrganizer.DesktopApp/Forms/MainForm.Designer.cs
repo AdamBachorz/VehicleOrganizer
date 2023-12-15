@@ -54,13 +54,13 @@
             tableLayoutPanel1.RowCount = 2;
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 5.33333349F));
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 94.6666641F));
-            tableLayoutPanel1.Size = new Size(1000, 450);
+            tableLayoutPanel1.Size = new Size(1000, 557);
             tableLayoutPanel1.TabIndex = 0;
             // 
             // mainPanel
             // 
             mainPanel.AutoSize = true;
-            mainPanel.Location = new Point(3, 27);
+            mainPanel.Location = new Point(3, 32);
             mainPanel.Name = "mainPanel";
             mainPanel.Size = new Size(0, 0);
             mainPanel.TabIndex = 0;
@@ -129,7 +129,7 @@
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             AutoSize = true;
-            ClientSize = new Size(1000, 450);
+            ClientSize = new Size(1000, 557);
             Controls.Add(tableLayoutPanel1);
             FormBorderStyle = FormBorderStyle.Fixed3D;
             MainMenuStrip = menuStrip;
