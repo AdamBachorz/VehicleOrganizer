@@ -41,6 +41,7 @@
             // flowLayoutPanelActivities
             // 
             flowLayoutPanelActivities.AutoScroll = true;
+            flowLayoutPanelActivities.BorderStyle = BorderStyle.Fixed3D;
             flowLayoutPanelActivities.Location = new Point(27, 84);
             flowLayoutPanelActivities.Name = "flowLayoutPanelActivities";
             flowLayoutPanelActivities.Size = new Size(1224, 430);
@@ -58,7 +59,7 @@
             // 
             // label1
             // 
-            label1.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            label1.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             label1.Location = new Point(27, 55);
             label1.Name = "label1";
             label1.Size = new Size(152, 26);
@@ -68,7 +69,7 @@
             // 
             // label2
             // 
-            label2.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            label2.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             label2.Location = new Point(409, 55);
             label2.Name = "label2";
             label2.Size = new Size(528, 26);
@@ -78,7 +79,7 @@
             // 
             // label3
             // 
-            label3.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            label3.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             label3.Location = new Point(185, 55);
             label3.Name = "label3";
             label3.Size = new Size(218, 26);
@@ -110,7 +111,7 @@
             // 
             // label4
             // 
-            label4.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            label4.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             label4.Location = new Point(943, 55);
             label4.Name = "label4";
             label4.Size = new Size(308, 26);

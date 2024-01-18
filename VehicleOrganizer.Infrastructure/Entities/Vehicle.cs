@@ -40,23 +40,35 @@ namespace VehicleOrganizer.Infrastructure.Entities
         
         public string? InsuranceTerminationPrompt(DateTime referenceDate)
         {
+            var prefix = "Ubezpieczenie";
             var daysToInsuranceTermination = DaysToInsuranceExpires(referenceDate);
             if (daysToInsuranceTermination <= Codes.Defaults.DaysToRemindAboutInsuranceTermination)
             {
+                if (daysToInsuranceTermination == 0)
+                {
+                    return $"{prefix} właśnie wygasło";
+                }
+
                 return daysToInsuranceTermination > 0
-                    ? $"Ubezpieczenie wygasa za {daysToInsuranceTermination} dni"
-                    : $"Ubezpieczenie wygasło {Math.Abs(daysToInsuranceTermination)} dni temu";
+                    ? $"{prefix} wygasa za {daysToInsuranceTermination} dni"
+                    : $"{prefix} wygasło {Math.Abs(daysToInsuranceTermination)} dni temu";
             } else return null;
         }
         
         public string? TechnicalReviewPrompt(DateTime referenceDate)
         {
+            var prefix = "Przegląd techniczny";
             var daysToNextTechnicalReview = DaysToNextTechnicalReview(referenceDate);
             if (daysToNextTechnicalReview <= Codes.Defaults.DaysToRemindAboutTechnicalReview)
             {
+                if (daysToNextTechnicalReview == 0)
+                {
+                    return $"{prefix} właśnie wygasł";
+                }
+
                 return daysToNextTechnicalReview > 0
-                    ? $"Przegląd techniczny wygasa za {daysToNextTechnicalReview} dni"
-                    : $"Przegląd techniczny wygasł {Math.Abs(daysToNextTechnicalReview)} dni temu";
+                    ? $"{prefix} wygasa za {daysToNextTechnicalReview} dni"
+                    : $"{prefix} wygasł {Math.Abs(daysToNextTechnicalReview)} dni temu";
             } else return null;
         }
     }

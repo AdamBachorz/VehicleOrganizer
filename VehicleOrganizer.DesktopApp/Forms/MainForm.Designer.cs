@@ -54,7 +54,7 @@
             tableLayoutPanel1.RowCount = 2;
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 5.33333349F));
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 94.6666641F));
-            tableLayoutPanel1.Size = new Size(1000, 557);
+            tableLayoutPanel1.Size = new Size(1240, 557);
             tableLayoutPanel1.TabIndex = 0;
             // 
             // mainPanel
@@ -71,7 +71,7 @@
             menuStrip.Items.AddRange(new ToolStripItem[] { toolStripMenuOptions, pojazdToolStripMenuItem, toolStripMenuAdmin });
             menuStrip.Location = new Point(0, 0);
             menuStrip.Name = "menuStrip";
-            menuStrip.Size = new Size(1000, 24);
+            menuStrip.Size = new Size(1240, 24);
             menuStrip.TabIndex = 1;
             menuStrip.Text = "menuStrip1";
             // 
@@ -129,14 +129,14 @@
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             AutoSize = true;
-            ClientSize = new Size(1000, 557);
+            ClientSize = new Size(1240, 557);
             Controls.Add(tableLayoutPanel1);
             FormBorderStyle = FormBorderStyle.Fixed3D;
             MainMenuStrip = menuStrip;
-            MaximizeBox = false;
             Name = "MainForm";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "MainForm";
+            WindowState = FormWindowState.Maximized;
             Load += MainForm_Load;
             tableLayoutPanel1.ResumeLayout(false);
             tableLayoutPanel1.PerformLayout();
