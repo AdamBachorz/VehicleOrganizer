@@ -49,7 +49,7 @@ namespace VehicleOrganizer.Core.Config
 
             service.AddEmailSender(settings =>
             {
-                settings.SenderHeader = Codes.AppName;
+                settings.SenderHeader = Codes.AppName + EnvUtils.GetValueDependingOnEnvironment(" [DEV]",  string.Empty);
                 settings.SenderValues = config.ValuesBag["Sender"] as string;
             });
         }

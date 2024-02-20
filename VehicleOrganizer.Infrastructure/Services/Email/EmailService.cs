@@ -120,7 +120,7 @@ namespace VehicleOrganizer.Infrastructure.Services.Email
 
             var emailBody = _htmlHelper.EndWithResult();
 
-            await _emailSender.SendEmailAsync("Przypomnienie o nadchodzących terminach (ubezpieczenie lub przegląd techniczny)", 
+            await _emailSender.SendEmailAsync("Przypomnienie o terminach (ubezpieczenie lub przegląd techniczny)", 
                 emailBody, user.Email, user.Name);
         }
     }
