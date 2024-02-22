@@ -2,8 +2,8 @@
 using VehicleOrganizer.Infrastructure.Entities;
 using Microsoft.EntityFrameworkCore;
 using BachorzLibrary.DAL.DotNetSix.Utils;
-using BachorzLibrary.Common.Utils;
 using VehicleOrganizer.Domain.Abstractions;
+using VehicleOrganizer.Domain.Abstractions.Utils;
 
 namespace VehicleOrganizer.Infrastructure;
 
@@ -26,7 +26,8 @@ public class DataBaseContext : BaseDbContext
     {
         base.OnConfiguring(optionsBuilder);
         //optionsBuilder.EnableSensitiveDataLogging();
-        DbContextUtils.ExplicitConfig(optionsBuilder, EnvUtils.GetValueDependingOnEnvironment(Codes.Files.DevConfig, Codes.Files.ProdConfig));
+        string configFile = EnvUtils.GetValueDependingOnEnvironment(Codes.Files.DevConfig, Codes.Files.ProdConfig);
+        DbContextUtils.ExplicitConfig(optionsBuilder, configFile);
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

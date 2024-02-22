@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
-using BachorzLibrary.Common.Utils;
 using VehicleOrganizer.Core;
 using VehicleOrganizer.DesktopApp.Controls;
 using VehicleOrganizer.DesktopApp.Forms;
 using VehicleOrganizer.DesktopApp.Interfaces;
+using VehicleOrganizer.Domain.Abstractions.Utils;
 using VehicleOrganizer.Infrastructure.Entities;
 using VehicleOrganizer.Infrastructure.Repositories.Interfaces;
 

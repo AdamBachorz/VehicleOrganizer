@@ -1,4 +1,4 @@
-﻿using BachorzLibrary.Common.Utils;
+﻿using VehicleOrganizer.Domain.Abstractions.Utils;
 
 namespace VehicleOrganizer.Core
 {

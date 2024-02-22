@@ -6,6 +6,7 @@
     <Nullable>enable</Nullable>
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
+    <ApplicationIcon>Atyourservice-Service-Categories-Car-Repair.ico</ApplicationIcon>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -17,9 +18,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="BachorzLibrary.Common" Version="0.0.10" />
+    <Content Include="Atyourservice-Service-Categories-Car-Repair.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="BachorzLibrary.Common" Version="0.0.12" />
     <PackageReference Include="BachorzLibrary.DAL" Version="0.0.6" />
-    <PackageReference Include="BachorzLibrary.DAL.DotNetSix" Version="0.0.5" />
+    <PackageReference Include="BachorzLibrary.DAL.DotNetSix" Version="0.0.6" />
     <PackageReference Include="BachorzLibrary.Desktop" Version="1.0.3" />
     <PackageReference Include="BachorzLibrary.Web" Version="0.0.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.0">

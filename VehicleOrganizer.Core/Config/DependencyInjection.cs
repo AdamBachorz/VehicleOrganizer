@@ -1,6 +1,5 @@
 ﻿using BachorzLibrary.Common.Extensions;
 using BachorzLibrary.Common.Tools.Html;
-using BachorzLibrary.Common.Utils;
 using BachorzLibrary.DAL.DotNetSix.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -8,10 +7,10 @@ using Newtonsoft.Json;
 using VehicleOrganizer.Core.Services;
 using VehicleOrganizer.Core.Services.Interfaces;
 using VehicleOrganizer.Domain.Abstractions;
+using VehicleOrganizer.Domain.Abstractions.Utils;
 using VehicleOrganizer.Infrastructure;
 using VehicleOrganizer.Infrastructure.Abstractions.Validators;
 using VehicleOrganizer.Infrastructure.Abstractions.Validators.Criteria;
-using VehicleOrganizer.Infrastructure.Criteria;
 using VehicleOrganizer.Infrastructure.Entities;
 using VehicleOrganizer.Infrastructure.Repositories;
 using VehicleOrganizer.Infrastructure.Repositories.Interfaces;

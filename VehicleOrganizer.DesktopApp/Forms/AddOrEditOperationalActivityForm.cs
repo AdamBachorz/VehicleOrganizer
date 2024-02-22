@@ -1,11 +1,11 @@
 ﻿using AutoMapper;
 using BachorzLibrary.Common.Extensions;
 using BachorzLibrary.Common.Tools;
-using BachorzLibrary.Common.Utils;
 using VehicleOrganizer.Core;
 using VehicleOrganizer.DesktopApp.Controls;
 using VehicleOrganizer.DesktopApp.Interfaces;
 using VehicleOrganizer.DesktopApp.Panels;
+using VehicleOrganizer.Domain.Abstractions.Utils;
 using VehicleOrganizer.Infrastructure.Abstractions.Validators;
 using VehicleOrganizer.Infrastructure.Abstractions.Validators.Criteria;
 using VehicleOrganizer.Infrastructure.Entities;
