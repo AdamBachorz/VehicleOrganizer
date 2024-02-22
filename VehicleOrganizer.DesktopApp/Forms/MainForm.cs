@@ -1,5 +1,6 @@
 ﻿using VehicleOrganizer.Core.Services.Interfaces;
 using VehicleOrganizer.DesktopApp.Panels;
+using VehicleOrganizer.Domain.Abstractions;
 using VehicleOrganizer.Infrastructure.Entities;
 using VehicleOrganizer.Infrastructure.Repositories.Interfaces;
 
@@ -26,9 +27,10 @@ namespace VehicleOrganizer.DesktopApp.Forms
             _adminToolsForm = adminToolsForm;
             _pickVehicleForm = pickVehicleForm;
             _operationalActivityPanel = operationActivityPanel;
-
-            UpdateToolStrips();
             _backgroundActionInvokeService = backgroundActionInvokeService;
+
+            Text = Codes.AppName;
+            UpdateToolStrips();
         }
         private async void MainForm_Load(object sender, EventArgs e)
         {

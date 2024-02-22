@@ -68,7 +68,7 @@
             Controls.Add(dateTimePicker1);
             Controls.Add(buttonPickDate);
             Name = "DatePickForm";
-            Text = "DatePickForm";
+            Text = "Wybierz datę";
             ResumeLayout(false);
             PerformLayout();
         }

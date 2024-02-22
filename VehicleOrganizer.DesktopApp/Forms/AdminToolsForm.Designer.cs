@@ -59,11 +59,11 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(209, 79);
+            ClientSize = new Size(232, 79);
             Controls.Add(buttonRunReminders);
             Controls.Add(checkBoxDebugMode);
             Name = "AdminToolsForm";
-            Text = "AdminToolsForm";
+            Text = "Narzędzia Admina";
             ResumeLayout(false);
             PerformLayout();
         }

@@ -251,7 +251,7 @@
             Controls.Add(label1);
             Controls.Add(buttonAddOrUpdate);
             Name = "AddOrEditOperationalActivityForm";
-            Text = "AddOrEditOperationalActivityForm";
+            Text = "Dodaj lub edytuj czynność";
             groupBoxDateOperated.ResumeLayout(false);
             groupBoxDateOperated.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)numericUpDownYearStep).EndInit();

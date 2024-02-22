@@ -68,7 +68,7 @@
             Controls.Add(textBox1);
             Controls.Add(label1);
             Name = "ValuePickForm";
-            Text = "ValuePickForm";
+            Text = "Wybierz wartość";
             ResumeLayout(false);
             PerformLayout();
         }
