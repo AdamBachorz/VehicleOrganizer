@@ -1,4 +1,5 @@
-﻿using BachorzLibrary.DAL.DotNetSix.Repositories;
+﻿using BachorzLibrary.Common.Extensions;
+using BachorzLibrary.DAL.DotNetSix.Repositories;
 using Microsoft.EntityFrameworkCore;
 using VehicleOrganizer.Infrastructure.Entities;
 using VehicleOrganizer.Infrastructure.Repositories.Interfaces;
@@ -22,7 +23,7 @@ namespace VehicleOrganizer.Infrastructure.Repositories
         {
             var existingUser = await _db.Users.AsNoTrackingWithIdentityResolution().FirstOrDefaultAsync(u => u.Id.Equals(user.Id));
 
-            if (existingUser is null) 
+            if (existingUser?.Id.ToString().IsNullOrEmpty() ?? true) 
             {
                 user.Id = Guid.NewGuid();
                 await _db.Users.AddAsync(user);
