@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.RegularExpressions;
 using VehicleOrganizer.Domain.Abstractions;
+using VehicleOrganizer.Domain.Abstractions.Utils;
 
 namespace VehicleOrganizer.Infrastructure.Entities
 {
@@ -26,9 +27,11 @@ namespace VehicleOrganizer.Infrastructure.Entities
         
         [NotMapped]
         [JsonIgnore]
-        public static User Default => JsonConvert.DeserializeObject<User>(File.ReadAllText(Codes.Files.DefaultUser));
+        public static User Default 
+            => JsonConvert.DeserializeObject<User>(File.ReadAllText(EnvUtils.GetValueDependingOnEnvironment(Codes.Files.DefaultUser, Codes.Files.DefaultUserProd)));
 
-        public static void RefreshData(User user) => File.WriteAllText(Codes.Files.DefaultUser, JsonConvert.SerializeObject(user));
+        public static void RefreshData(User user) 
+            => File.WriteAllText(EnvUtils.GetValueDependingOnEnvironment(Codes.Files.DefaultUser, Codes.Files.DefaultUserProd), JsonConvert.SerializeObject(user));
     }
 
     public struct Details
