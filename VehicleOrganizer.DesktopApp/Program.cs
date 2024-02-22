@@ -8,6 +8,8 @@ using VehicleOrganizer.DesktopApp.Panels;
 using BachorzLibrary.DAL.DotNetSix.EntityFrameworkCore;
 using VehicleOrganizer.Core;
 using AutoMapper;
+using VehicleOrganizer.Domain.Abstractions;
+using BachorzLibrary.Common;
 
 namespace VehicleOrganizer.DesktopApp
 {
@@ -21,6 +23,7 @@ namespace VehicleOrganizer.DesktopApp
         static async Task Main()
         {
             ApplicationConfiguration.Initialize();
+            AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledExceptionHandler;
           
             var service = new ServiceCollection();
 
@@ -73,6 +76,17 @@ namespace VehicleOrganizer.DesktopApp
             service.AddScoped<AdminToolsForm>();
 
             service.AddScoped<OperationalActivityPanel>();
+        }
+
+
+        private static void CurrentDomain_UnhandledExceptionHandler(object sender, UnhandledExceptionEventArgs e)
+        {
+            var ex = (Exception)e.ExceptionObject;
+
+            var directory = Path.Combine(Codes.MainPath, Codes.Directories.Exceptions, Codes.Directories.EnvSubdirectory);
+            var file = Path.Combine(directory, $"Exception_{DateTime.Now.ToString(Consts.DateFormat.Compact)}.txt");
+
+            File.WriteAllText(file, ex.FullMessageWithStackTrace());
         }
     }
 }

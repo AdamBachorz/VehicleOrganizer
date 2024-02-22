@@ -6,5 +6,6 @@
         Task AuthorizeDefaultUserAsync();
         Task InvokeAllAsync();
         Task RunRemindersAsync();
+        Task InformAdminAboutUnhandledExceptionsAsync();
     }
 }

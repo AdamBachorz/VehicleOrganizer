@@ -1,6 +1,7 @@
 ﻿using BachorzLibrary.Common.Extensions;
 using System.Collections.Concurrent;
 using VehicleOrganizer.Core.Services.Interfaces;
+using VehicleOrganizer.Domain.Abstractions;
 using VehicleOrganizer.Infrastructure.Entities;
 using VehicleOrganizer.Infrastructure.Repositories.Interfaces;
 using VehicleOrganizer.Infrastructure.Services.Email;
@@ -27,6 +28,7 @@ namespace VehicleOrganizer.Core.Services
 
         public async Task InvokeAllAsync()
         {
+            await InformAdminAboutUnhandledExceptionsAsync();
             await AuthorizeDefaultUserAsync();
             await RunRemindersAsync();
 
@@ -73,6 +75,46 @@ namespace VehicleOrganizer.Core.Services
                         _errors.Add(ex.FullMessageWithStackTrace());
                     }
                 }
+            }
+            catch (Exception ex) 
+            {
+                _errors.Add(ex.FullMessageWithStackTrace());
+            }
+        }
+        
+        public async Task InformAdminAboutUnhandledExceptionsAsync()
+        {
+            try
+            {
+                var directory = Path.Combine(Codes.MainPath, Codes.Directories.Exceptions, Codes.Directories.EnvSubdirectory);
+
+                var files = new DirectoryInfo(directory)
+                    .EnumerateFiles()
+                    .Where(f => f.Extension.Contains(".txt"))
+                    .OrderBy(f => f.Name);
+
+                if (files.IsNullOrEmpty())
+                {
+                    return;
+                }
+
+                var errorMessages = new List<string>();
+
+                foreach (var file in files)
+                {
+                    try
+                    {
+                        errorMessages.Add(File.ReadAllText(file.FullName));
+                        File.Delete(file.FullName);
+                    }
+                    catch (Exception)
+                    {
+                        continue;
+                    }                
+                }
+
+                await _emailService.InformAdminAboutProblemAsync(errorMessages);
+
             }
             catch (Exception ex) 
             {
