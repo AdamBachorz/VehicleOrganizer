@@ -27,8 +27,7 @@ namespace VehicleOrganizer.Infrastructure.Entities
         
         [NotMapped]
         [JsonIgnore]
-        public static User Default 
-            => JsonConvert.DeserializeObject<User>(File.ReadAllText(EnvUtils.GetValueDependingOnEnvironment(Codes.Files.DefaultUser, Codes.Files.DefaultUserProd)));
+        public static User Default { get; set; }
 
         public static void RefreshData(User user) 
             => File.WriteAllText(EnvUtils.GetValueDependingOnEnvironment(Codes.Files.DefaultUser, Codes.Files.DefaultUserProd), JsonConvert.SerializeObject(user));

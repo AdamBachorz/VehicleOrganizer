@@ -9,6 +9,12 @@
     <ApplicationVersion>1</ApplicationVersion>
     <ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <WarningsAsErrors />
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <WarningsAsErrors />
+  </PropertyGroup>
   <ItemGroup>
     <None Remove="Assets\Data\appsettings.Development.json" />
     <None Remove="Assets\Data\appsettings.PostDevelopment.json" />
@@ -16,6 +22,7 @@
     <None Remove="Assets\Data\DefaultUser.json" />
     <None Remove="Assets\Data\DefaultUserProd.json" />
     <None Remove="Assets\T.txt" />
+    <None Remove="Resources\layout\other_activity.xml" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />

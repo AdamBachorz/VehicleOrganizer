@@ -1,6 +1,8 @@
 ﻿using BachorzLibrary.Common.Extensions;
 using BachorzLibrary.Common.Tools.Html;
 using BachorzLibrary.DAL.DotNetSix.EntityFrameworkCore;
+using BachorzLibrary.DAL.DotNetSix.Utils;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
@@ -16,39 +18,34 @@ using VehicleOrganizer.Infrastructure.Repositories;
 using VehicleOrganizer.Infrastructure.Repositories.Interfaces;
 using VehicleOrganizer.Infrastructure.Services.Email;
 using VehicleOrganizer.Infrastructure.Validators;
+using VehicleOrganizer.Infrastructure.Extensions;
 
 namespace VehicleOrganizer.Core.Config
 {
     public static class DependencyInjection
     {
-        public static void RegisterModules(IServiceCollection service, string configContent)
+        public static void RegisterModules(IServiceCollection services, string configFileContent, Action<DbContextOptionsBuilder> options)
         {
-            service.AddLogging(config =>
+            services.AddLogging(config =>
             {
                 config.ClearProviders();
             });
 
-            var config = JsonConvert.DeserializeObject<EFCCustomConfig>(configContent);
-            service.AddObjectMappingConfiguration(AutoMapperFixture.Create());
-            service.AddSingleton<IEFCCustomConfig>(config);
-            service.AddDbContext<DataBaseContext>(options => 
-            {
-                
-            });
+            var config = JsonConvert.DeserializeObject<EFCCustomConfig>(configFileContent);
+            services.AddInfrastructure(configFileContent, options);
 
-            service.AddScoped<IBackgroundActionInvokeService, BackgroundActionInvokeService>();
-            service.AddScoped<IEmailService, EmailService>();
+            services.AddObjectMappingConfiguration(AutoMapperFixture.Create());
+            services.AddScoped<IBackgroundActionInvokeService, BackgroundActionInvokeService>();
+            services.AddScoped<IEmailService, EmailService>();
 
-            service.AddTransient<IUserRepository, UserRepository>();
-            service.AddTransient<IVehicleRepository, VehicleRepository>();
-            service.AddTransient<IOperationalActivityRepository, OperationalActivityRepository>();
+            
 
-            service.AddTransient<IValidator<Vehicle, VehicleValidationCriteria>, VehicleValidator>();
-            service.AddTransient<IValidator<OperationalActivity, OperationalActivityValidationCriteria>, OperationalActivityValidator>();
+            services.AddTransient<IValidator<Vehicle, VehicleValidationCriteria>, VehicleValidator>();
+            services.AddTransient<IValidator<OperationalActivity, OperationalActivityValidationCriteria>, OperationalActivityValidator>();
 
-            service.AddTransient<HtmlHelper>();
+            services.AddTransient<HtmlHelper>();
 
-            service.AddEmailSender(settings =>
+            services.AddEmailSender(settings =>
             {
                 settings.SenderHeader = Codes.AppName + EnvUtils.GetValueDependingOnEnvironment(" [DEV]",  string.Empty);
                 settings.SenderValues = config.ValuesBag["Sender"] as string;

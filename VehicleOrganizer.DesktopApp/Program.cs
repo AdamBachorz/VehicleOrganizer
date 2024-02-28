@@ -11,6 +11,8 @@ using AutoMapper;
 using VehicleOrganizer.Domain.Abstractions;
 using BachorzLibrary.Common;
 using VehicleOrganizer.Domain.Abstractions.Utils;
+using BachorzLibrary.DAL.DotNetSix.Utils;
+using Newtonsoft.Json;
 
 namespace VehicleOrganizer.DesktopApp
 {
@@ -27,14 +29,15 @@ namespace VehicleOrganizer.DesktopApp
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledExceptionHandler;
           
             var service = new ServiceCollection();
-
+            User.Default = JsonConvert.DeserializeObject<User>(File.ReadAllText(EnvUtils.GetValueDependingOnEnvironment(Codes.Files.DefaultUser, Codes.Files.DefaultUserProd)));
             string configFile = EnvUtils.GetValueDependingOnEnvironment(Codes.Files.DevConfig, Codes.Files.ProdConfig);
-            DependencyInjection.RegisterModules(service, File.ReadAllText(configFile));
+            string configFileContent = File.ReadAllText(configFile);
+            var config = JsonConvert.DeserializeObject<EFCCustomConfig>(configFileContent);
+            DependencyInjection.RegisterModules(service, File.ReadAllText(configFile), options => DbContextUtils.ExplicitConfig(options, config));
             RegisterFormsAndPanels(service);
 
             using (ServiceProvider serviceProvider = service.BuildServiceProvider())
             {
-                var config = serviceProvider.GetRequiredService<IEFCCustomConfig>();
                 var mapper = serviceProvider.GetRequiredService<IMapper>();
                 CommonPool.IsDebugMode = Convert.ToBoolean(config.ValuesBag["DebugMode"]);
                 var vehicleRepository = serviceProvider.GetRequiredService<IVehicleRepository>();

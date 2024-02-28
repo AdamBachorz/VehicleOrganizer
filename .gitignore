@@ -397,3 +397,4 @@ FodyWeavers.xsd
 # JetBrains Rider
 *.sln.iml
 VehicleOrganizer.MobileApp/Assets/Data/*
+VehicleOrganizer.MobileApp/G.cs

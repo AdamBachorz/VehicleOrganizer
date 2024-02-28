@@ -1,7 +1,11 @@
+using BachorzLibrary.DAL.DotNetSix.EntityFrameworkCore;
+using BachorzLibrary.DAL.DotNetSix.Utils;
 using Java.Sql;
 using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json;
 using System;
 using VehicleOrganizer.Core.Config;
+using VehicleOrganizer.Infrastructure.Entities;
 using VehicleOrganizer.Infrastructure.Repositories.Interfaces;
 
 namespace VehicleOrganizer.MobileApp
@@ -16,17 +20,21 @@ namespace VehicleOrganizer.MobileApp
             // Set our view from the "main" layout resource
             SetContentView(Resource.Layout.activity_main);
 
-            var con = new StreamReader(Assets.Open("Data/appsettings.Development.json")).ReadToEnd();
+            var services = new ServiceCollection();
+            RegisterModules(services);
 
-            var service = new ServiceCollection();
-            DependencyInjection.RegisterModules(service, con);
-
-            using ServiceProvider serviceProvider = service.BuildServiceProvider();
+            using ServiceProvider serviceProvider = services.BuildServiceProvider();
             var vehicleRepository = serviceProvider.GetRequiredService<IVehicleRepository>();
 
             var t = vehicleRepository.GetAll();
 
-            Toast.MakeText(this, t.Count, ToastLength.Long);
+            Toast.MakeText(this, t.FirstOrDefault()?.Name ?? "brak", ToastLength.Long).Show();
+        }
+
+        private void RegisterModules(ServiceCollection service)
+        {
+            User.Default = G.U(this);
+            DependencyInjection.RegisterModules(service, G.Cc(this), options => DbContextUtils.ExplicitConfig(options, G.C(this)));
         }
     }
 }

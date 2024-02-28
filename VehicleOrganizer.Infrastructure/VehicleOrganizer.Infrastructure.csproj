@@ -22,8 +22,8 @@
 
   <ItemGroup>
     <PackageReference Include="BachorzLibrary.Common" Version="0.0.12" />
-    <PackageReference Include="BachorzLibrary.DAL" Version="0.0.6" />
-    <PackageReference Include="BachorzLibrary.DAL.DotNetSix" Version="0.0.6" />
+    <PackageReference Include="BachorzLibrary.DAL" Version="0.0.8" />
+    <PackageReference Include="BachorzLibrary.DAL.DotNetSix" Version="0.0.8" />
     <PackageReference Include="BachorzLibrary.Web" Version="0.0.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.0" />
@@ -38,7 +38,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Extensions\" />
     <Folder Include="Migrations\" />
   </ItemGroup>
 
