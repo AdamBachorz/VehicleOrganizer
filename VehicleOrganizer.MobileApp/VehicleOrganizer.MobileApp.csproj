@@ -23,6 +23,7 @@
     <None Remove="Assets\Data\DefaultUserProd.json" />
     <None Remove="Assets\T.txt" />
     <None Remove="Resources\layout\other_activity.xml" />
+    <None Remove="Resources\layout\popup_update_mileage.xml" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
