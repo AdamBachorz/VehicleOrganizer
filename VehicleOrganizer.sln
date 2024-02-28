@@ -15,9 +15,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VehicleOrganizer.Infrastruc
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VehicleOrganizer.Infrastructure.Tests", "VehicleOrganizer.Infrastructure.Tests\VehicleOrganizer.Infrastructure.Tests.csproj", "{48B45CBD-EC54-4527-BBD4-FB7D56C0E686}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VehicleOrganizer.Core", "VehicleOrganizer.Core\VehicleOrganizer.Core.csproj", "{CA72871B-4D83-440A-939D-722A6D4EC03D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VehicleOrganizer.Core", "VehicleOrganizer.Core\VehicleOrganizer.Core.csproj", "{CA72871B-4D83-440A-939D-722A6D4EC03D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VehicleOrganizer.Core.Tests", "VehicleOrganizer.Core.Tests\VehicleOrganizer.Core.Tests.csproj", "{B3BE8A4E-CED2-4062-BEEE-3FBCF150E0A9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VehicleOrganizer.Core.Tests", "VehicleOrganizer.Core.Tests\VehicleOrganizer.Core.Tests.csproj", "{B3BE8A4E-CED2-4062-BEEE-3FBCF150E0A9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VehicleOrganizer.MobileApp", "VehicleOrganizer.MobileApp\VehicleOrganizer.MobileApp.csproj", "{B288D24A-E0F9-417B-AC44-A2D835C412CC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -57,6 +59,12 @@ Global
 		{B3BE8A4E-CED2-4062-BEEE-3FBCF150E0A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B3BE8A4E-CED2-4062-BEEE-3FBCF150E0A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B3BE8A4E-CED2-4062-BEEE-3FBCF150E0A9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B288D24A-E0F9-417B-AC44-A2D835C412CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B288D24A-E0F9-417B-AC44-A2D835C412CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B288D24A-E0F9-417B-AC44-A2D835C412CC}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{B288D24A-E0F9-417B-AC44-A2D835C412CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B288D24A-E0F9-417B-AC44-A2D835C412CC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B288D24A-E0F9-417B-AC44-A2D835C412CC}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

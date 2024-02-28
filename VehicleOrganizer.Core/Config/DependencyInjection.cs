@@ -21,18 +21,20 @@ namespace VehicleOrganizer.Core.Config
 {
     public static class DependencyInjection
     {
-        public static void RegisterModules(IServiceCollection service)
+        public static void RegisterModules(IServiceCollection service, string configContent)
         {
             service.AddLogging(config =>
             {
                 config.ClearProviders();
             });
 
-            var configFile = EnvUtils.GetValueDependingOnEnvironment(Codes.Files.DevConfig, Codes.Files.ProdConfig);
-            var config = JsonConvert.DeserializeObject<EFCCustomConfig>(File.ReadAllText(configFile));
+            var config = JsonConvert.DeserializeObject<EFCCustomConfig>(configContent);
             service.AddObjectMappingConfiguration(AutoMapperFixture.Create());
             service.AddSingleton<IEFCCustomConfig>(config);
-            service.AddDbContext<DataBaseContext>();
+            service.AddDbContext<DataBaseContext>(options => 
+            {
+                
+            });
 
             service.AddScoped<IBackgroundActionInvokeService, BackgroundActionInvokeService>();
             service.AddScoped<IEmailService, EmailService>();

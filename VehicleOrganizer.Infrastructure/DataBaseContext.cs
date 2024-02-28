@@ -7,7 +7,7 @@ using VehicleOrganizer.Domain.Abstractions.Utils;
 
 namespace VehicleOrganizer.Infrastructure;
 
-public class DataBaseContext : BaseDbContext
+public class DataBaseContext : DbContext
 {
     public DbSet<User> Users { get; set; }
     public DbSet<Vehicle> Vehicles { get; set; }
@@ -24,15 +24,16 @@ public class DataBaseContext : BaseDbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        base.OnConfiguring(optionsBuilder);
+        AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+        AppContext.SetSwitch("Npgsql.DisableDateTimeInfinityConversions", true);
         //optionsBuilder.EnableSensitiveDataLogging();
-        string configFile = EnvUtils.GetValueDependingOnEnvironment(Codes.Files.DevConfig, Codes.Files.ProdConfig);
-        DbContextUtils.ExplicitConfig(optionsBuilder, configFile);
+        //string configFile = EnvUtils.GetValueDependingOnEnvironment(Codes.Files.DevConfig, Codes.Files.ProdConfig);
+        //DbContextUtils.ExplicitConfig(optionsBuilder, configFile);
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        base.OnModelCreating(modelBuilder);
+        modelBuilder.UseSerialColumns();
     }
 }
 

@@ -10,6 +10,7 @@ using VehicleOrganizer.Core;
 using AutoMapper;
 using VehicleOrganizer.Domain.Abstractions;
 using BachorzLibrary.Common;
+using VehicleOrganizer.Domain.Abstractions.Utils;
 
 namespace VehicleOrganizer.DesktopApp
 {
@@ -27,7 +28,8 @@ namespace VehicleOrganizer.DesktopApp
           
             var service = new ServiceCollection();
 
-            DependencyInjection.RegisterModules(service);
+            string configFile = EnvUtils.GetValueDependingOnEnvironment(Codes.Files.DevConfig, Codes.Files.ProdConfig);
+            DependencyInjection.RegisterModules(service, File.ReadAllText(configFile));
             RegisterFormsAndPanels(service);
 
             using (ServiceProvider serviceProvider = service.BuildServiceProvider())
