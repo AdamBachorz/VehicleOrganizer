@@ -37,7 +37,6 @@ namespace VehicleOrganizer.Core.Config
             services.AddObjectMappingConfiguration(AutoMapperFixture.Create());
             services.AddScoped<IBackgroundActionInvokeService, BackgroundActionInvokeService>();
             services.AddScoped<IEmailService, EmailService>();
-
             
 
             services.AddTransient<IValidator<Vehicle, VehicleValidationCriteria>, VehicleValidator>();
